@@ -1,0 +1,1 @@
+// Stores lesson content (text or PDF), linked to a course

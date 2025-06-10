@@ -1,0 +1,1 @@
+// Custom unique ID or slug generator for courses/quizzes

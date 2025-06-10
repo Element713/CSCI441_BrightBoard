@@ -1,0 +1,1 @@
+// Stores course metadata: title, description, owner, creation date
