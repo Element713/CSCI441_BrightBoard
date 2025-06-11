@@ -1,1 +1,0 @@
-// CRUD operations for courses (create, edit, delete, list)
