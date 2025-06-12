@@ -1,59 +1,120 @@
+ /* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 2rem;
-  background-color: #eef1f5;
-  color: #333;
+  background-color: #f9fafb;
+  color: #1f2937;
+  line-height: 1.6;
 }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  color: #2c3e50;
-}
-
-button {
-  background-color: #3498db;
-  color: #fff;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin: 1rem 0;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-.state-list {
+/* Navbar */
+.navbar {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #3b82f6;
+  color: white;
 }
 
-.state-card {
-  background-color: #fafafa;
-  border-left: 5px solid #3498db;
-  padding: 1rem;
+.navbar h1 {
+  font-size: 1.5rem;
+}
+
+.nav-links a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: opacity 0.3s;
+}
+
+.nav-links a:hover {
+  opacity: 0.8;
+}
+
+/* Form Styles */
+.form-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #1e40af;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.state-card h3 {
-  margin-top: 0;
+.form-container button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.state-card ul {
-  margin: 0;
-  padding-left: 1.2rem;
-  list-style-type: disc;
+.form-container button:hover {
+  background-color: #2563eb;
+}
+
+.form-container p {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Footer */
+.footer {
+  background-color: #1f2937;
+  color: #d1d5db;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: 3rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    margin-top: 1rem;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 1rem;
+  }
 }
