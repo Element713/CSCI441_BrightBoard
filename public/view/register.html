@@ -1,52 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register - BrightBoard</title>
-<link rel="stylesheet" href="style.css">
- <!-- Corrected path -->
-
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Floating card style for registration, similar to login */
+    .card {
+      background: #fff;
+      max-width: 400px;
+      margin: 40px auto;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1.5px 4px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .card label {
+      margin-top: 1rem;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    .card input, .card select {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .card .btn {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background: #2d72d9;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .card .btn:hover {
+      background: #1a4e96;
+    }
+    #register-message {
+      margin-top: 1rem;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <header class="navbar">
     <h1>BrightBoard</h1>
-    <nav class="nav-links">
+    <div class="nav-links">
       <a href="index.html">Home</a>
-      <a href="register.html">Sign Up</a>
-      <a href="login.html">Log In</a>
-    </nav>
+      <a href="catalog.html">Catalog</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
   </header>
+  <main>
+    <div class="card">
+      <h2>Create an Account</h2>
+      <form id="register-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
 
-  <section class="form-container">
-    <h2>Register for BrightBoard</h2>
-    <form action="/submit-registration" method="POST">
-      <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" required placeholder="Your Full Name" />
-      </div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
 
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" required placeholder="Your Email" />
-      </div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required placeholder="Your Password" />
-      </div>
+        <label for="role">Register as:</label>
+        <select id="role" name="role" required>
+          <option value="">Select role</option>
+          <option value="student">Student</option>
+          <option value="professor">Professor</option>
+        </select>
 
-      <div class="form-group">
-        <label for="confirm-password">Confirm Password</label>
-        <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confirm Password" />
-      </div>
-
-      <button type="submit">Register</button>
-    </form>
-  </section>
-
+        <button type="submit" class="btn">Register</button>
+      </form>
+      <div id="register-message"></div>
+    </div>
+  </main>
   <footer class="footer">
-    &copy; 2025 BrightBoard. All rights reserved.
+    <p>&copy; 2025 BrightBoard. All rights reserved.</p>
   </footer>
+  <script>
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const role = document.getElementById('role').value;
+      const messageDiv = document.getElementById('register-message');
+      if (role === "student") {
+        messageDiv.innerHTML = 'Registration successful! <a href="student-dashboard.html">Go to Student Dashboard</a>';
+      } else if (role === "professor") {
+        messageDiv.innerHTML = 'Registration successful! <a href="professor-dashboard.html">Go to Professor Dashboard</a>';
+      } else {
+        messageDiv.textContent = 'Please select a role.';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Course Search - BrightBoard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Add to the top of each <body> -->
+  <header class="navbar">
+    <h1>BrightBoard</h1>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="catalog.html">Catalog</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+      <button id="toggle-theme" class="theme-toggle">Toggle Theme</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Search Courses</h2>
+    <div class="course-search-container">
+      <input type="text" id="course-search" placeholder="Search for a course..." onkeyup="searchCourses()">
+      <select id="category-filter" onchange="filterCourses()">
+        <option value="">All Categories</option>
+        <option value="web-development">Web Development</option>
+        <option value="data-science">Data Science</option>
+        <option value="design">Design</option>
+      </select>
+    </div>
+
+    <div id="course-list">
+      <!-- Courses will be rendered here -->
+    </div>
+  </main>
+  <script>
+    // Sample course data (would come from backend in real app)
+    const courses = [
+      {
+        title: "Intro to HTML & CSS",
+        description: "Learn the basics of web development.",
+        category: "web-development",
+        professor: "Prof. Smith"
+      },
+      {
+        title: "Data Science 101",
+        description: "Introduction to data analysis and visualization.",
+        category: "data-science",
+        professor: "Prof. Lee"
+      },
+      {
+        title: "UI/UX Design Basics",
+        description: "Design beautiful and user-friendly interfaces.",
+        category: "design",
+        professor: "Prof. Patel"
+      }
+    ];
+
+    function renderCourses(filteredCourses) {
+      const courseList = document.getElementById('course-list');
+      courseList.innerHTML = '';
+      if (filteredCourses.length === 0) {
+        courseList.innerHTML = '<p>No courses found.</p>';
+        return;
+      }
+      filteredCourses.forEach(course => {
+        const div = document.createElement('div');
+        div.className = 'course-item';
+        div.setAttribute('data-category', course.category);
+        div.innerHTML = `
+          <h3>${course.title}</h3>
+          <p>${course.description}</p>
+          <p><strong>Professor:</strong> ${course.professor}</p>
+          <button class="btn enroll-btn">Enroll</button>
+        `;
+        courseList.appendChild(div);
+      });
+
+      // Add enroll button handler
+      document.querySelectorAll('.enroll-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const courseTitle = this.parentElement.querySelector('h3').textContent;
+          alert('Enrolled in ' + courseTitle + '!");
+        });
+      });
+    }
+
+    function searchCourses() {
+      const searchQuery = document.getElementById('course-search').value.toLowerCase();
+      const filter = document.getElementById('category-filter').value;
+      const filtered = courses.filter(course => {
+        const matchesTitle = course.title.toLowerCase().includes(searchQuery);
+        const matchesCategory = !filter || course.category === filter;
+        return matchesTitle && matchesCategory;
+      });
+      renderCourses(filtered);
+    }
+
+    function filterCourses() {
+      searchCourses();
+    }
+
+    // Initial render
+    renderCourses(courses);
+  </script>
+</body>
+</html>

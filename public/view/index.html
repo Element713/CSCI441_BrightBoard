@@ -1,43 +1,43 @@
-<!-- public/view/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome to BrightBoard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrightBoard</title>
   <link rel="stylesheet" href="style.css">
- <!-- Corrected path -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
-<body>
-
-  <!-- Navbar -->
-  <header class="navbar">
-    <h1>BrightBoard</h1>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="register.html">Sign Up</a>
-      <a href="login.html">Log In</a>
-      <a href="course.html">Learn More</a>
-    </nav>
+<body><!-- Add to the top of each <body> -->
+<header class="navbar">
+  <h1>BrightBoard</h1>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="catalog.html">Catalog</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+    <button id="toggle-theme" class="theme-toggle">Toggle Theme</button>
+  </div>
+</header>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h2>Welcome to BrightBoard</h2>
-    <p>A lightweight, intuitive LMS built for microlearning, tutoring, and small-scale training. No clutter, no confusion—just smart, effective teaching.</p>
-    <div class="buttons">
-      <a href="register.html">Get Started</a>
-      <a href="course.html">Learn More</a>
-      <a href="login.html">Log In</a>
-      <a href="demo.html">Watch Demo</a> <!-- Optional: add demo.html if needed -->
-    </div>
-  </section>
+  <main>
+    
+    <section class="card hero">
+      <h2>Simple. Clean. Learning.</h2>
+      <p>BrightBoard helps instructors share knowledge and students learn with ease.</p>
+      <div style="display: flex; justify-content: center; margin-top: 1.5em;">
+        <a href="register.html" class="theme-toggle">Get Started</a>
+      </div>
+    </section>
+  </main>
 
-  <!-- Footer -->
   <footer class="footer">
-    &copy; 2025 BrightBoard. All rights reserved.
+    <p>&copy; 2025 BrightBoard. All rights reserved.</p>
   </footer>
 
+  <script>
+    document.getElementById('toggle-theme')?.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+  </script>
 </body>
 </html>

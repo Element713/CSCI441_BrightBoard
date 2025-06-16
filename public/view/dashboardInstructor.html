@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professor Dashboard - BrightBoard</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .card {
+      background: #fff;
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1.5px 4px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .section-title {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #2d72d9;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.25rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .btn {
+      padding: 0.6rem 1.2rem;
+      background: #2d72d9;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #1a4e96;
+    }
+    .created-list {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+    .created-item {
+      background: #f7faff;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid #2d72d9;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .created-item.selected {
+      background: #e3edfa;
+      border-left: 6px solid #1a4e96;
+    }
+    .no-items {
+      color: #888;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .student-list {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+    .student-item {
+      margin-bottom: 1.2rem;
+    }
+    .progress-bar-container {
+      background: #f1f1f1;
+      border-radius: 6px;
+      height: 18px;
+      width: 100%;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #2d72d9;
+      border-radius: 6px 0 0 6px;
+      transition: width 0.4s;
+      color: #fff;
+      font-size: 0.9rem;
+      text-align: center;
+      line-height: 18px;
+    }
+    .add-section {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #f7faff;
+      border-radius: 8px;
+      border: 1px solid #e3edfa;
+    }
+    .add-section h4 {
+      margin-bottom: 0.5rem;
+      color: #2d72d9;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <h1>BrightBoard</h1>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="catalog.html">Catalog</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Welcome, Professor!</h2>
+
+      <div class="section-title">Create a New Course</div>
+      <form id="course-form">
+        <div class="form-group">
+          <label for="course-title">Course Title:</label>
+          <input type="text" id="course-title" required />
+        </div>
+        <div class="form-group">
+          <label for="course-desc">Description:</label>
+          <textarea id="course-desc" rows="2" required></textarea>
+        </div>
+        <button type="submit" class="btn">Add Course</button>
+      </form>
+
+      <div class="section-title">Active Courses</div>
+      <div class="created-list" id="courses-list">
+        <div class="no-items">No courses created yet.</div>
+      </div>
+
+      <div id="course-details" style="display:none;">
+        <div class="section-title">Students & Progress</div>
+        <div class="student-list" id="students-list"></div>
+        <div class="add-section">
+          <h4>Add New Quiz/Material</h4>
+          <form id="material-form">
+            <div class="form-group">
+              <label for="material-title">Title:</label>
+              <input type="text" id="material-title" required />
+            </div>
+            <div class="form-group">
+              <label for="material-desc">Description:</label>
+              <textarea id="material-desc" rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn">Add</button>
+          </form>
+          <div class="created-list" id="materials-list"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <p>&copy; 2025 BrightBoard. All rights reserved.</p>
+  </footer>
+  <script>
+    // Sample data for demonstration
+    const courses = [];
+    let selectedCourseIndex = null;
+
+    // Each course will have students and materials/quizzes
+    function createSampleCourse(title, desc) {
+      return {
+        title,
+        desc,
+        students: [
+          { name: "Alice Johnson", progress: Math.floor(Math.random() * 100) },
+          { name: "Bob Lee", progress: Math.floor(Math.random() * 100) },
+          { name: "Charlie Kim", progress: Math.floor(Math.random() * 100) }
+        ],
+        materials: []
+      };
+    }
+
+    // Add a sample course for demo
+    courses.push(createSampleCourse("Intro to HTML & CSS", "Learn the basics of web development."));
+    courses.push(createSampleCourse("Data Science 101", "Introduction to data analysis and visualization."));
+
+    document.getElementById('course-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('course-title').value.trim();
+      const desc = document.getElementById('course-desc').value.trim();
+      if (title && desc) {
+        courses.push(createSampleCourse(title, desc));
+        renderCourses();
+        this.reset();
+      }
+    });
+
+    function renderCourses() {
+      const list = document.getElementById('courses-list');
+      if (courses.length === 0) {
+        list.innerHTML = '<div class="no-items">No courses created yet.</div>';
+        document.getElementById('course-details').style.display = "none";
+        return;
+      }
+      list.innerHTML = '';
+      courses.forEach((course, idx) => {
+        const div = document.createElement('div');
+        div.className = 'created-item' + (selectedCourseIndex === idx ? ' selected' : '');
+        div.innerHTML = `<strong>${course.title}</strong><br>${course.desc}`;
+        div.onclick = () => {
+          selectedCourseIndex = idx;
+          renderCourses();
+          renderCourseDetails();
+        };
+        list.appendChild(div);
+      });
+    }
+
+    function renderCourseDetails() {
+      if (selectedCourseIndex === null) {
+        document.getElementById('course-details').style.display = "none";
+        return;
+      }
+      document.getElementById('course-details').style.display = "block";
+      renderStudents();
+      renderMaterials();
+    }
+
+    function renderStudents() {
+      const course = courses[selectedCourseIndex];
+      const list = document.getElementById('students-list');
+      if (!course.students || course.students.length === 0) {
+        list.innerHTML = '<div class="no-items">No students enrolled yet.</div>';
+        return;
+      }
+      list.innerHTML = '';
+      course.students.forEach(student => {
+        const div = document.createElement('div');
+        div.className = 'student-item';
+        div.innerHTML = `
+          <strong>${student.name}</strong>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: ${student.progress}%;">${student.progress}%</div>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    // Material/Quiz logic
+    document.getElementById('material-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('material-title').value.trim();
+      const desc = document.getElementById('material-desc').value.trim();
+      if (title && desc && selectedCourseIndex !== null) {
+        courses[selectedCourseIndex].materials.push({ title, desc });
+        renderMaterials();
+        this.reset();
+      }
+    });
+
+    function renderMaterials() {
+      const course = courses[selectedCourseIndex];
+      const list = document.getElementById('materials-list');
+      if (!course.materials || course.materials.length === 0) {
+        list.innerHTML = '<div class="no-items">No quizzes/materials added yet.</div>';
+        return;
+      }
+      list.innerHTML = '';
+      course.materials.forEach(material => {
+        const div = document.createElement('div');
+        div.className = 'created-item';
+        div.innerHTML = `<strong>${material.title}</strong><br>${material.desc}`;
+        list.appendChild(div);
+      });
+    }
+
+    // Initial render
+    renderCourses();
+    renderCourseDetails();
+  </script>
+</body>
+</html>
