@@ -6,7 +6,7 @@ const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
-
+const errorHandler = require('./middleware/errorHandler');
 const routes = require('./routes'); 
 
 const PORT = process.env.PORT || 5000;
@@ -40,7 +40,6 @@ mongoose.connection.once('open', () => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
 
-// ...existing code...
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../brightboard-frontend/build')));
