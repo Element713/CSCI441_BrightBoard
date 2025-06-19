@@ -13,4 +13,6 @@ export default function Navbar() {
       </div>
     </header>
   );
+  echo > src/components/Navbar.css
+  echo > src/pages/NotFound.css
 }
