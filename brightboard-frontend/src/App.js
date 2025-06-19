@@ -4,8 +4,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import Lesson from "./pages/Lesson";
 import Quiz from "./pages/Quiz";
-import CourseCatalog from "./pages/CourseCataloug"; // <-- spelling matches your file
-import CourseSearch from "./pages/CourseSearch";
+import CourseCatalog from "./pages/CourseCatalog";
 import CourseView from "./pages/CourseView";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -23,7 +22,6 @@ function App() {
         <Route path="/lesson" element={<Lesson />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/catalog" element={<CourseCatalog />} />
-        <Route path="/search" element={<CourseSearch />} />
         <Route path="/course" element={<CourseView />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

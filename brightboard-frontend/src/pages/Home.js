@@ -5,10 +5,9 @@ function Navbar({ onToggleTheme }) {
     <header className="navbar">
       <h1>BrightBoard</h1>
       <div className="nav-links">
-        <a href="/">Home</a>
-        <a href="/catalog">Catalog</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
+        <a href="/Home">Home</a>
+        <a href="/Login">Login</a>
+        <a href="/Register">Register</a>
         <button id="toggle-theme" className="theme-toggle" onClick={onToggleTheme}>
           Toggle Theme
         </button>
