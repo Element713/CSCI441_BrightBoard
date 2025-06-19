@@ -1,7 +1,6 @@
 // 404 Page Not Found
 import React from 'react';
 import Navbar from '../components/Navbar';
-import './NotFound.css'; // Optional: move styles here or keep in style.css
 
 export default function NotFound() {
   return (

@@ -1,18 +1,9 @@
 import React from "react";
-import "./Navbar.css"; // Optional: move navbar styles here or keep in style.css
 
 export default function Navbar() {
   return (
-    <header className="navbar">
-      <h1>BrightBoard</h1>
-      <div className="nav-links">
-        <a href="/">Home</a>
-        <a href="/catalog">Catalog</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-      </div>
-    </header>
+    <nav>
+      <h2>Navbar</h2>
+    </nav>
   );
-  echo > src/components/Navbar.css
-  echo > src/pages/NotFound.css
 }

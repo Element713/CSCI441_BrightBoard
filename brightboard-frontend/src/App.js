@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import './App.css';
 import StudentDashboard from "./pages/StudentDashboard";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import Lesson from "./pages/Lesson";
@@ -11,7 +10,7 @@ import CourseView from "./pages/CourseView";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Progress from "./pages/Progress";
-import NotFound from "./pages/404";
+import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 
 function App() {

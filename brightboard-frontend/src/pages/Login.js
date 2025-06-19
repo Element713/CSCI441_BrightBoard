@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-// Optional: import './style.css';
 function Navbar({ onToggleTheme }) {
   return (
     <header className="navbar">
