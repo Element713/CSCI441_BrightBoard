@@ -23,7 +23,6 @@ export default function Register() {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
     role: ""
   });
   const [message, setMessage] = useState("");

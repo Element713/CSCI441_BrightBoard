@@ -16,7 +16,6 @@ function Navbar({ onToggleTheme }) {
   );
 }
 
-
 export default function Login() {
   const [dark, setDark] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -25,13 +24,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleToggleTheme = () => {
     setDark(d => !d);
     document.body.classList.toggle("dark");
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
@@ -45,8 +45,24 @@ export default function Login() {
       valid = false;
     }
     if (valid) {
-      alert("Login successful (mock)");
-      // Proceed with login logic or redirect
+      setLoading(true);
+      try {
+        const res = await fetch("/routes/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert("Login successful!");
+          // Optionally: save token, redirect, etc.
+        } else {
+          setPasswordError(data.message || "Login failed.");
+        }
+      } catch (err) {
+        setPasswordError("Server error. Please try again.");
+      }
+      setLoading(false);
     }
   };
 
@@ -66,6 +82,7 @@ export default function Login() {
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+                disabled={loading}
               />
               <small className="error-msg">{emailError}</small>
             </div>
@@ -78,6 +95,7 @@ export default function Login() {
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
+                disabled={loading}
               />
               <small className="error-msg">{passwordError}</small>
               <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginTop: "0.5rem" }}>
@@ -116,7 +134,7 @@ export default function Login() {
                 </a>
               </div>
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
           </form>
         </section>
       </main>

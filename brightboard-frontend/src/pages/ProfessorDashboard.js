@@ -1,54 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 
-const initialCourses = [
-  {
-    title: "Intro to HTML & CSS",
-    desc: "Learn the basics of web development.",
-    students: [
-      { name: "Alice Johnson", progress: 85 },
-      { name: "Bob Lee", progress: 60 },
-      { name: "Charlie Kim", progress: 100 }
-    ],
-    materials: []
-  },
-  {
-    title: "Data Science 101",
-    desc: "Introduction to data analysis and visualization.",
-    students: [
-      { name: "Dana White", progress: 70 },
-      { name: "Eli Brown", progress: 40 }
-    ],
-    materials: []
-  }
-];
-
 export default function ProfessorDashboard() {
-  const [courses, setCourses] = useState(initialCourses);
+  const [courses, setCourses] = useState([]);
   const [selected, setSelected] = useState(null);
   const [courseTitle, setCourseTitle] = useState("");
   const [courseDesc, setCourseDesc] = useState("");
   const [materialTitle, setMaterialTitle] = useState("");
   const [materialDesc, setMaterialDesc] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const addCourse = e => {
+  // Fetch courses from backend on mount
+  useEffect(() => {
+    fetch("/routes/courses")
+      .then(res => res.json())
+      .then(data => setCourses(Array.isArray(data) ? data : []))
+      .catch(() => setCourses([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Add a new course (POST to backend)
+  const addCourse = async e => {
     e.preventDefault();
-    setCourses([
-      ...courses,
-      { title: courseTitle, desc: courseDesc, students: [], materials: [] }
-    ]);
-    setCourseTitle("");
-    setCourseDesc("");
+    try {
+      const res = await fetch("/routes/courses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: courseTitle, description: courseDesc })
+      });
+      const newCourse = await res.json();
+      if (res.ok) {
+        setCourses([...courses, newCourse]);
+        setCourseTitle("");
+        setCourseDesc("");
+      } else {
+        alert(newCourse.message || "Failed to add course.");
+      }
+    } catch {
+      alert("Server error. Try again.");
+    }
   };
 
-  const addMaterial = e => {
+  // Add material/quiz to selected course (PUT to backend)
+  const addMaterial = async e => {
     e.preventDefault();
     if (selected === null) return;
-    const updatedCourses = [...courses];
-    updatedCourses[selected].materials.push({ title: materialTitle, desc: materialDesc });
-    setCourses(updatedCourses);
-    setMaterialTitle("");
-    setMaterialDesc("");
+    const course = courses[selected];
+    try {
+      const res = await fetch(`/routes/courses/${course._id}/materials`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: materialTitle, desc: materialDesc })
+      });
+      const updatedCourse = await res.json();
+      if (res.ok) {
+        // Update course in local state
+        const updatedCourses = [...courses];
+        updatedCourses[selected] = updatedCourse;
+        setCourses(updatedCourses);
+        setMaterialTitle("");
+        setMaterialDesc("");
+      } else {
+        alert(updatedCourse.message || "Failed to add material.");
+      }
+    } catch {
+      alert("Server error. Try again.");
+    }
   };
 
   return (
@@ -71,29 +88,31 @@ export default function ProfessorDashboard() {
           </form>
           <div className="section-title">Active Courses</div>
           <div className="created-list">
-            {courses.length === 0 ? (
+            {loading ? (
+              <div>Loading...</div>
+            ) : courses.length === 0 ? (
               <div className="no-items">No courses created yet.</div>
             ) : (
               courses.map((course, idx) => (
                 <div
                   className={`created-item${selected === idx ? " selected" : ""}`}
-                  key={course.title}
+                  key={course._id}
                   onClick={() => setSelected(idx)}
                 >
-                  <strong>{course.title}</strong><br />{course.desc}
+                  <strong>{course.title}</strong><br />{course.description}
                 </div>
               ))
             )}
           </div>
-          {selected !== null && (
+          {selected !== null && courses[selected] && (
             <div id="course-details">
               <div className="section-title">Students & Progress</div>
               <div className="student-list">
-                {courses[selected].students.length === 0 ? (
+                {courses[selected].students && courses[selected].students.length === 0 ? (
                   <div className="no-items">No students enrolled yet.</div>
                 ) : (
                   courses[selected].students.map(student => (
-                    <div className="student-item" key={student.name}>
+                    <div className="student-item" key={student._id || student.name}>
                       <strong>{student.name}</strong>
                       <div className="progress-bar-container">
                         <div className="progress-bar" style={{ width: `${student.progress}%` }}>
@@ -118,11 +137,11 @@ export default function ProfessorDashboard() {
                   <button className="btn" type="submit">Add</button>
                 </form>
                 <div className="created-list">
-                  {courses[selected].materials.length === 0 ? (
+                  {courses[selected].materials && courses[selected].materials.length === 0 ? (
                     <div className="no-items">No quizzes/materials added yet.</div>
                   ) : (
                     courses[selected].materials.map((mat, i) => (
-                      <div className="created-item" key={i}>
+                      <div className="created-item" key={mat._id || i}>
                         <strong>{mat.title}</strong><br />{mat.desc}
                       </div>
                     ))
