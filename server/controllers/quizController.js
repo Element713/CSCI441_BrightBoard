@@ -1,7 +1,8 @@
 // Handles quiz creation, fetching quizzes, and submitting answers
 
-const { Quiz, QuizResult } = require('../models');
+const { Quiz } = require('../models');
 
+// Create a new quiz (Instructor only)
 const createQuiz = async (req, res) => {
   try {
     const quiz = await Quiz.create(req.body);
@@ -11,29 +12,20 @@ const createQuiz = async (req, res) => {
   }
 };
 
+// Fetch quiz by associated lesson ID
 const getQuizByLesson = async (req, res) => {
-  const quiz = await Quiz.findOne({ lesson: req.params.lessonId });
-  res.json(quiz);
+  try {
+    const quiz = await Quiz.findOne({ lesson: req.params.lessonId });
+    if (!quiz) {
+      return res.status(404).json({ error: 'Quiz not found for this lesson' });
+    }
+    res.json(quiz);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-const submitQuiz = async (req, res) => {
-  const { answers } = req.body;
-  const quiz = await Quiz.findById(req.params.quizId);
-  if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
-
-  let score = 0;
-  quiz.questions.forEach((q, i) => {
-    if (q.correctAnswer === answers[i]) score++;
-  });
-
-  const result = await QuizResult.create({
-    quiz: quiz._id,
-    student: req.user._id,
-    score,
-    total: quiz.questions.length
-  });
-
-  res.json({ score, total: quiz.questions.length });
+module.exports = {
+  createQuiz,
+  getQuizByLesson
 };
-
-module.exports = { createQuiz, getQuizByLesson, submitQuiz };

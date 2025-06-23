@@ -1,18 +1,48 @@
-// Defines user schema (instructor or student), password hash, auth-related data
-// models/User.js
+// This model can be used to create, read, update, and delete user records in the database.
+// It includes methods for password hashing and comparison, ensuring secure authentication.
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
-  username: { type: String, unique: true },
-  email: { type: String, required: true },
-  passwordHash: { type: String, required: true },
-  role: { type: String, enum: ['student', 'instructor'], default: 'student' },
-});
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
+    },
+    passwordHash: {
+      type: String,
+      required: true
+    },
+    role: {
+      type: String,
+      enum: ['student', 'instructor'],
+      default: 'student'
+    }
+  },
+  { timestamps: true }
+);
 
-// Password comparison method
+// Instance method for password comparison
 userSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.passwordHash);
 };
+
+// Virtual (optional): hide sensitive fields when converting to JSON
+userSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    delete ret.passwordHash;
+    return ret;
+  }
+});
 
 module.exports = mongoose.model('User', userSchema);

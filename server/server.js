@@ -8,54 +8,41 @@ const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const errorHandler = require('./middleware/errorHandler');
 const routes = require('./routes'); 
+const { logger } = require('./middleware/logEvents');
 
 const PORT = process.env.PORT || 5000;
-connectDB(); // Connect to MongoDB
 
+// Connect to MongoDB
+connectDB();
 
-// Cross Origin Resource Sharing
+// Middleware
+app.use(logger);
 app.use(cors(corsOptions));
-
-// built-in middleware for json 
 app.use(express.json());
 
-// Routes
-app.use('/routes', routes); 
+// API routes
+app.use('/api', routes);
 
-// Catch-all 404 handler
-app.all('*', (req, res) => {
-  if (req.accepts('html')) {
-    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
-  } else if (req.accepts('json')) {
-    res.status(404).json({ error: '404 Not Found' });
-  } else {
-    res.status(404).type('txt').send('404 Not Found');
-  }
+// Static file serving (only in production)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../brightboard-frontend/build')));
+
+  // React fallback route
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../brightboard-frontend/build', 'index.html'));
+  });
+}
+
+// API fallback for unknown endpoints
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ error: '404 Not Found' });
 });
 
+// Global error handler
 app.use(errorHandler);
 
+// Start server only after DB is connected
 mongoose.connection.once('open', () => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-});
-
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../brightboard-frontend/build')));
-
-// For any route not handled by your API, serve React's index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../brightboard-frontend/build', 'index.html'));
-});
-
-// Catch-all 404 handler (move this below the above code)
-app.all('/api/*', (req, res) => {
-  if (req.accepts('html')) {
-    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
-  } else if (req.accepts('json')) {
-    res.status(404).json({ error: '404 Not Found' });
-  } else {
-    res.status(404).type('txt').send('404 Not Found');
-  }
+  console.log('Connected to MongoDB');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });

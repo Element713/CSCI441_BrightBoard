@@ -1,1 +1,0 @@
-// Standard format for error responses in API

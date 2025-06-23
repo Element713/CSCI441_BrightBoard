@@ -1,1 +1,0 @@
-// (optional)	If sending confirmation or reminder emails (e.g., nodemailer config)
