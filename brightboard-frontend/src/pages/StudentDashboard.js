@@ -19,7 +19,7 @@ export default function StudentDashboard() {
       return;
     }
     // Adjust endpoint as needed for your backend
-    fetch(`/routes/progress/student/${userId}`)
+    fetch(`/api/progress/student/${userId}`)
       .then(res => res.json())
       .then(data => setCourses(Array.isArray(data) ? data : []))
       .catch(() => setCourses([]))

@@ -21,7 +21,7 @@ export default function Quiz() {
       setLoading(false);
       return;
     }
-    fetch(`/routes/quizzes/${quizId}`)
+    fetch(`/api/quizzes/${quizId}`)
       .then((res) => res.json())
       .then((data) => setQuiz(data))
       .catch(() => setQuiz(null))
@@ -46,7 +46,7 @@ export default function Quiz() {
     // Save result to backend
     const userId = getCurrentUserId();
     if (userId) {
-      await fetch(`/routes/quizzes/submit/${quiz._id}`, {
+      await fetch(`/api/quizzes/submit/${quiz._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

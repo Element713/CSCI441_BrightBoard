@@ -40,7 +40,7 @@ export default function Progress() {
       setLoading(false);
       return;
     }
-    fetch(`/routes/progress/student/${userId}`)
+    fetch(`/api/progress/student/${userId}`)
       .then(res => res.json())
       .then(data => setProgress(Array.isArray(data) ? data : []))
       .catch(() => setProgress([]))

@@ -34,13 +34,13 @@ export default function CourseView() {
   useEffect(() => {
     // Fetch course info
     setLoading(true);
-    fetch(`/routes/courses/${id}`)
+    fetch(`/api/courses/${id}`)
       .then(res => res.json())
       .then(data => setCourse(data))
       .catch(() => setCourse(null));
 
     // Fetch lessons for this course
-    fetch(`/routes/lessons/${id}`)
+    fetch(`/api/lessons/${id}`)
       .then(res => res.json())
       .then(data => setLessons(Array.isArray(data) ? data : []))
       .catch(() => setLessons([]))

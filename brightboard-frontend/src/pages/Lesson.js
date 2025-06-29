@@ -8,7 +8,7 @@ export default function Lesson() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/routes/lessons/single/${id}`)
+    fetch(`/api/lessons/single/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setLesson(data);

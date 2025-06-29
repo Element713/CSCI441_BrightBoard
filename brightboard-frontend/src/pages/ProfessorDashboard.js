@@ -12,7 +12,7 @@ export default function ProfessorDashboard() {
 
   // Fetch courses from backend on mount
   useEffect(() => {
-    fetch("/routes/courses")
+    fetch("/api/courses")
       .then(res => res.json())
       .then(data => setCourses(Array.isArray(data) ? data : []))
       .catch(() => setCourses([]))
@@ -23,7 +23,7 @@ export default function ProfessorDashboard() {
   const addCourse = async e => {
     e.preventDefault();
     try {
-      const res = await fetch("/routes/courses", {
+      const res = await fetch("/api/courses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: courseTitle, description: courseDesc })
@@ -47,7 +47,7 @@ export default function ProfessorDashboard() {
     if (selected === null) return;
     const course = courses[selected];
     try {
-      const res = await fetch(`/routes/courses/${course._id}/materials`, {
+      const res = await fetch(`/api/courses/${course._id}/materials`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: materialTitle, desc: materialDesc })

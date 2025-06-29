@@ -26,7 +26,7 @@ export default function CourseSearch() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/routes/courses")
+    fetch("/api/courses")
       .then(res => res.json())
       .then(data => {
         setCourses(Array.isArray(data) ? data : []);

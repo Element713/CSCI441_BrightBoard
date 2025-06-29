@@ -131,7 +131,7 @@ export default function ProfessorQuiz() {
 
   // Fetch courses for dropdown
   useEffect(() => {
-    fetch("/routes/courses")
+    fetch("/api/courses")
       .then(res => res.json())
       .then(data => setCourses(Array.isArray(data) ? data : []))
       .catch(() => setCourses([]));
@@ -143,7 +143,7 @@ export default function ProfessorQuiz() {
       setQuizzes([]);
       return;
     }
-    fetch(`/routes/quizzes?courseId=${courseId}`)
+    fetch(`/api/quizzes?courseId=${courseId}`)
       .then(res => res.json())
       .then(data => setQuizzes(Array.isArray(data) ? data : []))
       .catch(() => setQuizzes([]));
@@ -155,13 +155,13 @@ export default function ProfessorQuiz() {
     try {
       let res, data;
       if (editingQuiz) {
-        res = await fetch(`/routes/quizzes/${editingQuiz._id}`, {
+        res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...quizData, courseId })
         });
       } else {
-        res = await fetch("/routes/quizzes", {
+        res = await fetch("/api/quizzes", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...quizData, courseId })
@@ -173,7 +173,7 @@ export default function ProfessorQuiz() {
         setEditingQuiz(null);
         setCreating(false);
         // Refresh quizzes
-        fetch(`/routes/quizzes?courseId=${courseId}`)
+        fetch(`/api/quizzes?courseId=${courseId}`)
           .then(res => res.json())
           .then(data => setQuizzes(Array.isArray(data) ? data : []))
           .catch(() => setQuizzes([]));
@@ -190,7 +190,7 @@ export default function ProfessorQuiz() {
     if (!window.confirm("Are you sure you want to delete this quiz?")) return;
     setMessage("");
     try {
-      const res = await fetch(`/routes/quizzes/${quizId}`, { method: "DELETE" });
+      const res = await fetch(`/api/quizzes/${quizId}`, { method: "DELETE" });
       if (res.ok) {
         setMessage("Quiz deleted.");
         setQuizzes(quizzes.filter(q => q._id !== quizId));
