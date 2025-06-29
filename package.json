@@ -6,7 +6,7 @@
     "server"
   ],
   "scripts": {
-    "start": "concurrently \"npm run start --workspace server\" \"npm run start --workspace brightboard-frontend\""
+    "start": "cd server && npm start"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
