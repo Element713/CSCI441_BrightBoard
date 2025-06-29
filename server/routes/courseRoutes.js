@@ -3,16 +3,15 @@
 const express = require('express');
 const router = express.Router();
 const courseController = require('../controllers/courseController');
-const authMiddleware = require('../middleware/authMiddleware');
-const { verifyUser } = require('../middleware/roleMiddleware');
-const { verifyInstructor } = require('../middleware/roleMiddleware');
+const { verifyUser } = require('../middleware/authMiddleware');
+const { verifyInstructor, verifyStudent } = require('../middleware/roleMiddleware');
 
-// Protected routes
-router.post('/', roleMiddleware.verifyInstructor, courseController.createCourse);
-router.get('/', courseController.getCourses);
-router.get('/:id', courseController.getCourseById);
-router.put('/:id', roleMiddleware.verifyInstructor, courseController.updateCourse);
-router.delete('/:id', roleMiddleware.verifyInstructor, courseController.deleteCourse);
-router.post('/:id/enroll', roleMiddleware.verifyStudent, courseController.enrollInCourse);
+// Course routes
+router.post('/', verifyUser, verifyInstructor, courseController.createCourse);
+router.get('/', verifyUser, courseController.getCourses);
+router.get('/:id', verifyUser, courseController.getCourseById);
+router.put('/:id', verifyUser, verifyInstructor, courseController.updateCourse);
+router.delete('/:id', verifyUser, verifyInstructor, courseController.deleteCourse);
+router.post('/:id/enroll', verifyUser, verifyStudent, courseController.enrollInCourse);
 
 module.exports = router;
