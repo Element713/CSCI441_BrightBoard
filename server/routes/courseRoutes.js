@@ -13,6 +13,6 @@ router.get('/', courseController.getCourses);
 router.get('/:id', courseController.getCourseById);
 router.put('/:id', authMiddleware.verifyInstructor, courseController.updateCourse);
 router.delete('/:id', authMiddleware.verifyInstructor, courseController.deleteCourse);
-router.post('/:id/enroll', authMiddleware.verifyStudent, courseController.enrollInCourse);
+//router.post('/:id/enroll', authMiddleware.verifyStudent, courseController.enrollInCourse);
 
 module.exports = router;
