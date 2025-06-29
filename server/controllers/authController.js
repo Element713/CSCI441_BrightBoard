@@ -1,7 +1,7 @@
 // Handles login, registration, logout, and token refresh
 
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const { User } = require('../models');
 
 const register = async (req, res) => {

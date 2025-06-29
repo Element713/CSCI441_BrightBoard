@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true
     },
-    passwordHash: {
+    password: {
       type: String,
       required: true
     },
@@ -34,13 +34,13 @@ const userSchema = new mongoose.Schema(
 
 // Instance method for password comparison
 userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compare(password, this.passwordHash);
+  return bcrypt.compare(password, this.password);
 };
 
 // Virtual (optional): hide sensitive fields when converting to JSON
 userSchema.set('toJSON', {
   transform: function (doc, ret) {
-    delete ret.passwordHash;
+    delete ret.password;
     return ret;
   }
 });

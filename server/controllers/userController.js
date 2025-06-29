@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 // Get currently logged-in user (via token)
 const getCurrentUser = (req, res) => {
