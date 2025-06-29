@@ -102,3 +102,11 @@ module.exports = {
   deleteCourse,
   enrollInCourse 
 };
+
+console.log("createCourse:", typeof courseController.createCourse);
+console.log("getCourses:", typeof courseController.getCourses);
+console.log("getCourseById:", typeof courseController.getCourseById);
+console.log("updateCourse:", typeof courseController.updateCourse);
+console.log("deleteCourse:", typeof courseController.deleteCourse);
+console.log("enrollInCourse:", typeof courseController.enrollInCourse);
+
