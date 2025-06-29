@@ -9,7 +9,7 @@ const { verifyInstructor } = require('../middleware/roleMiddleware');
 
 // Protected routes
 router.post('/', authMiddleware.verifyInstructor, courseController.createCourse);
-router.get('/', courseController.getAllCourses);
+router.get('/', courseController.getCourses);
 router.get('/:id', courseController.getCourseById);
 router.put('/:id', authMiddleware.verifyInstructor, courseController.updateCourse);
 router.delete('/:id', authMiddleware.verifyInstructor, courseController.deleteCourse);
