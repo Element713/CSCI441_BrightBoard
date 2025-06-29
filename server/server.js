@@ -23,15 +23,15 @@ app.use(express.json());
 // API routes
 app.use('/api', routes);
 
-// Static file serving (only in production)
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../brightboard-frontend/build')));
+// Serve static files from React build (in all environments)
+app.use(express.static(path.join(__dirname, '../brightboard-frontend/build')));
 
-  // React fallback route
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../brightboard-frontend/build', 'index.html'));
-  });
-}
+// React fallback route (for client-side routing)
+app.get('*', (req, res) => {
+  // If the request starts with /api, skip to next handler (API 404)
+  if (req.path.startsWith('/api')) return res.status(404).json({ error: '404 Not Found' });
+  res.sendFile(path.join(__dirname, '../brightboard-frontend/build', 'index.html'));
+});
 
 // API fallback for unknown endpoints
 app.all('/api/*', (req, res) => {
