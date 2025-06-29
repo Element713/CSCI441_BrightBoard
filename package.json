@@ -6,10 +6,10 @@
     "server"
   ],
   "scripts": {
-    "start": "cd server && npm start"
+    "start": "node server/server.js",
+    "heroku-postbuild": "cd brightboard-frontend && npm install && npm run build"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "react-scripts": "5.0.1"
+  }
 }
