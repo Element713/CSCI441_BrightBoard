@@ -56,14 +56,16 @@ export default function Login() {
         });
         const data = await res.json();
         if (res.ok) {
+          // Save user info from backend's nested user object
           localStorage.setItem("user", JSON.stringify({
-            username: data.username,
-            role: data.role
+            username: data.user.username,
+            role: data.user.role
           }));
-          localStorage.setItem("userId", data.userId);
+          localStorage.setItem("userId", data.user.id);
+          localStorage.setItem("token", data.token); // Optional: save JWT for API calls
           navigate("/dashboard");
         } else {
-          setPasswordError(data.message || "Login failed.");
+          setPasswordError(data.error || "Login failed.");
         }
       } catch (err) {
         setPasswordError("Server error. Please try again.");
