@@ -56,7 +56,6 @@ export default function Login() {
         });
         const data = await res.json();
         if (res.ok) {
-          // Save user info and userId
           localStorage.setItem("user", JSON.stringify({
             username: data.username,
             role: data.role
