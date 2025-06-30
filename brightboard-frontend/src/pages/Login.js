@@ -57,8 +57,11 @@ export default function Login() {
         const data = await res.json();
         if (res.ok) {
           // Save user info and userId
-          localStorage.setItem("user", JSON.stringify({ username: data.username, role: data.role }));
-          localStorage.setItem("userId", data.userId); // or whatever your backend returns
+          localStorage.setItem("user", JSON.stringify({
+            username: data.username,
+            role: data.role
+          }));
+          localStorage.setItem("userId", data.userId);
           navigate("/dashboard");
         } else {
           setPasswordError(data.message || "Login failed.");
