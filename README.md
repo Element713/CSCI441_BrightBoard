@@ -27,3 +27,21 @@ You may serve it with a static server:
 Find out more about deployment here:
 
   https://cra.link/deployment
+
+
+
+This folder contains all source code for the BrightBoard system.
+
+To run the system:
+1. Open a terminal in the project root.
+2. Run: npm install
+3. Start the backend:
+   cd server
+   npm install
+   npm start
+4. Start the frontend:
+   cd ../brightboard-frontend
+   npm install
+   npm start
+
+Make sure MongoDB is running and .env file is configured.
