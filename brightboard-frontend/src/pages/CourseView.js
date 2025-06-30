@@ -71,7 +71,7 @@ export default function CourseView() {
                 </ul>
               )}
               <p>
-                <Link to={`/quiz?courseId=${id}`} className="btn">Take Quiz</Link>
+                <Link to={`/quiz?courseId=${course._id}`} className="btn">Take Quiz</Link>
               </p>
             </>
           )}
