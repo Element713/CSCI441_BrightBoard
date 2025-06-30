@@ -1,4 +1,118 @@
+:root {
+  /* Primary green gradient */
+  --green-1: #aede94;
+  --green-2: #7db95c;
+  --green-3: #549431;
+  --green-4: #336f12;
+  --green-accent: #53ee00;
+
+  /* Secondary blue gradient */
+  --blue-1: #7a85ad;
+  --blue-2: #515e90;
+  --blue-3: #304073;
+  --blue-4: #172557;
+  --blue-accent: #002ed6;
+
+  /* Accent yellow */
+  --yellow-1: #ffe5aa;
+  --yellow-2: #d4b46a;
+  --yellow-3: #aa8739;
+  --yellow-4: #805f15;
+  --yellow-accent: #ffb100;
+
+  /* Complement pink/red */
+  --pink-1: #ec9dae;
+  --pink-2: #c56277;
+  --pink-3: #9d344b;
+  --pink-4: #761429;
+  --pink-accent: #f50035;
+}
+
+/* App background and text */
+body {
+  background: linear-gradient(135deg, var(--green-1), var(--green-2), var(--green-3), var(--green-4));
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #222;
+}
+
 .App {
+  min-height: 100vh;
+  text-align: center;
+  background: transparent;
+}
+
+/* Example header using secondary blue */
+header, .navbar {
+  background: var(--blue-1);
+  color: #fff;
+  padding: 1rem 0;
+}
+
+/* Buttons */
+button, .btn {
+  background: var(--yellow-accent);
+  color: #222;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover, .btn:hover {
+  background: var(--yellow-2);
+}
+
+/* Card backgrounds */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 500px;
+}
+
+/* Accent links */
+a, .App-link {
+  color: var(--pink-accent);
+  text-decoration: underline;
+}
+a:hover {
+  color: var(--pink-2);
+}
+
+/* Progress bar example */
+.progress-bar-container {
+  background: var(--green-2);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 1.2rem;
+  margin: 0.5rem 0;
+}
+.progress-bar {
+  background: var(--blue-accent);
+  height: 100%;
+  color: #fff;
+  text-align: right;
+  padding-right: 0.5rem;
+  border-radius: 8px 0 0 8px;
+  font-weight: bold;
+}
+
+/* Footer */
+.footer {
+  background: var(--blue-2);
+  color: #fff;
+  padding: 1rem 0;
+  margin-top: 2rem;
+}
+
+.App {
+  background-color: #7ed957; /* medium/light green */
+  min-height: 100vh;
   text-align: center;
 }
 
