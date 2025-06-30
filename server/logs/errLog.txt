@@ -1,0 +1,1 @@
+20250630	05:13:34	08ac779e-155c-4908-996b-2f3d6c1c5346	Error: ENOENT: no such file or directory, stat 'C:\Users\srlov\OneDrive\Desktop\summer 25\Software Engineering\CSCI441_BrightBoard\brightboard-frontend\build\index.html'	GET	/brightboard-frontend/src/pages/ProfessorDashboard.js
