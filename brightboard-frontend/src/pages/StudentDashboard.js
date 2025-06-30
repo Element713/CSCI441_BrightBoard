@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import UserDropdown from "../components/UserDropdown";
 import { useNavigate } from "react-router-dom";
 
 function getCurrentUserId() {

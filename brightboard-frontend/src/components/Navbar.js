@@ -1,27 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import UserDropdown from "./UserDropdown";
 
-export default function Navbar() {
-  // Replace this with your actual authentication logic
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export default function Navbar({ onToggleTheme }) {
+  // Get user info from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  // Optional: handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
+    window.location.href = "/login";
+  };
 
   return (
-    <nav>
-      <h2>Navbar</h2>
-      <ul>
-        {!isLoggedIn ? (
-          <>
-            <li><a href="/Home">Home</a></li>
-            <li><a href="/Login">Login</a></li>
-            <li><a href="/Register">Register</a></li>
-          </>
+    <header className="navbar">
+      <h1>
+        <Link to="/" className="logo">BrightBoard</Link>
+      </h1>
+      <div className="nav-links">
+        <Link to="/">Home</Link>
+        <Link to="/catalog">Catalog</Link>
+        {user ? (
+          <UserDropdown
+            username={user.username}
+            role={user.role}
+            onLogout={handleLogout}
+          />
         ) : (
           <>
-            <li><a href="/Lesson">Lessons</a></li>
-            <li><a href="/CourseCatalog">Course Catalog</a></li>
-            <li><a href="/Login">Logout</a></li>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
           </>
         )}
-      </ul>
-    </nav>
+        <button id="toggle-theme" className="theme-toggle" onClick={onToggleTheme}>
+          Toggle Theme
+        </button>
+      </div>
+    </header>
   );
 }
