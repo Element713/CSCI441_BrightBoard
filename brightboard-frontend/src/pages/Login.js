@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // <-- Add this import
 
 function Navbar({ onToggleTheme }) {
   return (
@@ -25,6 +26,7 @@ export default function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // <-- Add this
 
   const handleToggleTheme = () => {
     setDark(d => !d);
@@ -54,8 +56,8 @@ export default function Login() {
         });
         const data = await res.json();
         if (res.ok) {
-          alert("Login successful!");
-          // Optionally: save token, redirect, etc.
+          // Optionally: save token, etc.
+          navigate("/dashboard"); // <-- Redirect to dashboard
         } else {
           setPasswordError(data.message || "Login failed.");
         }

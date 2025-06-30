@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function Navbar({ onToggleTheme }) {
   return (
     <header className="navbar">
-      <h1>BrightBoard</h1>
+      <h1><button id="logo" className="logo">BrightBoard</button></h1>
       <div className="nav-links">
         <a href="/Home">Home</a>
         <a href="/Login">Login</a>
