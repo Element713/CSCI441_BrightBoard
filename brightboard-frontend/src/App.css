@@ -1,12 +1,12 @@
 :root {
-  /* Primary green gradient */
+  /* Primary green palette */
   --green-1: #aede94;
   --green-2: #7db95c;
   --green-3: #549431;
   --green-4: #336f12;
   --green-accent: #53ee00;
 
-  /* Secondary blue gradient */
+  /* Secondary blue palette */
   --blue-1: #7a85ad;
   --blue-2: #515e90;
   --blue-3: #304073;
@@ -30,24 +30,26 @@
 
 /* App background and text */
 body {
-  background: linear-gradient(135deg, var(--green-1), var(--green-2), var(--green-3), var(--green-4));
+  background-color: var(--green-1);
   min-height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
   color: #222;
 }
 
+/* Main app container */
 .App {
   min-height: 100vh;
   text-align: center;
   background: transparent;
 }
 
-/* Example header using secondary blue */
-header, .navbar {
-  background: var(--blue-1);
+/* Navbar/header */
+.navbar, header.navbar {
+  background-color: var(--blue-1);
   color: #fff;
   padding: 1rem 0;
+  border-bottom: 2px solid var(--blue-2);
 }
 
 /* Buttons */
@@ -66,7 +68,7 @@ button:hover, .btn:hover {
 }
 
 /* Card backgrounds */
-.card {
+.card, .form-container, .dashboard-card, .quiz-card, .lesson-card, .progress-card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
@@ -84,7 +86,7 @@ a:hover {
   color: var(--pink-2);
 }
 
-/* Progress bar example */
+/* Progress bar */
 .progress-bar-container {
   background: var(--green-2);
   border-radius: 8px;
@@ -108,6 +110,7 @@ a:hover {
   color: #fff;
   padding: 1rem 0;
   margin-top: 2rem;
+  border-top: 2px solid var(--blue-3);
 }
 
 .App {
