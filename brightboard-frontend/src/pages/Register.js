@@ -26,26 +26,34 @@ export default function Register() {
     role: ""
   });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (form.role === "student") {
-      setMessage(
-        'Registration successful! ' +
-        '<a href="/student-dashboard">Go to Student Dashboard</a>'
-      );
-    } else if (form.role === "professor") {
-      setMessage(
-        'Registration successful! ' +
-        '<a href="/professor-dashboard">Go to Professor Dashboard</a>'
-      );
-    } else {
-      setMessage("Please select a role.");
+    setLoading(true);
+    setMessage("");
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setMessage(
+          `Registration successful! <a href="/Login">Go to Login</a>`
+        );
+      } else {
+        setMessage(data.error || "Registration failed.");
+      }
+    } catch (err) {
+      setMessage("An error occurred. Please try again.");
     }
+    setLoading(false);
   };
 
   return (
@@ -95,10 +103,12 @@ export default function Register() {
             >
               <option value="">Select role</option>
               <option value="student">Student</option>
-              <option value="professor">Professor</option>
+              <option value="instructor">Professor</option>
             </select>
 
-            <button type="submit" className="btn">Register</button>
+            <button type="submit" className="btn" disabled={loading}>
+              {loading ? "Registering..." : "Register"}
+            </button>
           </form>
           <div
             id="register-message"
