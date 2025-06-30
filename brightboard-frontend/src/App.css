@@ -153,3 +153,109 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+/* Professor Dashboard specific (add to App.css) */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 2rem 0 1rem 0;
+  color: var(--blue-3);
+}
+
+.created-list, .student-list {
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.created-item, .student-item {
+  background: var(--green-1);
+  border: 1px solid var(--green-2);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s;
+}
+
+.created-item.selected {
+  background: var(--yellow-1);
+  border-color: var(--yellow-accent);
+}
+
+.no-items {
+  color: var(--pink-2);
+  font-style: italic;
+}
+
+.add-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--blue-1);
+}
+
+/* Add to App.css for quiz management consistency */
+.created-item {
+  background: var(--green-1);
+  border: 1px solid var(--green-2);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 2rem 0 1rem 0;
+  color: var(--blue-3);
+}
+
+.quiz-question-form {
+  background: var(--yellow-1);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.success-msg {
+  color: var(--green-3);
+  margin-top: 1em;
+}
+.error-msg {
+  color: var(--pink-accent);
+  margin-top: 1em;
+}
+
+.quiz-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.quiz-result {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: var(--green-3);
+  font-weight: bold;
+}
+
+.question {
+  margin-bottom: 2rem;
+}
+
+/* App.css */
+#register-message {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.05rem;
+}
+#register-message a {
+  color: var(--blue-accent);
+  text-decoration: underline;
+}
+

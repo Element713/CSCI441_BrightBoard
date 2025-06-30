@@ -61,6 +61,20 @@ export default function Progress() {
             <div key={item.courseId || idx} className="progress-card">
               <p><strong>Course:</strong> {item.courseTitle}</p>
               <p>Lessons Completed: {item.lessonsCompleted}/{item.totalLessons}</p>
+              <div className="progress-bar-container">
+                <div
+                  className="progress-bar"
+                  style={{
+                    width: item.totalLessons
+                      ? `${Math.round((item.lessonsCompleted / item.totalLessons) * 100)}%`
+                      : "0%"
+                  }}
+                >
+                  {item.totalLessons
+                    ? `${Math.round((item.lessonsCompleted / item.totalLessons) * 100)}%`
+                    : "0%"}
+                </div>
+              </div>
               <p>Quiz Score: {item.quizScore}%</p>
             </div>
           ))

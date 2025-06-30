@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// Optional: import './style.css';
+// Optional: import './App.css';
 function Navbar({ onToggleTheme }) {
   return (
     <header className="navbar">
@@ -58,47 +58,64 @@ export default function CourseSearch() {
       <Navbar onToggleTheme={handleToggleTheme} />
       <main className="container">
         <h2>Search Courses</h2>
-        <div className="course-search-container">
-          <input
-            type="text"
-            id="course-search"
-            placeholder="Search for a course..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-          <select
-            id="category-filter"
-            value={category}
-            onChange={e => setCategory(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            <option value="web-development">Web Development</option>
-            <option value="data-science">Data Science</option>
-            <option value="design">Design</option>
-            <option value="language">Language</option>
-            <option value="business">Business</option>
-            <option value="technology">Technology</option>
-          </select>
-        </div>
-        <div id="course-list">
-          {loading ? (
-            <p>Loading...</p>
-          ) : courses.length === 0 ? (
-            <p>No courses available at this time.</p>
-          ) : filteredCourses.length === 0 ? (
-            <p>No courses found.</p>
-          ) : (
-            filteredCourses.map(course => (
-              <div className="course-item" data-category={course.category} key={course._id || course.title}>
-                <h3>{course.title}</h3>
-                <p>{course.description}</p>
-                <p><strong>Professor:</strong> {course.professor || course.instructor}</p>
-                <button className="btn enroll-btn" onClick={() => handleEnroll(course.title)}>
-                  Enroll
-                </button>
-              </div>
-            ))
-          )}
+        <div className="card">
+          <div className="course-search-container" style={{ marginBottom: "1.5rem" }}>
+            <input
+              type="text"
+              id="course-search"
+              placeholder="Search for a course..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{ marginRight: "1rem", padding: "0.5rem", borderRadius: "4px", border: "1px solid #ccc" }}
+            />
+            <select
+              id="category-filter"
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+              style={{ padding: "0.5rem", borderRadius: "4px", border: "1px solid #ccc" }}
+            >
+              <option value="">All Categories</option>
+              <option value="web-development">Web Development</option>
+              <option value="data-science">Data Science</option>
+              <option value="design">Design</option>
+              <option value="language">Language</option>
+              <option value="business">Business</option>
+              <option value="technology">Technology</option>
+            </select>
+          </div>
+          <div id="course-list">
+            {loading ? (
+              <p>Loading...</p>
+            ) : courses.length === 0 ? (
+              <p>No courses available at this time.</p>
+            ) : filteredCourses.length === 0 ? (
+              <p>No courses found.</p>
+            ) : (
+              filteredCourses.map(course => (
+                <div
+                  className="course-item"
+                  data-category={course.category}
+                  key={course._id || course.title}
+                  style={{
+                    border: "1px solid var(--green-2)",
+                    borderRadius: "8px",
+                    padding: "1rem",
+                    marginBottom: "1rem",
+                    background: "var(--green-1)"
+                  }}
+                >
+                  <h3>{course.title}</h3>
+                  <p>{course.description}</p>
+                  <p>
+                    <strong>Professor:</strong> {course.professor || course.instructor}
+                  </p>
+                  <button className="btn enroll-btn" onClick={() => handleEnroll(course.title)}>
+                    Enroll
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </main>
       <footer className="footer">

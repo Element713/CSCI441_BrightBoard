@@ -32,7 +32,7 @@ export default function Home() {
           <h2>Simple. Clean. Learning.</h2>
           <p>BrightBoard helps instructors share knowledge and students learn with ease.</p>
           <div style={{ display: "flex", justifyContent: "center", marginTop: "1.5em" }}>
-            <a href="/register" className="theme-toggle">Get Started</a>
+            <a href="/register" className="btn">Get Started</a>
           </div>
         </section>
       </main>

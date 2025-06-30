@@ -32,14 +32,12 @@ export default function CourseView() {
   };
 
   useEffect(() => {
-    // Fetch course info
     setLoading(true);
     fetch(`/api/courses/${id}`)
       .then(res => res.json())
       .then(data => setCourse(data))
       .catch(() => setCourse(null));
 
-    // Fetch lessons for this course
     fetch(`/api/lessons/${id}`)
       .then(res => res.json())
       .then(data => setLessons(Array.isArray(data) ? data : []))
@@ -51,31 +49,33 @@ export default function CourseView() {
     <div className={dark ? "dark" : ""}>
       <Navbar onToggleTheme={handleToggleTheme} />
       <main className="container">
-        {loading ? (
-          <p>Loading...</p>
-        ) : !course ? (
-          <p>Course not found.</p>
-        ) : (
-          <>
-            <h2>Course: {course.title}</h2>
-            <p>{course.description}</p>
-            <p>Lessons:</p>
-            {lessons.length === 0 ? (
-              <p>No lessons available for this course.</p>
-            ) : (
-              <ul>
-                {lessons.map(lesson => (
-                  <li key={lesson._id}>
-                    <Link to={`/lesson/${lesson._id}`}>{lesson.title}</Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <p>
-              <Link to={`/quiz?courseId=${id}`} className="btn">Take Quiz</Link>
-            </p>
-          </>
-        )}
+        <div className="card">
+          {loading ? (
+            <p>Loading...</p>
+          ) : !course ? (
+            <p>Course not found.</p>
+          ) : (
+            <>
+              <h2>Course: {course.title}</h2>
+              <p>{course.description}</p>
+              <p><strong>Lessons:</strong></p>
+              {lessons.length === 0 ? (
+                <p>No lessons available for this course.</p>
+              ) : (
+                <ul style={{ paddingLeft: "1.5rem", marginBottom: "1.5rem" }}>
+                  {lessons.map(lesson => (
+                    <li key={lesson._id} style={{ marginBottom: "0.5rem" }}>
+                      <Link to={`/lesson/${lesson._id}`}>{lesson.title}</Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p>
+                <Link to={`/quiz?courseId=${id}`} className="btn">Take Quiz</Link>
+              </p>
+            </>
+          )}
+        </div>
       </main>
       <footer className="footer">
         <p>&copy; 2025 BrightBoard. All rights reserved.</p>

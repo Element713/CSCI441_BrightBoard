@@ -219,7 +219,7 @@ export default function ProfessorQuiz() {
           </div>
           {courseId && (
             <>
-              <button onClick={() => { setCreating(true); setEditingQuiz(null); }}>Create New Quiz</button>
+              <button className="btn" onClick={() => { setCreating(true); setEditingQuiz(null); }}>Create New Quiz</button>
               <div className="section-title">Existing Quizzes</div>
               {quizzes.length === 0 ? (
                 <div>No quizzes for this course.</div>
@@ -227,8 +227,8 @@ export default function ProfessorQuiz() {
                 quizzes.map(quiz => (
                   <div key={quiz._id} className="created-item">
                     <strong>{quiz.title}</strong>
-                    <button style={{ marginLeft: "1em" }} onClick={() => { setEditingQuiz(quiz); setCreating(false); }}>Edit</button>
-                    <button style={{ marginLeft: "1em" }} onClick={() => handleDeleteQuiz(quiz._id)}>Delete</button>
+                    <button className="btn" style={{ marginLeft: "1em" }} onClick={() => { setEditingQuiz(quiz); setCreating(false); }}>Edit</button>
+                    <button className="btn" style={{ marginLeft: "1em" }} onClick={() => handleDeleteQuiz(quiz._id)}>Delete</button>
                   </div>
                 ))
               )}
@@ -243,7 +243,11 @@ export default function ProfessorQuiz() {
               />
             </div>
           )}
-          {message && <div style={{ marginTop: "1em", color: message.includes("success") ? "green" : "red" }}>{message}</div>}
+          {message && (
+            <div className={message.includes("success") ? "success-msg" : "error-msg"}>
+              {message}
+            </div>
+          )}
         </div>
       </main>
       <footer className="footer">

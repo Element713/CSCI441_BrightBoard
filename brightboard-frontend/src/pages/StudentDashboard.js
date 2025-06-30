@@ -1,19 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-
 import { useNavigate } from "react-router-dom";
-// ...
-const navigate = useNavigate();
-useEffect(() => {
-  const userId = getCurrentUserId();
-  if (!userId) {
-    navigate("/login");
-    return;
-  }
-  // ...rest of your code
-}, []);
 
-// Example: get userId from localStorage or context
 function getCurrentUserId() {
   // Replace with your actual user ID retrieval logic
   return localStorage.getItem("userId");
@@ -22,21 +10,20 @@ function getCurrentUserId() {
 export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = getCurrentUserId();
     if (!userId) {
-      setCourses([]);
-      setLoading(false);
+      navigate("/login");
       return;
     }
-    // Adjust endpoint as needed for your backend
     fetch(`/api/progress/student/${userId}`)
       .then(res => res.json())
       .then(data => setCourses(Array.isArray(data) ? data : []))
       .catch(() => setCourses([]))
       .finally(() => setLoading(false));
-  }, []);
+  }, [navigate]);
 
   return (
     <>

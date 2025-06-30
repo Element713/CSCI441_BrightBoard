@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // <-- Add this import
+import { useNavigate, Link } from "react-router-dom";
 
 function Navbar({ onToggleTheme }) {
   return (
@@ -26,7 +26,7 @@ export default function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // <-- Add this
+  const navigate = useNavigate();
 
   const handleToggleTheme = () => {
     setDark(d => !d);
@@ -57,7 +57,7 @@ export default function Login() {
         const data = await res.json();
         if (res.ok) {
           // Optionally: save token, etc.
-          navigate("/dashboard"); // <-- Redirect to dashboard
+          navigate("/dashboard");
         } else {
           setPasswordError(data.message || "Login failed.");
         }
@@ -119,24 +119,25 @@ export default function Login() {
                   />
                   <label htmlFor="rememberMe" style={{ fontSize: "0.9rem" }}>Remember Me</label>
                 </div>
-                <a href="/passwordreset" style={{ fontSize: "0.9rem", color: "var(--primary)", textDecoration: "underline" }}>
-                  <button
-                    type="button"
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "var(--primary)",
-                      cursor: "pointer",
-                      padding: 0,
-                      fontSize: "0.9rem"
-                    }}
-                  >
-                    Forgot Password?
-                  </button>
-                </a>
+                <Link
+                  to="/passwordreset"
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "var(--pink-accent)",
+                    textDecoration: "underline",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0
+                  }}
+                >
+                  Forgot Password?
+                </Link>
               </div>
             </div>
-            <button type="submit" disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
+            <button type="submit" className="btn" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
           </form>
         </section>
       </main>

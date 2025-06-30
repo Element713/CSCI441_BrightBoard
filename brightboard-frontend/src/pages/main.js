@@ -16,14 +16,15 @@ export default function CourseCatalog() {
       : courses.filter(course => course.category === filter);
 
   return (
-    <div>
+    <div className="card">
       <h2>Course Catalog</h2>
-      <label>
+      <label htmlFor="course-filter" style={{ marginRight: "1rem" }}>
         Filter:
         <select
           id="course-filter"
           value={filter}
           onChange={e => setFilter(e.target.value)}
+          style={{ marginLeft: "0.5rem" }}
         >
           <option value="all">All</option>
           <option value="web">Web Development</option>
@@ -37,15 +38,9 @@ export default function CourseCatalog() {
             <h3>{course.title}</h3>
             <div className="progress-bar-container" style={{ margin: "1rem 0" }}>
               <div
-                className="progress-fill"
+                className="progress-bar"
                 style={{
-                  width: `${course.progress}%`,
-                  background: "#2d72d9",
-                  height: "18px",
-                  borderRadius: "6px",
-                  color: "#fff",
-                  textAlign: "center",
-                  lineHeight: "18px"
+                  width: `${course.progress}%`
                 }}
               >
                 <span className="progress-label">{course.progress}% course completion</span>
