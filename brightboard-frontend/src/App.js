@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StudentDashboard from "./pages/StudentDashboard";
-import ProfessorDashboard from "./pages/ProfessorDashboard";
+import Dashboard from "./pages/Dashboard";
 import Lesson from "./pages/Lesson";
 import Quiz from "./pages/Quiz";
 import CourseCatalog from "./pages/CourseCatalog";
@@ -17,8 +16,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
-        <Route path="/professor-dashboard" element={<ProfessorDashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/lesson" element={<Lesson />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/catalog" element={<CourseCatalog />} />
