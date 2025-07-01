@@ -6,6 +6,10 @@ function getCurrentUserId() {
   return localStorage.getItem("userId");
 }
 
+function getToken() {
+  return localStorage.getItem("token");
+}
+
 export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,11 +17,14 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     const userId = getCurrentUserId();
+    const token = getToken();
     if (!userId) {
       navigate("/login");
       return;
     }
-    fetch(`/api/progress/student/${userId}`)
+    fetch(`/api/progress/student/${userId}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
       .then(res => res.json())
       .then(data => setCourses(Array.isArray(data) ? data : []))
       .catch(() => setCourses([]))

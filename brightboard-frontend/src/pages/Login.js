@@ -97,13 +97,12 @@ export default function Login() {
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
-                type={showPassword ? "text" : "password"}
                 id="password"
-                name="password"
                 required
+                type="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
-                disabled={loading}
+                name="password"
+                autoComplete="current-password"
               />
               <small className="error-msg">{passwordError}</small>
               <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginTop: "0.5rem" }}>

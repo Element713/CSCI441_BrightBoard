@@ -170,16 +170,23 @@ export default function ProfessorQuiz() {
     try {
       let res, data;
       const payload = { ...quizData, courseId, lessonId };
+      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
       if (editingQuiz) {
         res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
           body: JSON.stringify(payload)
         });
       } else {
         res = await fetch("/api/quizzes", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
           body: JSON.stringify(payload)
         });
       }
@@ -206,7 +213,13 @@ export default function ProfessorQuiz() {
     if (!window.confirm("Are you sure you want to delete this quiz?")) return;
     setMessage("");
     try {
-      const res = await fetch(`/api/quizzes/${quizId}`, { method: "DELETE" });
+      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+      const res = await fetch(`/api/quizzes/${quizId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (res.ok) {
         setMessage("Quiz deleted.");
         setQuizzes(quizzes.filter(q => q._id !== quizId));

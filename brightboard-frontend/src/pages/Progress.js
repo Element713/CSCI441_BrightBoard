@@ -17,12 +17,15 @@ export default function Progress() {
 
   useEffect(() => {
     const userId = getCurrentUserId();
+    const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
     if (!userId) {
       setProgress([]);
       setLoading(false);
       return;
     }
-    fetch(`/api/progress/student/${userId}`)
+    fetch(`/api/progress/student/${userId}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
       .then(res => res.json())
       .then(data => setProgress(Array.isArray(data) ? data : []))
       .catch(() => setProgress([]))
