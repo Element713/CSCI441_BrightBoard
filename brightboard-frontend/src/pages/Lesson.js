@@ -73,9 +73,13 @@ export default function Lesson() {
         }),
       example: form.example,
     };
+    const token = localStorage.getItem("token");
     const res = await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify(body),
     });
     const data = await res.json();
@@ -86,6 +90,9 @@ export default function Lesson() {
         fd.append("pdf", form.pdf);
         await fetch(`/api/lessons/${data._id}/upload`, {
           method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
           body: fd,
         });
       }
@@ -158,26 +165,23 @@ export default function Lesson() {
                   rows={5}
                   required
                 />
-                <textarea
-                  name="vocab"
-                  value={form.vocab}
-                  onChange={handleChange}
-                  placeholder="Vocabulary (term:definition, one per line)"
-                  rows={3}
-                />
-                <input
-                  name="example"
-                  value={form.example}
-                  onChange={handleChange}
-                  placeholder="Example conversation"
-                />
+          
+            
                 <input
                   type="file"
                   name="pdf"
                   accept="application/pdf"
                   ref={fileInputRef}
                   onChange={handleChange}
+                  />
+                  <input
+                  type="image"
+                  name="png"
+                  accept="image/png"
+                  ref={fileInputRef}
+                  onChange={handleChange}
                 />
+
                 <button className="btn" type="submit">
                   {selectedLesson ? "Update Lesson" : "Create Lesson"}
                 </button>
