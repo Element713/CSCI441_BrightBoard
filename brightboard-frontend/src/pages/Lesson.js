@@ -1,109 +1,210 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 export default function Lesson() {
-  const { id } = useParams(); // expects route like /lesson/:id
-  const [lesson, setLesson] = useState(null);
+  const { lessonId, courseId } = useParams(); // expects /lesson/:courseId or /lesson/:courseId/:lessonId
+  const [lessons, setLessons] = useState([]);
+  const [selectedLesson, setSelectedLesson] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({
+    title: "",
+    subtitle: "",
+    content: "",
+    vocab: "",
+    example: "",
+    pdf: null,
+  });
+  const fileInputRef = useRef();
 
+  // Fetch all lessons for this course
   useEffect(() => {
-    fetch(`/api/lessons/single/${id}`)
+    setLoading(true);
+    fetch(`/api/lessons/course/${courseId}`)
       .then((res) => res.json())
       .then((data) => {
-        setLesson(data);
+        setLessons(Array.isArray(data) ? data : []);
         setLoading(false);
       })
-      .catch(() => {
-        setLesson(null);
-        setLoading(false);
+      .catch(() => setLessons([]));
+  }, [courseId]);
+
+  // When selecting a lesson to edit
+  const handleSelectLesson = (lesson) => {
+    setSelectedLesson(lesson);
+    setForm({
+      title: lesson.title || "",
+      subtitle: lesson.subtitle || "",
+      content: lesson.content || "",
+      vocab: lesson.vocab
+        ? lesson.vocab.map((v) => `${v.term}:${v.definition}`).join("\n")
+        : "",
+      example: lesson.example || "",
+      pdf: null,
+    });
+  };
+
+  // Handle form changes
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setForm((f) => ({
+      ...f,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  // Handle lesson create/update
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const method = selectedLesson ? "PUT" : "POST";
+    const url = selectedLesson
+      ? `/api/lessons/${selectedLesson._id}`
+      : `/api/lessons`;
+    const body = {
+      course: courseId,
+      title: form.title,
+      subtitle: form.subtitle,
+      content: form.content,
+      vocab: form.vocab
+        .split("\n")
+        .map((line) => {
+          const [term, definition] = line.split(":");
+          return { term, definition };
+        }),
+      example: form.example,
+    };
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      // If PDF is selected, upload it
+      if (form.pdf) {
+        const fd = new FormData();
+        fd.append("pdf", form.pdf);
+        await fetch(`/api/lessons/${data._id}/upload`, {
+          method: "POST",
+          body: fd,
+        });
+      }
+      // Refresh lessons
+      const updated = await fetch(
+        `/api/lessons/course/${courseId}`
+      ).then((r) => r.json());
+      setLessons(Array.isArray(updated) ? updated : []);
+      setSelectedLesson(null);
+      setForm({
+        title: "",
+        subtitle: "",
+        content: "",
+        vocab: "",
+        example: "",
+        pdf: null,
       });
-  }, [id]);
-
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <main>
-          <div className="lesson-card">
-            <p>Loading...</p>
-          </div>
-        </main>
-        <footer className="footer">
-          <p>&copy; 2025 BrightBoard. All rights reserved.</p>
-        </footer>
-      </>
-    );
-  }
-
-  if (!lesson) {
-    return (
-      <>
-        <Navbar />
-        <main>
-          <div className="lesson-card">
-            <p>Lesson not found.</p>
-          </div>
-        </main>
-        <footer className="footer">
-          <p>&copy; 2025 BrightBoard. All rights reserved.</p>
-        </footer>
-      </>
-    );
-  }
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } else {
+      alert(data.error || "Failed to save lesson.");
+    }
+  };
 
   return (
     <>
       <Navbar />
       <main>
         <div className="lesson-card">
-          <h2>Lesson: {lesson.title}</h2>
-          <h3>{lesson.subtitle || ""}</h3>
-          <p>{lesson.content || "No content available."}</p>
-          {lesson.vocab && lesson.vocab.length > 0 && (
+          <h2>Manage Lessons</h2>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
             <>
-              <ul>
-                {lesson.vocab.map((item, idx) => (
-                  <li key={idx}>
-                    <strong>{item.term}</strong> — {item.definition}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {lesson.example && (
-            <>
-              <h4>Example Conversation</h4>
-              <p>{lesson.example}</p>
-            </>
-          )}
-          {lesson.pdfUrl && (
-            <>
-              <h4>Lesson PDF</h4>
-              <embed
-                src={lesson.pdfUrl}
-                type="application/pdf"
-                className="pdf-embed"
-                style={{ width: "100%", height: "400px" }}
-              />
-              <p>
-                <small>
-                  If you can't view the PDF,{" "}
-                  <a
-                    href={lesson.pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+              <div>
+                <h3>Lessons for this Course</h3>
+                {lessons.length === 0 ? (
+                  <div>No lessons yet.</div>
+                ) : (
+                  <ul>
+                    {lessons.map((lesson) => (
+                      <li key={lesson._id}>
+                        <button onClick={() => handleSelectLesson(lesson)}>
+                          {lesson.title}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <h3>{selectedLesson ? "Edit Lesson" : "Create New Lesson"}</h3>
+              <form onSubmit={handleSubmit} style={{ marginBottom: "2em" }}>
+                <input
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
+                  placeholder="Title"
+                  required
+                />
+                <input
+                  name="subtitle"
+                  value={form.subtitle}
+                  onChange={handleChange}
+                  placeholder="Subtitle"
+                />
+                <textarea
+                  name="content"
+                  value={form.content}
+                  onChange={handleChange}
+                  placeholder="Lesson content"
+                  rows={5}
+                  required
+                />
+                <textarea
+                  name="vocab"
+                  value={form.vocab}
+                  onChange={handleChange}
+                  placeholder="Vocabulary (term:definition, one per line)"
+                  rows={3}
+                />
+                <input
+                  name="example"
+                  value={form.example}
+                  onChange={handleChange}
+                  placeholder="Example conversation"
+                />
+                <input
+                  type="file"
+                  name="pdf"
+                  accept="application/pdf"
+                  ref={fileInputRef}
+                  onChange={handleChange}
+                />
+                <button className="btn" type="submit">
+                  {selectedLesson ? "Update Lesson" : "Create Lesson"}
+                </button>
+                {selectedLesson && (
+                  <button
+                    type="button"
+                    className="btn"
+                    style={{ marginLeft: "1em" }}
+                    onClick={() => {
+                      setSelectedLesson(null);
+                      setForm({
+                        title: "",
+                        subtitle: "",
+                        content: "",
+                        vocab: "",
+                        example: "",
+                        pdf: null,
+                      });
+                      if (fileInputRef.current) fileInputRef.current.value = "";
+                    }}
                   >
-                    click here to download it
-                  </a>
-                  .
-                </small>
-              </p>
+                    Cancel
+                  </button>
+                )}
+              </form>
             </>
           )}
-          <Link className="btn" to={`/quiz?lessonId=${id}`}>
-            Take Quiz
-          </Link>
         </div>
       </main>
       <footer className="footer">

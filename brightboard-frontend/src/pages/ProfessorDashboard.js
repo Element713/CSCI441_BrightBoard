@@ -230,34 +230,15 @@ export default function ProfessorDashboard() {
           <div className="dashboard-box card">
             <h3>Lessons / Materials</h3>
             {selected === null || !courses[selected] ? (
-              <div style={{ color: "#888" }}>Select a course to manage its materials.</div>
+              <div style={{ color: "#888" }}>Select a course to manage its lessons.</div>
             ) : (
-              <>
-                <form onSubmit={addMaterial} autoComplete="off">
-                  <div className="form-group">
-                    <label>Title:</label>
-                    <input value={materialTitle} onChange={e => setMaterialTitle(e.target.value)} required />
-                  </div>
-                  <div className="form-group">
-                    <label>Description:</label>
-                    <textarea value={materialDesc} onChange={e => setMaterialDesc(e.target.value)} rows={2} required />
-                  </div>
-                  <button className="btn" type="submit">Add Material</button>
-                </form>
-                <div className="created-list" style={{ marginTop: "1em" }}>
-                  {Array.isArray(courses[selected]?.materials) && courses[selected].materials.length === 0 ? (
-                    <div className="no-items">No materials yet.</div>
-                  ) : Array.isArray(courses[selected]?.materials) ? (
-                    courses[selected].materials.map((mat, i) => (
-                      <div className="created-item" key={mat._id || i}>
-                        <strong>{mat.title}</strong><br />{mat.desc}
-                      </div>
-                    ))
-                  ) : (
-                    <div className="no-items">No materials yet.</div>
-                  )}
-                </div>
-              </>
+              <button
+                className="btn"
+                style={{ marginTop: "1em" }}
+                onClick={() => navigate(`/lesson/${courses[selected]._id}`)}
+              >
+                Manage Lessons
+              </button>
             )}
           </div>
 
