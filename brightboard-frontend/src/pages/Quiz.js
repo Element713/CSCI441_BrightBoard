@@ -28,6 +28,18 @@ export default function Quiz() {
       .finally(() => setLoading(false));
   }, []);
 
+  const token = localStorage.getItem("token");
+fetch(`/api/progress/student/${userId}`, {
+  headers: { "Authorization": `Bearer ${token}` }
+})
+  .then((res) => res.json())
+  .then((data) => {
+    // Handle progress data
+  })
+  .catch(() => {
+    // Handle error
+  });
+
   const handleChange = (qIdx, value) => {
     setAnswers({ ...answers, [qIdx]: value });
   };

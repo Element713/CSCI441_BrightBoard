@@ -17,7 +17,7 @@ export default function Progress() {
 
   useEffect(() => {
     const userId = getCurrentUserId();
-    const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+    const token = localStorage.getItem("token");
     if (!userId) {
       setProgress([]);
       setLoading(false);
