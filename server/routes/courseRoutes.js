@@ -13,5 +13,6 @@ router.get('/:id', verifyUser, courseController.getCourseById);
 router.put('/:id', verifyUser, verifyInstructor, courseController.updateCourse);
 router.delete('/:id', verifyUser, verifyInstructor, courseController.deleteCourse);
 router.post('/:id/enroll', verifyUser, verifyStudent, courseController.enrollInCourse);
+router.get('/enrolled/:studentId', verifyUser, courseController.getEnrolledCourses);
 
 module.exports = router;

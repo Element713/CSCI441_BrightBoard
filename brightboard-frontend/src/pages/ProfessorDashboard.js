@@ -16,7 +16,7 @@ export default function ProfessorDashboard() {
   // Fetch courses from backend on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("/api/courses", {
+    fetch("/api/courses?mine=true", {
       headers: { "Authorization": `Bearer ${token}` }
     })
       .then(res => res.json())

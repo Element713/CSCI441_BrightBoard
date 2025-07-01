@@ -20,7 +20,12 @@ const createCourse = async (req, res) => {
 // Get all courses
 const getCourses = async (req, res) => {
   try {
-    const courses = await Course.find().populate('instructor', 'name');
+    let filter = {};
+    // If ?mine=true, only return courses for the logged-in professor
+    if (req.query.mine === "true" && req.user.role === "professor") {
+      filter = { instructor: req.user._id };
+    }
+    const courses = await Course.find(filter).populate('instructor', 'name');
     res.json(courses);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -94,12 +99,25 @@ const enrollInCourse = async (req, res) => {
   }
 };
 
+// Get courses by student ID (enrolled courses)
+const getEnrolledCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({ students: req.params.studentId })
+      .populate('instructor', 'username')
+      .select('title description instructor');
+    res.json(courses);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createCourse,
   getCourses,
   getCourseById,
   updateCourse,
   deleteCourse,
-  enrollInCourse 
+  enrollInCourse,
+  getEnrolledCourses
 };
 
