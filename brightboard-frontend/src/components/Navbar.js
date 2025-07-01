@@ -20,7 +20,11 @@ export default function Navbar({ onToggleTheme }) {
       </h1>
       <div className="nav-links">
         <Link to="/">Home</Link>
+        <Link to="/dashboard">Dashboard</Link>
         <Link to="/catalog">Catalog</Link>
+        <Link to="/professor/dashboard">Professor</Link>
+        <Link to="/student/dashboard">Student</Link>
+        <Link to="/progress">Progress</Link>
         {user ? (
           <UserDropdown
             username={user.username}

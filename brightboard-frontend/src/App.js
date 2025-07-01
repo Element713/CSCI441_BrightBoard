@@ -10,6 +10,8 @@ import Login from "./pages/Login";
 import Progress from "./pages/Progress";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
+import ProfessorDashboard from "./pages/ProfessorDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
 
 function App() {
   return (
@@ -17,13 +19,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/lesson" element={<Lesson />} />
-        <Route path="/quiz" element={<Quiz />} />
         <Route path="/catalog" element={<CourseCatalog />} />
         <Route path="/course" element={<CourseView />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/progress" element={<Progress />} />
+        <Route path="/professor/dashboard" element={<ProfessorDashboard />} />
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/lesson/:lessonId" element={<Lesson />} />
+        <Route path="/quiz/:quizId" element={<Quiz />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

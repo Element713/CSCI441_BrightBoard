@@ -3,6 +3,14 @@
 
 const mongoose = require('mongoose');
 
+const materialSchema = new mongoose.Schema(
+  {
+    title: String,
+    desc: String
+  },
+  { _id: false }
+);
+
 const courseSchema = new mongoose.Schema(
   {
     title: {
@@ -20,7 +28,8 @@ const courseSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
-    students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // <-- Add this line
+    students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    materials: [materialSchema] // <-- Add this line
   },
   { timestamps: true }
 );
