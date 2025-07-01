@@ -2,6 +2,46 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
+function LessonSelector({ courseId, onLessonSelect }) {
+  const [lessons, setLessons] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (!courseId) return;
+    setLoading(true);
+    fetch(`/api/lessons/course/${courseId}`)
+      .then(res => res.json())
+      .then(data => setLessons(Array.isArray(data) ? data : []))
+      .catch(() => setLessons([]))
+      .finally(() => setLoading(false));
+  }, [courseId]);
+
+  if (loading) return <div>Loading lessons...</div>;
+  if (lessons.length === 0) return <div>No lessons found for this course.</div>;
+
+  return (
+    <div>
+      <label>Select Lesson:</label>
+      <select
+        onChange={e => {
+          if (e.target.value) onLessonSelect(e.target.value);
+        }}
+        defaultValue=""
+      >
+        <option value="" disabled>
+          Choose a lesson
+        </option>
+        {lessons.map(lesson => (
+          <option key={lesson._id} value={lesson._id}>
+            {lesson.title}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+// --- End LessonSelector ---
+
 export default function ProfessorDashboard() {
   const [courses, setCourses] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -243,20 +283,19 @@ export default function ProfessorDashboard() {
           </div>
 
           {/* Quizzes Box */}
-          <div className="dashboard-box card">
-            <h3>Quizzes</h3>
-            {selected === null || !courses[selected] ? (
-              <div style={{ color: "#888" }}>Select a course to manage its quizzes.</div>
-            ) : (
-              <button
-                className="btn"
-                style={{ marginTop: "1em" }}
-                onClick={() => navigate(`/professor/quizzes?courseId=${courses[selected]._id}`)}
-              >
-                Go to Quiz Builder 
-              </button>
-            )}
-          </div>
+            <div className="dashboard-box card">
+              <h3>Quizzes</h3>
+              {selected === null || !courses[selected] ? (
+                <div style={{ color: "#888" }}>Select a course to manage its quizzes.</div>
+              ) : (
+                <LessonSelector
+                  courseId={courses[selected]._id}
+                  onLessonSelect={lessonId =>
+                    navigate(`/professor/quizzes?courseId=${courses[selected]._id}&lessonId=${lessonId}`)
+                  }
+                />
+              )}
+            </div>
 
           {/* Students & Progress Box */}
           <div className="dashboard-box card">
