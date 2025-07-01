@@ -128,6 +128,8 @@ export default function ProfessorQuiz() {
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [creating, setCreating] = useState(false);
   const [message, setMessage] = useState("");
+  const [lessons, setLessons] = useState([]);
+  const [lessonId, setLessonId] = useState("");
 
   // Fetch courses for dropdown
   useEffect(() => {
@@ -149,22 +151,36 @@ export default function ProfessorQuiz() {
       .catch(() => setQuizzes([]));
   }, [courseId]);
 
+  // Fetch lessons for selected course
+  useEffect(() => {
+    if (!courseId) {
+      setLessons([]);
+      setLessonId("");
+      return;
+    }
+    fetch(`/api/lessons/course/${courseId}`)
+      .then(res => res.json())
+      .then(data => setLessons(Array.isArray(data) ? data : []))
+      .catch(() => setLessons([]));
+  }, [courseId]);
+
   // Create or update quiz
   const handleSaveQuiz = async quizData => {
     setMessage("");
     try {
       let res, data;
+      const payload = { ...quizData, courseId, lessonId };
       if (editingQuiz) {
         res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...quizData, courseId })
+          body: JSON.stringify(payload)
         });
       } else {
         res = await fetch("/api/quizzes", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...quizData, courseId })
+          body: JSON.stringify(payload)
         });
       }
       data = await res.json();
@@ -233,6 +249,17 @@ export default function ProfessorQuiz() {
                 ))
               )}
             </>
+          )}
+          {courseId && (
+            <div className="form-group">
+              <label>Lesson:</label>
+              <select value={lessonId} onChange={e => setLessonId(e.target.value)} required>
+                <option value="">Select a lesson</option>
+                {lessons.map(lesson => (
+                  <option key={lesson._id} value={lesson._id}>{lesson.title}</option>
+                ))}
+              </select>
+            </div>
           )}
           {(creating || editingQuiz) && (
             <div style={{ marginTop: "2em" }}>
