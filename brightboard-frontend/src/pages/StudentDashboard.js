@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function getCurrentUserId() {
   return localStorage.getItem("userId");
@@ -45,6 +45,13 @@ export default function StudentDashboard() {
                       {course.progress || 0}%
                     </div>
                   </div>
+                  <Link
+                    className="btn"
+                    to={`/student/lessons/${course.courseId || course._id}`}
+                    style={{ marginTop: "0.5em", display: "inline-block" }}
+                  >
+                    View Lessons
+                  </Link>
                 </div>
               ))
             )}

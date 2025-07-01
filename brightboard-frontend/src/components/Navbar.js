@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import UserDropdown from "./UserDropdown";
 
 export default function Navbar({ onToggleTheme }) {
   // Get user info from localStorage
@@ -20,13 +19,33 @@ export default function Navbar({ onToggleTheme }) {
       </h1>
       <div className="nav-links">
         <Link to="/">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
         <Link to="/catalog">Catalog</Link>
-        <Link to="/professor/dashboard">Professor</Link>
-        <Link to="/student/dashboard">Student</Link>
-        <Link to="/progress">Progress</Link>
-        
-
+        {/* Show links based on user role */}
+        {user?.role === "student" && (
+          <>
+            <Link to="/student/dashboard">Dashboard</Link>
+            <Link to="/progress">Progress</Link>
+            {/* Lessons for the selected course are accessed from dashboard */}
+          </>
+        )}
+        {(user?.role === "professor" || user?.role === "instructor") && (
+          <>
+            <Link to="/professor/dashboard">Dashboard</Link>
+            <Link to="/professor/quizzes">Quizzes</Link>
+            {/* Add more professor links as needed */}
+          </>
+        )}
+        {!user && (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
+        {user && (
+          <button className="btn" onClick={handleLogout} style={{ marginLeft: "1em" }}>
+            Logout
+          </button>
+        )}
       </div>
     </header>
   );

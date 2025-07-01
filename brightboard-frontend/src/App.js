@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProfessorQuiz from './pages/ProfessorQuiz';
+import StudentLessonView from "./pages/StudentLessonView";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/lesson/:courseId" element={<Lesson />} />
         <Route path="/quiz/:quizId" element={<Quiz />} />
         <Route path="/professor/quizzes" element={<ProfessorQuiz />} />
+        <Route path="/student/lessons/:courseId" element={<StudentLessonView />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
