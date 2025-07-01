@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
+import ProfessorQuiz from './pages/ProfessorQuiz';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/lesson/:lessonId" element={<Lesson />} />
         <Route path="/quiz/:quizId" element={<Quiz />} />
+        <Route path="/professor/quizzes" element={<ProfessorQuiz />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

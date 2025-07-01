@@ -272,7 +272,7 @@ export default function ProfessorDashboard() {
                 style={{ marginTop: "1em" }}
                 onClick={() => navigate(`/professor/quizzes?courseId=${courses[selected]._id}`)}
               >
-                Go to Quiz Builder
+                Go to Quiz Builder 
               </button>
             )}
           </div>

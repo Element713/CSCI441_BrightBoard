@@ -29,7 +29,7 @@ const courseSchema = new mongoose.Schema(
       required: true
     },
     students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    materials: [materialSchema] // <-- Add this line
+    materials: [materialSchema] 
   },
   { timestamps: true }
 );
