@@ -1,36 +1,21 @@
 :root {
   /* Primary green palette */
-  --green-1: #aede94;
-  --green-2: #7db95c;
   --green-3: #549431;
-  --green-4: #336f12;
-  --green-accent: #53ee00;
+
 
   /* Secondary blue palette */
-  --blue-1: #7a85ad;
-  --blue-2: #515e90;
   --blue-3: #304073;
-  --blue-4: #172557;
-  --blue-accent: #002ed6;
 
   /* Accent yellow */
-  --yellow-1: #ffe5aa;
-  --yellow-2: #d4b46a;
-  --yellow-3: #aa8739;
-  --yellow-4: #805f15;
   --yellow-accent: #ffb100;
 
   /* Complement pink/red */
-  --pink-1: #ec9dae;
-  --pink-2: #c56277;
   --pink-3: #9d344b;
-  --pink-4: #761429;
-  --pink-accent: #f50035;
 }
 
 /* App background and text */
 body {
-  background-color: var(--green-1);
+  background-color: var(--green-3);
   min-height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -49,7 +34,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--green-3, #549431);
+  background: var(--green-3);
   padding: 0.5em 2em;
   box-shadow: 0 2px 8px rgba(51, 111, 18, 0.08);
 }
@@ -89,13 +74,13 @@ body {
 }
 
 .nav-links a:hover, .nav-links button:hover {
-  color: var(--yellow-accent, #ffb100);
+  color: var(--yellow-accent);
 }
 
 .theme-toggle {
   padding: 0.3em 1em;
   border-radius: 6px;
-  background: var(--green-2, #7db95c);
+  background: var(--green-3);
   color: #fff;
   border: none;
   margin-left: 1em;
@@ -104,7 +89,7 @@ body {
 }
 
 .theme-toggle:hover {
-  background: var(--green-accent, #53ee00);
+  background: var(--yellow-accent);
   color: #222;
 }
 
@@ -120,15 +105,13 @@ button, .btn {
   transition: background 0.2s;
 }
 button:hover, .btn:hover {
-  background: var(--yellow-2);
+  background: var(--blue-3);
+  color: #fff;
 }
 
 /* Card backgrounds */
 .card, .form-container, .dashboard-card, .quiz-card, .lesson-card, .progress-card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
-  padding: 2rem;
 }
 
 /* Remove stacking/centering for ALL cards */
@@ -156,25 +139,25 @@ button:hover, .btn:hover {
 
 /* Accent links */
 a, .App-link {
-  color: var(--pink-accent);
+  color: var(--pink-3);
   text-decoration: underline;
 }
 a:hover {
-  color: var(--pink-2);
+  color: var(--yellow-accent);
 }
 
 /* Progress bar */
 .progress-bar-container {
-  background: var(--green-2);
+  background: var(--green-3);
   border-radius: 8px;
   overflow: hidden;
   height: 1.2rem;
   margin: 0.5rem 0;
 }
 .progress-bar {
-  background: var(--blue-accent);
-  height: 100%;
+  background: var(--blue-3);
   color: #fff;
+  height: 100%;
   text-align: right;
   padding-right: 0.5rem;
   border-radius: 8px 0 0 8px;
@@ -183,7 +166,7 @@ a:hover {
 
 /* Footer */
 .footer {
-  background: var(--blue-2);
+  background: var(--blue-3);
   color: #fff;
   padding: 1rem 0;
   margin-top: 2rem;
@@ -245,8 +228,8 @@ a:hover {
 }
 
 .created-item, .student-item {
-  background: var(--green-1);
-  border: 1px solid var(--green-2);
+  background: #fff;
+  border: 1px solid var(--green-3);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   margin-bottom: 0.75rem;
@@ -255,12 +238,12 @@ a:hover {
 }
 
 .created-item.selected {
-  background: var(--yellow-1);
+  background: var(--yellow-accent);
   border-color: var(--yellow-accent);
 }
 
 .no-items {
-  color: var(--pink-2);
+  color: var(--pink-3);
   font-style: italic;
 }
 
@@ -272,8 +255,8 @@ a:hover {
 
 /* Add to App.css for quiz management consistency */
 .created-item {
-  background: var(--green-1);
-  border: 1px solid var(--green-2);
+  background: #fff;
+  border: 1px solid var(--green-3);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   margin-bottom: 0.75rem;
@@ -301,7 +284,7 @@ a:hover {
   margin-top: 1em;
 }
 .error-msg {
-  color: var(--pink-accent);
+  color: var(--pink-3);
   margin-top: 1em;
 }
 
@@ -354,7 +337,7 @@ a:hover {
   right: 0;
   top: 110%;
   background: #fff;
-  border: 1px solid var(--blue-2);
+  border: 1px solid var(--blue-3);
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
   min-width: 180px;
@@ -373,12 +356,12 @@ a:hover {
   font-size: 1rem;
 }
 .dropdown-menu a:hover, .dropdown-menu button:hover {
-  background: var(--green-1);
+  background: var(--yellow-accent);
 }
 .dropdown-logout {
-  color: var(--pink-accent);
+  color: var(--pink-3);
   font-weight: bold;
-  border-top: 1px solid var(--blue-1);
+  border-top: 1px solid var(--blue-3);
   margin-top: 0.5rem;
 }
 
@@ -409,9 +392,10 @@ a:hover {
   border: none;
   font-size: 1.5em;
   cursor: pointer;
+  color: var(--pink-3);
 }
 .enrolled-msg {
-  color: var(--green-3, green);
+  color: var(--green-3);
   font-weight: bold;
   margin-top: 1em;
 }
@@ -445,7 +429,7 @@ a:hover {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
-  border: 1px solid var(--blue-2);
+  border: 1px solid var(--blue-3);
   padding: 1.5em;
   cursor: pointer;
   transition: box-shadow 0.2s, border 0.2s;
