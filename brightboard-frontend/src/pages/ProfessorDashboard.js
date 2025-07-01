@@ -299,7 +299,7 @@ function LessonSelector({ courseId, onLessonSelect }) {
   React.useEffect(() => {
     if (!courseId) return;
     setLoading(true);
-    fetch(`/api/lessons/course/${courseId}`)
+    fetch(`/api/lessons/${courseId}`)
       .then(res => res.json())
       .then(data => setLessons(Array.isArray(data) ? data : []))
       .catch(() => setLessons([]))
