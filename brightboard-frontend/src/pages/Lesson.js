@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 export default function Lesson() {
-  const { lessonId, courseId } = useParams(); // expects /lesson/:courseId or /lesson/:courseId/:lessonId
+  const { courseId } = useParams();
   const [lessons, setLessons] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -61,7 +61,7 @@ export default function Lesson() {
       ? `/api/lessons/${selectedLesson._id}`
       : `/api/lessons`;
     const body = {
-      course: courseId,
+      course: courseId, // This must be the actual course's _id
       title: form.title,
       subtitle: form.subtitle,
       content: form.content,

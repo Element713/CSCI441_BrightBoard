@@ -13,14 +13,8 @@ export default function CourseCatalog() {
 	useEffect(() => {
 		fetch("/api/courses")
 			.then((res) => res.json())
-			.then((data) => {
-				setCourses(Array.isArray(data) ? data : []);
-				setLoading(false);
-			})
-			.catch(() => {
-				setCourses([]);
-				setLoading(false);
-			});
+			.then((data) => setCourses(Array.isArray(data) ? data : []))
+			.catch(() => setCourses([]));
 	}, []);
 
 	const handleSelectCourse = (course) => {

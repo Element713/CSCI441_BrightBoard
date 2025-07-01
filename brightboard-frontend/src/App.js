@@ -27,7 +27,7 @@ function App() {
         <Route path="/progress" element={<Progress />} />
         <Route path="/professor/dashboard" element={<ProfessorDashboard />} />
         <Route path="/student/dashboard" element={<StudentDashboard />} />
-        <Route path="/lesson/:lessonId" element={<Lesson />} />
+        <Route path="/lesson/:courseId" element={<Lesson />} />
         <Route path="/quiz/:quizId" element={<Quiz />} />
         <Route path="/professor/quizzes" element={<ProfessorQuiz />} />
         <Route path="*" element={<NotFound />} />
