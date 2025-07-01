@@ -143,8 +143,13 @@ export default function ProfessorDashboard() {
   const handleSelectCourse = idx => {
     setSelected(idx);
     setEditMode(false);
-    setCourseTitle(courses[idx].title);
-    setCourseDesc(courses[idx].description);
+    if (courses[idx]) {
+      setCourseTitle(courses[idx].title || "");
+      setCourseDesc(courses[idx].description || "");
+    } else {
+      setCourseTitle("");
+      setCourseDesc("");
+    }
   };
 
   return (
@@ -240,14 +245,16 @@ export default function ProfessorDashboard() {
                   <button className="btn" type="submit">Add Material</button>
                 </form>
                 <div className="created-list" style={{ marginTop: "1em" }}>
-                  {courses[selected].materials && courses[selected].materials.length === 0 ? (
+                  {Array.isArray(courses[selected]?.materials) && courses[selected].materials.length === 0 ? (
                     <div className="no-items">No materials yet.</div>
-                  ) : (
+                  ) : Array.isArray(courses[selected]?.materials) ? (
                     courses[selected].materials.map((mat, i) => (
                       <div className="created-item" key={mat._id || i}>
                         <strong>{mat.title}</strong><br />{mat.desc}
                       </div>
                     ))
+                  ) : (
+                    <div className="no-items">No materials yet.</div>
                   )}
                 </div>
               </>
@@ -277,9 +284,9 @@ export default function ProfessorDashboard() {
               <div style={{ color: "#888" }}>Select a course to view students.</div>
             ) : (
               <div className="student-list">
-                {courses[selected].students && courses[selected].students.length === 0 ? (
+                {Array.isArray(courses[selected]?.students) && courses[selected].students.length === 0 ? (
                   <div className="no-items">No students enrolled yet.</div>
-                ) : (
+                ) : Array.isArray(courses[selected]?.students) ? (
                   courses[selected].students.map(student => (
                     <div className="student-item" key={student._id || student.name}>
                       <strong>{student.name}</strong>
@@ -290,6 +297,8 @@ export default function ProfessorDashboard() {
                       </div>
                     </div>
                   ))
+                ) : (
+                  <div className="no-items">No students enrolled yet.</div>
                 )}
               </div>
             )}
