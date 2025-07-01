@@ -14,5 +14,6 @@ router.put('/:id', verifyUser, verifyInstructor, courseController.updateCourse);
 router.delete('/:id', verifyUser, verifyInstructor, courseController.deleteCourse);
 router.post('/:id/enroll', verifyUser, verifyStudent, courseController.enrollInCourse);
 router.get('/enrolled/:studentId', verifyUser, courseController.getEnrolledCourses);
+router.put('/:courseId/materials', verifyUser, courseController.addMaterial);
 
 module.exports = router;

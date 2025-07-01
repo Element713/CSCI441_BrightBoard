@@ -111,6 +111,24 @@ const getEnrolledCourses = async (req, res) => {
   }
 };
 
+// Add material to course
+const addMaterial = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.courseId);
+    if (!course) return res.status(404).json({ error: "Course not found" });
+
+    course.materials = course.materials || [];
+    course.materials.push({
+      title: req.body.title,
+      desc: req.body.desc
+    });
+    await course.save();
+    res.json(course);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createCourse,
   getCourses,
@@ -118,6 +136,7 @@ module.exports = {
   updateCourse,
   deleteCourse,
   enrollInCourse,
-  getEnrolledCourses
+  getEnrolledCourses,
+  addMaterial
 };
 
