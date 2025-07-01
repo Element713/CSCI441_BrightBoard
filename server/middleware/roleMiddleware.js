@@ -1,6 +1,6 @@
 const verifyInstructor = (req, res, next) => {
-  if (req.user?.role !== 'instructor') {
-    return res.status(403).json({ error: 'Access denied. Instructor role required.' });
+  if (req.user?.role !== 'instructor' && req.user?.role !== 'professor') {
+    return res.status(403).json({ error: 'Access denied. Instructor or Professor role required.' });
   }
   next();
 };

@@ -25,21 +25,8 @@ export default function Navbar({ onToggleTheme }) {
         <Link to="/professor/dashboard">Professor</Link>
         <Link to="/student/dashboard">Student</Link>
         <Link to="/progress">Progress</Link>
-        {user ? (
-          <UserDropdown
-            username={user.username}
-            role={user.role}
-            onLogout={handleLogout}
-          />
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        )}
-        <button id="toggle-theme" className="theme-toggle" onClick={onToggleTheme}>
-          Toggle Theme
-        </button>
+        
+
       </div>
     </header>
   );

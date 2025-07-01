@@ -32,14 +32,12 @@ export default function UserDropdown({ username, role, onLogout }) {
               <Link to="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>
               <Link to="/progress" onClick={() => setOpen(false)}>Progress</Link>
               <Link to="/catalog" onClick={() => setOpen(false)}>Course Catalog</Link>
-              <Link to="/profile" onClick={() => setOpen(false)}>Profile</Link>
             </>
           ) : (
             <>
               <Link to="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>
               <Link to="/professor/courses" onClick={() => setOpen(false)}>My Courses</Link>
               <Link to="/professor/quizzes" onClick={() => setOpen(false)}>Quizzes</Link>
-              <Link to="/profile" onClick={() => setOpen(false)}>Profile</Link>
             </>
           )}
           <button className="dropdown-logout" onClick={handleLogout}>Logout</button>
