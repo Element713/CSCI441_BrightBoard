@@ -20,7 +20,7 @@ export default function Lesson() {
   // Fetch all lessons for this course
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/lessons/course/${courseId}`)
+    fetch(`/api/lessons/${courseId}`)
       .then((res) => res.json())
       .then((data) => {
         setLessons(Array.isArray(data) ? data : []);
@@ -98,7 +98,7 @@ export default function Lesson() {
       }
       // Refresh lessons
       const updated = await fetch(
-        `/api/lessons/course/${courseId}`
+        `/api/lessons/${courseId}`
       ).then((r) => r.json());
       setLessons(Array.isArray(updated) ? updated : []);
       setSelectedLesson(null);

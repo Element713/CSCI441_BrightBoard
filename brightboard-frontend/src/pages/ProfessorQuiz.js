@@ -158,7 +158,7 @@ export default function ProfessorQuiz() {
       setLessonId("");
       return;
     }
-    fetch(`/api/lessons/course/${courseId}`)
+    fetch(`/api/lessons/${courseId}`)
       .then(res => res.json())
       .then(data => setLessons(Array.isArray(data) ? data : []))
       .catch(() => setLessons([]));

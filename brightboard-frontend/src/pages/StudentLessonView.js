@@ -10,7 +10,7 @@ export default function StudentLessonView() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/lessons/course/${courseId}`)
+    fetch(`/api/lessons/${courseId}`)
       .then(res => res.json())
       .then(data => {
         setLessons(Array.isArray(data) ? data : []);
