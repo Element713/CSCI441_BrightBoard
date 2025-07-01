@@ -151,66 +151,83 @@ export default function ProfessorDashboard() {
     <>
       <Navbar />
       <main>
-        <div className="card">
-          <h2>Welcome, Professor!</h2>
-          <div className="section-title">{editMode ? "Edit Course" : "Create a New Course"}</div>
-          <form onSubmit={editMode ? editCourse : addCourse} autoComplete="off">
-            <div className="form-group">
-              <label>Course Title:</label>
-              <input value={courseTitle} onChange={e => setCourseTitle(e.target.value)} required />
-            </div>
-            <div className="form-group">
-              <label>Description:</label>
-              <textarea value={courseDesc} onChange={e => setCourseDesc(e.target.value)} rows={2} required />
-            </div>
-            <button className="btn" type="submit">{editMode ? "Update Course" : "Add Course"}</button>
-            {editMode && (
-              <button
-                className="btn"
-                type="button"
-                style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
-                onClick={() => {
-                  setEditMode(false);
-                  setCourseTitle("");
-                  setCourseDesc("");
-                }}
-              >
-                Cancel
-              </button>
-            )}
-          </form>
-          <div className="section-title">Active Courses</div>
-          <div className="created-list">
-            {loading ? (
-              <div>Loading...</div>
-            ) : courses.length === 0 ? (
-              <div className="no-items">No courses created yet.</div>
-            ) : (
-              courses.map((course, idx) => (
-                <div
-                  className={`created-item${selected === idx ? " selected" : ""}`}
-                  key={course._id}
-                  onClick={() => handleSelectCourse(idx)}
+        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Professor Dashboard</h2>
+        <div className="dashboard-grid" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: "2em",
+          margin: "2em"
+        }}>
+          {/* Courses Box */}
+          <div className="dashboard-box card">
+            <h3>Courses</h3>
+            <form onSubmit={editMode ? editCourse : addCourse} autoComplete="off">
+              <div className="form-group">
+                <label>Title:</label>
+                <input value={courseTitle} onChange={e => setCourseTitle(e.target.value)} required />
+              </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea value={courseDesc} onChange={e => setCourseDesc(e.target.value)} rows={2} required />
+              </div>
+              <button className="btn" type="submit">{editMode ? "Update" : "Add"}</button>
+              {editMode && (
+                <button
+                  className="btn"
+                  type="button"
+                  style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
+                  onClick={() => {
+                    setEditMode(false);
+                    setCourseTitle("");
+                    setCourseDesc("");
+                  }}
                 >
-                  <strong>{course.title}</strong><br />{course.description}
-                  <div style={{ marginTop: "0.5em" }}>
-                    <button className="btn" type="button" onClick={() => {
-                      setEditMode(true);
-                      setCourseTitle(course.title);
-                      setCourseDesc(course.description);
-                      setSelected(idx);
-                    }}>Edit</button>
-                    <button className="btn" type="button" style={{ marginLeft: "0.5em", background: "var(--pink-accent)" }} onClick={deleteCourse}>Delete</button>
+                  Cancel
+                </button>
+              )}
+            </form>
+            <div className="created-list" style={{ marginTop: "1em" }}>
+              {loading ? (
+                <div>Loading...</div>
+              ) : courses.length === 0 ? (
+                <div className="no-items">No courses created yet.</div>
+              ) : (
+                courses.map((course, idx) => (
+                  <div
+                    className={`created-item${selected === idx ? " selected" : ""}`}
+                    key={course._id}
+                    onClick={() => handleSelectCourse(idx)}
+                    style={{ cursor: "pointer", marginBottom: "0.5em" }}
+                  >
+                    <strong>{course.title}</strong>
+                    <div style={{ fontSize: "0.9em" }}>{course.description}</div>
+                    <div style={{ marginTop: "0.5em" }}>
+                      <button className="btn" type="button" onClick={e => {
+                        e.stopPropagation();
+                        setEditMode(true);
+                        setCourseTitle(course.title);
+                        setCourseDesc(course.description);
+                        setSelected(idx);
+                      }}>Edit</button>
+                      <button className="btn" type="button" style={{ marginLeft: "0.5em", background: "var(--pink-accent)" }} onClick={e => {
+                        e.stopPropagation();
+                        setSelected(idx);
+                        deleteCourse();
+                      }}>Delete</button>
+                    </div>
                   </div>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
-          {selected !== null && courses[selected] && (
-            <div id="course-details">
-              <div className="section-title">Lessons / Materials</div>
-              <div className="add-section">
-                <h4>Add New Lesson/Material</h4>
+
+          {/* Lessons/Materials Box */}
+          <div className="dashboard-box card">
+            <h3>Lessons / Materials</h3>
+            {selected === null || !courses[selected] ? (
+              <div style={{ color: "#888" }}>Select a course to manage its materials.</div>
+            ) : (
+              <>
                 <form onSubmit={addMaterial} autoComplete="off">
                   <div className="form-group">
                     <label>Title:</label>
@@ -220,11 +237,11 @@ export default function ProfessorDashboard() {
                     <label>Description:</label>
                     <textarea value={materialDesc} onChange={e => setMaterialDesc(e.target.value)} rows={2} required />
                   </div>
-                  <button className="btn" type="submit">Add</button>
+                  <button className="btn" type="submit">Add Material</button>
                 </form>
-                <div className="created-list">
+                <div className="created-list" style={{ marginTop: "1em" }}>
                   {courses[selected].materials && courses[selected].materials.length === 0 ? (
-                    <div className="no-items">No lessons/materials added yet.</div>
+                    <div className="no-items">No materials yet.</div>
                   ) : (
                     courses[selected].materials.map((mat, i) => (
                       <div className="created-item" key={mat._id || i}>
@@ -233,16 +250,32 @@ export default function ProfessorDashboard() {
                     ))
                   )}
                 </div>
-              </div>
-              <div className="section-title" style={{ marginTop: "2em" }}>Quizzes</div>
+              </>
+            )}
+          </div>
+
+          {/* Quizzes Box */}
+          <div className="dashboard-box card">
+            <h3>Quizzes</h3>
+            {selected === null || !courses[selected] ? (
+              <div style={{ color: "#888" }}>Select a course to manage its quizzes.</div>
+            ) : (
               <button
                 className="btn"
                 style={{ marginTop: "1em" }}
                 onClick={() => navigate(`/professor/quizzes?courseId=${courses[selected]._id}`)}
               >
-                Manage Quizzes for this Course
+                Go to Quiz Builder
               </button>
-              <div className="section-title" style={{ marginTop: "2em" }}>Students & Progress</div>
+            )}
+          </div>
+
+          {/* Students & Progress Box */}
+          <div className="dashboard-box card">
+            <h3>Students & Progress</h3>
+            {selected === null || !courses[selected] ? (
+              <div style={{ color: "#888" }}>Select a course to view students.</div>
+            ) : (
               <div className="student-list">
                 {courses[selected].students && courses[selected].students.length === 0 ? (
                   <div className="no-items">No students enrolled yet.</div>
@@ -259,8 +292,8 @@ export default function ProfessorDashboard() {
                   ))
                 )}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
       <footer className="footer">
