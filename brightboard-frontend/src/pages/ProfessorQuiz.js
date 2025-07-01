@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { useLocation } from "react-router-dom";
 
 // QuizForm component for creating/editing quizzes
 function QuizForm({ quiz, onSave, onCancel }) {
@@ -122,47 +123,49 @@ function QuizForm({ quiz, onSave, onCancel }) {
 }
 
 export default function ProfessorQuiz() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const urlCourseId = params.get("courseId") || "";
+  const urlLessonId = params.get("lessonId") || "";
+
   const [courses, setCourses] = useState([]);
-  const [courseId, setCourseId] = useState("");
+  const [courseId, setCourseId] = useState(urlCourseId);
   const [quizzes, setQuizzes] = useState([]);
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [creating, setCreating] = useState(false);
   const [message, setMessage] = useState("");
   const [lessons, setLessons] = useState([]);
-  const [lessonId, setLessonId] = useState("");
+  const [lessonId, setLessonId] = useState(urlLessonId);
 
-  // Fetch courses for dropdown
+  // Fetch courses for dropdown (only if not coming from URL)
   useEffect(() => {
+    if (courseId) return;
     fetch("/api/courses")
       .then(res => res.json())
       .then(data => setCourses(Array.isArray(data) ? data : []))
       .catch(() => setCourses([]));
-  }, []);
-
-  // Fetch quizzes for selected course
-  useEffect(() => {
-    if (!courseId) {
-      setQuizzes([]);
-      return;
-    }
-    fetch(`/api/quizzes?courseId=${courseId}`)
-      .then(res => res.json())
-      .then(data => setQuizzes(Array.isArray(data) ? data : []))
-      .catch(() => setQuizzes([]));
   }, [courseId]);
 
-  // Fetch lessons for selected course
+  // Fetch lessons for selected course (only if not coming from URL)
   useEffect(() => {
-    if (!courseId) {
-      setLessons([]);
-      setLessonId("");
-      return;
-    }
+    if (!courseId || lessonId) return;
     fetch(`/api/lessons/${courseId}`)
       .then(res => res.json())
       .then(data => setLessons(Array.isArray(data) ? data : []))
       .catch(() => setLessons([]));
-  }, [courseId]);
+  }, [courseId, lessonId]);
+
+  // Fetch quizzes for selected lesson
+  useEffect(() => {
+    if (!courseId || !lessonId) {
+      setQuizzes([]);
+      return;
+    }
+    fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
+      .then(res => res.json())
+      .then(data => setQuizzes(Array.isArray(data) ? data : []))
+      .catch(() => setQuizzes([]));
+  }, [courseId, lessonId]);
 
   // Create or update quiz
   const handleSaveQuiz = async quizData => {
@@ -170,7 +173,7 @@ export default function ProfessorQuiz() {
     try {
       let res, data;
       const payload = { ...quizData, courseId, lessonId };
-      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+      const token = localStorage.getItem("token");
       if (editingQuiz) {
         res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
           method: "PUT",
@@ -196,7 +199,7 @@ export default function ProfessorQuiz() {
         setEditingQuiz(null);
         setCreating(false);
         // Refresh quizzes
-        fetch(`/api/quizzes?courseId=${courseId}`)
+        fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
           .then(res => res.json())
           .then(data => setQuizzes(Array.isArray(data) ? data : []))
           .catch(() => setQuizzes([]));
@@ -213,7 +216,7 @@ export default function ProfessorQuiz() {
     if (!window.confirm("Are you sure you want to delete this quiz?")) return;
     setMessage("");
     try {
-      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+      const token = localStorage.getItem("token");
       const res = await fetch(`/api/quizzes/${quizId}`, {
         method: "DELETE",
         headers: {
@@ -231,27 +234,20 @@ export default function ProfessorQuiz() {
     }
   };
 
+  // UI rendering
   return (
     <>
       <Navbar />
       <main>
         <div className="card">
           <h2>Manage Quizzes</h2>
-          <div className="form-group">
-            <label>Course:</label>
-            <select value={courseId} onChange={e => setCourseId(e.target.value)} required>
-              <option value="">Select a course</option>
-              {courses.map(course => (
-                <option key={course._id} value={course._id}>{course.title}</option>
-              ))}
-            </select>
-          </div>
-          {courseId && (
+          {/* If courseId and lessonId are present, show quiz management for that lesson */}
+          {(courseId && lessonId) ? (
             <>
               <button className="btn" onClick={() => { setCreating(true); setEditingQuiz(null); }}>Create New Quiz</button>
               <div className="section-title">Existing Quizzes</div>
               {quizzes.length === 0 ? (
-                <div>No quizzes for this course.</div>
+                <div>No quizzes for this lesson.</div>
               ) : (
                 quizzes.map(quiz => (
                   <div key={quiz._id} className="created-item">
@@ -261,27 +257,40 @@ export default function ProfessorQuiz() {
                   </div>
                 ))
               )}
+              {(creating || editingQuiz) && (
+                <div style={{ marginTop: "2em" }}>
+                  <QuizForm
+                    quiz={editingQuiz}
+                    onSave={handleSaveQuiz}
+                    onCancel={() => { setEditingQuiz(null); setCreating(false); }}
+                  />
+                </div>
+              )}
             </>
-          )}
-          {courseId && (
-            <div className="form-group">
-              <label>Lesson:</label>
-              <select value={lessonId} onChange={e => setLessonId(e.target.value)} required>
-                <option value="">Select a lesson</option>
-                {lessons.map(lesson => (
-                  <option key={lesson._id} value={lesson._id}>{lesson.title}</option>
-                ))}
-              </select>
-            </div>
-          )}
-          {(creating || editingQuiz) && (
-            <div style={{ marginTop: "2em" }}>
-              <QuizForm
-                quiz={editingQuiz}
-                onSave={handleSaveQuiz}
-                onCancel={() => { setEditingQuiz(null); setCreating(false); }}
-              />
-            </div>
+          ) : (
+            // Fallback: allow course/lesson selection if not in URL
+            <>
+              <div className="form-group">
+                <label>Course:</label>
+                <select value={courseId} onChange={e => setCourseId(e.target.value)} required>
+                  <option value="">Select a course</option>
+                  {courses.map(course => (
+                    <option key={course._id} value={course._id}>{course.title}</option>
+                  ))}
+                </select>
+              </div>
+              {courseId && (
+                <div className="form-group">
+                  <label>Lesson:</label>
+                  <select value={lessonId} onChange={e => setLessonId(e.target.value)} required>
+                    <option value="">Select a lesson</option>
+                    {lessons.map(lesson => (
+                      <option key={lesson._id} value={lesson._id}>{lesson.title}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </>
           )}
           {message && (
             <div className={message.includes("success") ? "success-msg" : "error-msg"}>
