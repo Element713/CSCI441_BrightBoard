@@ -44,7 +44,7 @@ export default function StudentDashboard() {
               <div className="no-courses">You are not enrolled in any courses yet.</div>
             ) : (
               courses.map(course => (
-                <div className="course-item" key={course.courseId || course.title}>
+                <div className="course-item" key={course._id || course.courseId || course.title}>
                   <h3>{course.courseTitle || course.title}</h3>
                   <p><strong>Professor:</strong> {course.professor || course.instructor}</p>
                   <div className="progress-bar-container">

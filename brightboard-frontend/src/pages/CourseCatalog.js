@@ -118,9 +118,7 @@ export default function CourseCatalog() {
 							filteredCourses.map((course) => (
 								<div
 									className="course-card"
-									key={course._id || course.id || course.title}
-									onClick={() => handleSelectCourse(course)}
-									style={{ cursor: "pointer" }}
+									key={typeof course._id === "string" ? course._id : course.title}
 								>
 									<strong style={{ fontSize: "1.2em" }}>
 										{course.title}
