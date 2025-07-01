@@ -107,9 +107,30 @@ button:hover, .btn:hover {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
-  margin: 2rem auto;
   padding: 2rem;
-  max-width: 500px;
+}
+
+/* Remove stacking/centering for ALL cards */
+.card, .form-container, .dashboard-card, .quiz-card, .lesson-card, .progress-card {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+}
+
+/* Dashboard grid: always horizontal scroll if needed */
+.dashboard-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: 1fr;
+  overflow-x: auto;
+  gap: 2em;
+  margin: 2em;
+  white-space: nowrap;
+}
+.dashboard-box {
+  min-width: 320px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 /* Accent links */
@@ -372,5 +393,22 @@ a:hover {
   color: var(--green-3, green);
   font-weight: bold;
   margin-top: 1em;
+}
+
+/* Dashboard grid and box styles */
+.dashboard-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: 1fr;
+  overflow-x: auto;
+  gap: 2em;
+  margin: 2em;
+  white-space: nowrap;
+}
+
+.dashboard-box {
+  min-width: 320px;
+  display: inline-block;
+  vertical-align: top;
 }
 
