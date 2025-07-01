@@ -96,7 +96,7 @@ export default function ProfessorDashboard() {
       if (res.ok) {
         const updatedCourses = courses.filter((_, idx) => idx !== selected);
         setCourses(updatedCourses);
-        setSelected(null);
+        setSelected(null); // <-- Reset selection
         setEditMode(false);
         setCourseTitle("");
         setCourseDesc("");
