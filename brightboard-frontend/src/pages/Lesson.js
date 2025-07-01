@@ -61,7 +61,7 @@ export default function Lesson() {
       ? `/api/lessons/${selectedLesson._id}`
       : `/api/lessons`;
     const body = {
-      course: courseId, // This must be the actual course's _id
+      course: courseId, // This should be the actual course's _id
       title: form.title,
       subtitle: form.subtitle,
       content: form.content,
