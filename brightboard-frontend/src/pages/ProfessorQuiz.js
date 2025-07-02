@@ -166,7 +166,7 @@ export default function ProfessorQuiz() {
       setQuizzes([]);
       return;
     }
-    fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
+    fetch(`/professor/quizzes?courseId=${courses[selected]._id}&lessonId=${lessonId}`)
       .then(res => res.json())
       .then(data => setQuizzes(Array.isArray(data) ? data : []))
       .catch(() => setQuizzes([]));
@@ -223,7 +223,7 @@ export default function ProfessorQuiz() {
         setCreating(false);
         setSelectedQuizId(null);
         // Refresh quizzes
-        fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
+        fetch(`/api/quizzes?courseId=${courses[selected]._id}&lessonId=${lessonId}`)
           .then(res => res.json())
           .then(data => setQuizzes(Array.isArray(data) ? data : []))
           .catch(() => setQuizzes([]));
