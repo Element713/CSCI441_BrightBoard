@@ -78,6 +78,8 @@ const deleteCourse = async (req, res) => {
   }
 };
 
+
+
 // Enroll student in a course
 const enrollInCourse = async (req, res) => {
   try {

@@ -33,6 +33,7 @@ function App() {
         <Route path="/professor/quizzes" element={<ProfessorQuiz />} />
         <Route path="/student/lessons/:courseId" element={<StudentLessonView />} />
         <Route path="*" element={<NotFound />} />
+        
       </Routes>
     </Router>
   );
