@@ -158,6 +158,7 @@ module.exports = {
   updateCourse,
   deleteCourse,
   enrollInCourse,
-  addMaterial
+  addMaterial,
+  getEnrolledCourses
 };
 
