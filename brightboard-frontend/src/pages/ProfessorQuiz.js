@@ -169,29 +169,47 @@ export default function ProfessorQuiz() {
 
   // Create or update quiz
   const handleSaveQuiz = async quizData => {
-    setMessage("");
-    try {
-      let res, data;
-      const payload = { ...quizData, course: courseId, lesson: lessonId };
-      const token = localStorage.getItem("token");
-      if (editingQuiz) {
-        res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify(payload)
-        });
-      } else {
-        res = await fetch("/api/quizzes", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify(payload)
-        });
+  setMessage("");
+  try {
+    // Transform questions to match backend schema
+    const questions = quizData.questions.map(q => {
+      const choices = q.options.map(opt => opt.label);
+      // Find the correct answer index based on the value
+      const correctAnswerIndex = q.options.findIndex(opt => opt.value === q.correct);
+      return {
+        questionText: q.question,
+        choices,
+        correctAnswerIndex
+      };
+    });
+
+    const payload = {
+      title: quizData.title,
+      course: courseId,
+      lesson: lessonId,
+      questions
+    };
+
+    const token = localStorage.getItem("token");
+    let res, data;
+    if (editingQuiz) {
+      res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+    } else {
+      res = await fetch("/api/quizzes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
       }
       data = await res.json();
       if (res.ok) {
