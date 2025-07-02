@@ -37,10 +37,12 @@ export default function CourseCatalog() {
 		if (res.ok) setEnrolled(true);
 		else alert("Enrollment failed.");
 	};
-
-	return (
-		<div>
-			<Navbar />
+// Inside CourseCatalog component, before return (
+console.log("courses", courses);
+console.log("selectedCourse", selectedCourse);
+return (
+  <div>
+    <Navbar />
 			<main>
 				<div style={{ maxWidth: 900, margin: "0 auto" }}>
 					<h2 style={{ textAlign: "center", margin: "1.5em 0" }}>
