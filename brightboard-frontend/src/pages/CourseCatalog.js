@@ -12,22 +12,17 @@ export default function CourseCatalog() {
     fetch("/api/courses")
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched courses:", data); // 🐞 Debugging
         if (Array.isArray(data)) {
           const normalized = data.map((course) => ({
             ...course,
             _id: String(course._id || ""),
             instructor:
-              course.instructor && typeof course.instructor === "object"
-                ? {
-                    ...course.instructor,
-                    _id: String(course.instructor._id || ""),
-                  }
-                : course.instructor,
+              typeof course.instructor === "object" && course.instructor !== null
+                ? { ...course.instructor, _id: String(course.instructor._id || "") }
+                : { name: "Unknown" },
           }));
           setCourses(normalized);
         } else {
-          console.warn("Unexpected course data format:", data);
           setCourses([]);
         }
       })
@@ -45,7 +40,7 @@ export default function CourseCatalog() {
     <>
       <Navbar />
       <main>
-        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Course Catalog</h2>
+        <h2 style={{ textAlign: "center", margin: "1.5em 0" }}>Course Catalog</h2>
         <div style={{ textAlign: "center", marginBottom: "1em" }}>
           <input
             type="text"
@@ -85,7 +80,7 @@ export default function CourseCatalog() {
           )}
         </div>
       </main>
-      <footer className="footer">
+      <footer style={{ textAlign: "center", marginTop: "2em", padding: "1em", borderTop: "1px solid #eee" }}>
         <p>&copy; 2025 BrightBoard. All rights reserved.</p>
       </footer>
     </>
