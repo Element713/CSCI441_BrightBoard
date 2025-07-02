@@ -31,7 +31,13 @@ export default function CourseCatalog() {
         setCourses([]);
       });
   }, []);
-
+// Function to handle quiz submission
+ const payload = {
+        title: course.title,
+        course: courseId,
+        lesson: lessonId
+      };
+	    // Filter courses based on search query
   const filteredCourses = courses.filter((course) =>
     course.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
