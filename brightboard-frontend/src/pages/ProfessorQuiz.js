@@ -172,7 +172,7 @@ export default function ProfessorQuiz() {
     setMessage("");
     try {
       let res, data;
-      const payload = { ...quizData, courseId, lessonId };
+      const payload = { ...quizData, course: courseId, lesson: lessonId };
       const token = localStorage.getItem("token");
       if (editingQuiz) {
         res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
