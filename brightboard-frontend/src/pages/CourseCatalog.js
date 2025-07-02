@@ -5,20 +5,17 @@ export default function CourseCatalog() {
 	const [courses, setCourses] = useState([]);
 	const [selectedCourse, setSelectedCourse] = useState(null);
 	const [enrolled, setEnrolled] = useState(false);
-	const [search, setSearch] = useState("");
-	const [category, setCategory] = useState("");
-	const [dark, setDark] = useState(false);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-	const token = localStorage.getItem("token");
-	fetch("/api/courses", {
-		headers: token ? { Authorization: `Bearer ${token}` } : {},
-	})
-		.then((res) => res.json())
-		.then((data) => setCourses(Array.isArray(data) ? data : []))
-		.catch(() => setCourses([]))
-		.finally(() => setLoading(false));
+		const token = localStorage.getItem("token");
+		fetch("/api/courses", {
+			headers: { Authorization: `Bearer ${token}` },
+		})
+			.then((res) => res.json())
+			.then((data) => setCourses(Array.isArray(data) ? data : []))
+			.catch(() => setCourses([]))
+			.finally(() => setLoading(false));
 	}, []);
 
 	const handleSelectCourse = (course) => {
@@ -27,95 +24,35 @@ export default function CourseCatalog() {
 	};
 
 	const handleEnroll = async () => {
-		// Example: await fetch(`/api/enroll`, { method: "POST", ... });
-		setEnrolled(true);
+		if (!selectedCourse) return;
+		const token = localStorage.getItem("token");
+		const res = await fetch("/api/enroll", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ courseId: selectedCourse._id }),
+		});
+		if (res.ok) setEnrolled(true);
+		else alert("Enrollment failed.");
 	};
-
-	const handleToggleTheme = () => {
-		setDark((d) => !d);
-		document.body.classList.toggle("dark");
-	};
-
-	const filteredCourses = courses.filter((course) => {
-		const matchesTitle = course.title
-			.toLowerCase()
-			.includes(search.toLowerCase());
-		const matchesCategory = !category || course.category === category;
-		return matchesTitle && matchesCategory;
-	});
 
 	return (
-		<div className={dark ? "dark" : ""}>
-			<Navbar onToggleTheme={handleToggleTheme} />
+		<div>
+			<Navbar />
 			<main>
-				<div style={{ maxWidth: 1200, margin: "0 auto" }}>
-					<h2
-						style={{
-							textAlign: "center",
-							margin: "1.5em 0",
-						}}
-					>
+				<div style={{ maxWidth: 900, margin: "0 auto" }}>
+					<h2 style={{ textAlign: "center", margin: "1.5em 0" }}>
 						Course Catalog
 					</h2>
-					<div className="card" style={{ marginBottom: "2em" }}>
-						<div
-							className="course-search-container"
-							style={{
-								marginBottom: "1.5rem",
-								display: "flex",
-								gap: "1rem",
-								flexWrap: "wrap",
-							}}
-						>
-							<input
-								type="text"
-								id="course-search"
-								placeholder="Search for a course..."
-								value={search}
-								onChange={(e) => setSearch(e.target.value)}
-								style={{
-									padding: "0.5rem",
-									borderRadius: "4px",
-									border: "1px solid #ccc",
-									flex: "1 1 200px",
-								}}
-							/>
-							<select
-								id="category-filter"
-								value={category}
-								onChange={(e) => setCategory(e.target.value)}
-								style={{
-									padding: "0.5rem",
-									borderRadius: "4px",
-									border: "1px solid #ccc",
-									flex: "1 1 200px",
-								}}
-							>
-								<option value="">All Categories</option>
-								<option value="web-development">Web Development</option>
-								<option value="data-science">Data Science</option>
-								<option value="design">Design</option>
-								<option value="language">Language</option>
-								<option value="business">Business</option>
-								<option value="technology">Technology</option>
-							</select>
-							<button
-								id="toggle-theme"
-								className="theme-toggle"
-								type="button"
-								onClick={handleToggleTheme}
-							>
-								Toggle Theme
-							</button>
-						</div>
-					</div>
-					<div className="course-catalog-grid">
-						{loading ? (
-							<p>Loading...</p>
-						) : filteredCourses.length === 0 ? (
-							<p>No courses found.</p>
-						) : (
-							filteredCourses.map((course) => (
+					{loading ? (
+						<p>Loading...</p>
+					) : courses.length === 0 ? (
+						<p>No courses found.</p>
+					) : (
+						<div className="course-catalog-grid">
+							{courses.map((course) => (
 								<div
 									className="course-card"
 									key={course._id}
@@ -138,11 +75,11 @@ export default function CourseCatalog() {
 										{course.category}
 									</div>
 								</div>
-							))
-						)}
-					</div>
+							))}
+						</div>
+					)}
 
-					{/* Modal for course details */}
+					{/* Modal for course details and enrollment */}
 					{selectedCourse && (
 						<div
 							className="modal-overlay"
@@ -161,8 +98,11 @@ export default function CourseCatalog() {
 								</button>
 								<h3>{selectedCourse.title}</h3>
 								<p>
-									<strong>Instructor:</strong> 
-									{selectedCourse.instructor?.name || selectedCourse.professor?.name || selectedCourse.instructor || selectedCourse.professor}
+									<strong>Instructor:</strong>{" "}
+									{selectedCourse.instructor?.name ||
+										selectedCourse.professor?.name ||
+										selectedCourse.instructor ||
+										selectedCourse.professor}
 								</p>
 								<p>
 									<strong>Category:</strong> {selectedCourse.category}
