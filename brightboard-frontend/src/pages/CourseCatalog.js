@@ -13,7 +13,16 @@ export default function CourseCatalog() {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((res) => res.json())
-			.then((data) => setCourses(Array.isArray(data) ? data : []))
+			.then((data) =>
+				setCourses(
+					Array.isArray(data)
+						? data.map((course) => ({
+								...course,
+								_id: String(course._id), // Normalize _id to string
+						  }))
+						: []
+				)
+			)
 			.catch(() => setCourses([]))
 			.finally(() => setLoading(false));
 	}, []);
@@ -38,9 +47,6 @@ export default function CourseCatalog() {
 		else alert("Enrollment failed.");
 	};
 
-	// Inside CourseCatalog component, before return (
-	console.log("courses", courses);
-	console.log("selectedCourse", selectedCourse);
 	return (
 		<div>
 			<Navbar />
@@ -69,7 +75,10 @@ export default function CourseCatalog() {
 										<span style={{ color: "var(--blue-3)" }}>
 											Instructor:
 										</span>{" "}
-										{course.instructor?.name || course.professor?.name || course.instructor || course.professor}
+										{course.instructor?.name ||
+											course.professor?.name ||
+											course.instructor ||
+											course.professor}
 									</div>
 									<div>
 										<span style={{ color: "var(--green-4)" }}>
