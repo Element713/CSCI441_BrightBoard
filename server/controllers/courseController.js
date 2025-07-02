@@ -130,6 +130,26 @@ const addMaterial = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// Get courses created by this instructor
+exports.getCourses = async (req, res) => {
+  try {
+    const instructorId = req.user._id;
+
+    const query = req.query.mine === "true"
+      ? { instructor: instructorId }
+      : {};
+
+    const courses = await Course.find(query)
+      .populate("students", "name")
+      .populate("instructor", "name")
+      .lean();
+
+    res.json(courses);
+  } catch (err) {
+    console.error("Error fetching courses:", err);
+    res.status(500).json({ error: "Failed to get courses" });
+  }
+};
 
 module.exports = {
   createCourse,
