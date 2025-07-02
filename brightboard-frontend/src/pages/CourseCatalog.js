@@ -1,147 +1,93 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import CourseCard from "../components/CourseCard";
+import { useNavigate } from "react-router-dom";
 
 export default function CourseCatalog() {
-	const [courses, setCourses] = useState([]);
-	const [selectedCourse, setSelectedCourse] = useState(null);
-	const [enrolled, setEnrolled] = useState(false);
-	const [loading, setLoading] = useState(true);
+  const [courses, setCourses] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		const token = localStorage.getItem("token");
-		fetch("/api/courses", {
-			headers: { Authorization: `Bearer ${token}` },
-		})
-			.then((res) => res.json())
-			.then((data) =>
-				setCourses(
-					Array.isArray(data)
-						? data.map((course) => ({
-								...course,
-								_id: String(course._id), // Normalize _id to string
-						  }))
-						: []
-				)
-			)
-			.catch(() => setCourses([]))
-			.finally(() => setLoading(false));
-	}, []);
+  useEffect(() => {
+    fetch("/api/courses")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched courses:", data); // 🐞 Debugging
+        if (Array.isArray(data)) {
+          const normalized = data.map((course) => ({
+            ...course,
+            _id: String(course._id || ""),
+            instructor:
+              course.instructor && typeof course.instructor === "object"
+                ? {
+                    ...course.instructor,
+                    _id: String(course.instructor._id || ""),
+                  }
+                : course.instructor,
+          }));
+          setCourses(normalized);
+        } else {
+          console.warn("Unexpected course data format:", data);
+          setCourses([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch courses:", err);
+        setCourses([]);
+      });
+  }, []);
 
-	const handleSelectCourse = (course) => {
-		setSelectedCourse(course);
-		setEnrolled(false);
-	};
+  const filteredCourses = courses.filter((course) =>
+    course.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-	const handleEnroll = async () => {
-		if (!selectedCourse) return;
-		const token = localStorage.getItem("token");
-		const res = await fetch("/api/enroll", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({ courseId: selectedCourse._id }),
-		});
-		if (res.ok) setEnrolled(true);
-		else alert("Enrollment failed.");
-	};
-
-	return (
-		<div>
-			<Navbar />
-			<main>
-				<div style={{ maxWidth: 900, margin: "0 auto" }}>
-					<h2 style={{ textAlign: "center", margin: "1.5em 0" }}>
-						Course Catalog
-					</h2>
-					{loading ? (
-						<p>Loading...</p>
-					) : courses.length === 0 ? (
-						<p>No courses found.</p>
-					) : (
-						<div className="course-catalog-grid">
-							{courses.map((course) => (
-								<div
-									className="course-card"
-									key={course._id}
-									onClick={() => handleSelectCourse(course)}
-									style={{ cursor: "pointer" }}
-								>
-									<strong style={{ fontSize: "1.2em" }}>
-										{course.title}
-									</strong>
-									<div style={{ margin: "0.5em 0" }}>
-										<span style={{ color: "var(--blue-3)" }}>
-											Instructor:
-										</span>{" "}
-										{course.instructor?.name ||
-											course.professor?.name ||
-											course.instructor ||
-											course.professor}
-									</div>
-									<div>
-										<span style={{ color: "var(--green-4)" }}>
-											Category:
-										</span>{" "}
-										{course.category}
-									</div>
-								</div>
-							))}
-						</div>
-					)}
-
-					{/* Modal for course details and enrollment */}
-					{selectedCourse && (
-						<div
-							className="modal-overlay"
-							onClick={() => setSelectedCourse(null)}
-						>
-							<div
-								className="modal-content"
-								onClick={(e) => e.stopPropagation()}
-							>
-								<button
-									className="modal-close"
-									onClick={() => setSelectedCourse(null)}
-									aria-label="Close"
-								>
-									&times;
-								</button>
-								<h3>{selectedCourse.title}</h3>
-								<p>
-									<strong>Instructor:</strong>{" "}
-									{selectedCourse.instructor?.name ||
-										selectedCourse.professor?.name ||
-										selectedCourse.instructor ||
-										selectedCourse.professor}
-								</p>
-								<p>
-									<strong>Category:</strong> {selectedCourse.category}
-								</p>
-								<p>{selectedCourse.description}</p>
-								{!enrolled ? (
-									<button className="btn" onClick={handleEnroll}>
-										Enroll
-									</button>
-								) : (
-									<p
-										style={{
-											color: "green",
-											fontWeight: "bold",
-										}}
-									>
-										You are enrolled!
-									</p>
-								)}
-							</div>
-						</div>
-					)}
-				</div>
-			</main>
-			<footer className="footer">
-				<p>&copy; 2025 BrightBoard. All rights reserved.</p>
-			</footer>
-		</div>
-	);
+  return (
+    <>
+      <Navbar />
+      <main>
+        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Course Catalog</h2>
+        <div style={{ textAlign: "center", marginBottom: "1em" }}>
+          <input
+            type="text"
+            placeholder="Search by course title"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              padding: "0.5em",
+              width: "300px",
+              maxWidth: "90%",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+            }}
+          />
+        </div>
+        <div
+          className="course-catalog-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "2em",
+            margin: "2em",
+          }}
+        >
+          {filteredCourses.length === 0 ? (
+            <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>
+              No courses found.
+            </div>
+          ) : (
+            filteredCourses.map((course) => (
+              <CourseCard
+                key={course._id}
+                course={course}
+                onClick={() => navigate(`/course/${course._id}`)}
+              />
+            ))
+          )}
+        </div>
+      </main>
+      <footer className="footer">
+        <p>&copy; 2025 BrightBoard. All rights reserved.</p>
+      </footer>
+    </>
+  );
 }
