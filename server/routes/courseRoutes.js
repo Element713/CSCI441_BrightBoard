@@ -8,7 +8,7 @@ const { verifyInstructor, verifyStudent } = require('../middleware/roleMiddlewar
 
 // Course routes
 router.post('/', verifyUser, verifyInstructor, courseController.createCourse);
-router.get('/', verifyUser, courseController.getCourses);
+router.get('/', courseController.getCourses);
 router.get('/:id', verifyUser, courseController.getCourseById);
 router.put('/:id', verifyUser, verifyInstructor, courseController.updateCourse);
 router.delete('/:id', verifyUser, verifyInstructor, courseController.deleteCourse);

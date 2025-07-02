@@ -11,14 +11,14 @@ export default function CourseCatalog() {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const token = localStorage.getItem("token");
-		fetch("/api/courses", {
-			headers: { Authorization: `Bearer ${token}` },
-		})
-			.then((res) => res.json())
-			.then((data) => setCourses(Array.isArray(data) ? data : []))
-			.catch(() => setCourses([]))
-			.finally(() => setLoading(false));
+	const token = localStorage.getItem("token");
+	fetch("/api/courses", {
+		headers: token ? { Authorization: `Bearer ${token}` } : {},
+	})
+		.then((res) => res.json())
+		.then((data) => setCourses(Array.isArray(data) ? data : []))
+		.catch(() => setCourses([]))
+		.finally(() => setLoading(false));
 	}, []);
 
 	const handleSelectCourse = (course) => {
