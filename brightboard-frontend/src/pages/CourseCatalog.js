@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import CourseCard from "../components/CourseCard";
 import { useNavigate } from "react-router-dom";
 
 export default function CourseCatalog() {
@@ -12,14 +11,15 @@ export default function CourseCatalog() {
     fetch("/api/courses")
       .then((res) => res.json())
       .then((data) => {
+        console.log("Fetched courses:", data);
         if (Array.isArray(data)) {
           const normalized = data.map((course) => ({
             ...course,
-            _id: String(course._id || ""),
+            _id: course._id ? String(course._id) : "",
             instructor:
               typeof course.instructor === "object" && course.instructor !== null
                 ? { ...course.instructor, _id: String(course.instructor._id || "") }
-                : { name: "Unknown" },
+                : course.instructor,
           }));
           setCourses(normalized);
         } else {
@@ -31,22 +31,40 @@ export default function CourseCatalog() {
         setCourses([]);
       });
   }, []);
-// Function to handle quiz submission
- const payload = {
-        title: course.title,
-        course: courseId,
-        lesson: lessonId
-      };
-	    // Filter courses based on search query
+
   const filteredCourses = courses.filter((course) =>
     course.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Inline version of CourseCard
+  const InlineCourseCard = ({ course, onClick }) => (
+    <div
+      onClick={onClick}
+      style={{
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        padding: "1em",
+        cursor: "pointer",
+        boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#fff",
+        transition: "transform 0.2s ease-in-out",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    >
+      <h3 style={{ marginBottom: "0.5em" }}>{course.title}</h3>
+      <p style={{ fontSize: "0.9em", color: "#555" }}>{course.description}</p>
+      <p style={{ fontStyle: "italic", marginTop: "1em", color: "#888" }}>
+        Instructor: {course.instructor?.name || "Unknown"}
+      </p>
+    </div>
   );
 
   return (
     <>
       <Navbar />
       <main>
-        <h2 style={{ textAlign: "center", margin: "1.5em 0" }}>Course Catalog</h2>
+        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Course Catalog</h2>
         <div style={{ textAlign: "center", marginBottom: "1em" }}>
           <input
             type="text"
@@ -72,12 +90,10 @@ export default function CourseCatalog() {
           }}
         >
           {filteredCourses.length === 0 ? (
-            <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>
-              No courses found.
-            </div>
+            <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>No courses found.</div>
           ) : (
             filteredCourses.map((course) => (
-              <CourseCard
+              <InlineCourseCard
                 key={course._id}
                 course={course}
                 onClick={() => navigate(`/course/${course._id}`)}
@@ -86,9 +102,10 @@ export default function CourseCatalog() {
           )}
         </div>
       </main>
-      <footer style={{ textAlign: "center", marginTop: "2em", padding: "1em", borderTop: "1px solid #eee" }}>
+      <footer className="footer">
         <p>&copy; 2025 BrightBoard. All rights reserved.</p>
       </footer>
     </>
   );
 }
+
