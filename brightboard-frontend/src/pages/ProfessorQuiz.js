@@ -9,9 +9,13 @@ function QuizForm({ quiz, onSave, onCancel }) {
     quiz?.questions?.length
       ? quiz.questions.map(q => ({
           ...q,
-          options: q.options.length
+          options: Array.isArray(q.options) && q.options.length
             ? q.options
-            : [{ label: "", value: "a" }, { label: "", value: "b" }, { label: "", value: "c" }]
+            : [
+                { label: "", value: "a" },
+                { label: "", value: "b" },
+                { label: "", value: "c" }
+              ]
         }))
       : [
           {
