@@ -364,5 +364,5 @@ export default function ProfessorQuiz() {
         <p>&copy; 2025 BrightBoard. All rights reserved.</p>
       </footer>
     </>
-  );
+      );
 }
