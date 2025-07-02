@@ -46,7 +46,10 @@ export default function StudentDashboard() {
               courses.map(course => (
                 <div className="course-item" key={course._id || course.courseId || course.title}>
                   <h3>{course.courseTitle || course.title}</h3>
-                  <p><strong>Professor:</strong> {course.professor || course.instructor}</p>
+                  <p>
+                    <strong>Professor:</strong> 
+                    {course.professor?.name || course.instructor?.name || course.professor || course.instructor}
+                  </p>
                   <div className="progress-bar-container">
                     <div className="progress-bar" style={{ width: `${course.progress || 0}%` }}>
                       {course.progress || 0}%

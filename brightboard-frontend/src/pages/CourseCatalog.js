@@ -118,7 +118,9 @@ export default function CourseCatalog() {
 							filteredCourses.map((course) => (
 								<div
 									className="course-card"
-									key={typeof course._id === "string" ? course._id : course.title}
+									key={course._id}
+									onClick={() => handleSelectCourse(course)}
+									style={{ cursor: "pointer" }}
 								>
 									<strong style={{ fontSize: "1.2em" }}>
 										{course.title}
@@ -127,7 +129,7 @@ export default function CourseCatalog() {
 										<span style={{ color: "var(--blue-3)" }}>
 											Instructor:
 										</span>{" "}
-										{course.instructor || course.professor}
+										{course.instructor?.name || course.professor?.name || course.instructor || course.professor}
 									</div>
 									<div>
 										<span style={{ color: "var(--green-4)" }}>
@@ -159,7 +161,8 @@ export default function CourseCatalog() {
 								</button>
 								<h3>{selectedCourse.title}</h3>
 								<p>
-									<strong>Instructor:</strong> {selectedCourse.instructor || selectedCourse.professor}
+									<strong>Instructor:</strong> 
+									{selectedCourse.instructor?.name || selectedCourse.professor?.name || selectedCourse.instructor || selectedCourse.professor}
 								</p>
 								<p>
 									<strong>Category:</strong> {selectedCourse.category}
