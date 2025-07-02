@@ -7,34 +7,38 @@ export default function CourseCatalog() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch("/api/courses")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched courses:", data);
-        if (Array.isArray(data)) {
-          const normalized = data.map((course) => ({
-            ...course,
-            _id: course._id ? String(course._id) : "",
-            instructor:
-              typeof course.instructor === "object" && course.instructor !== null
-                ? { ...course.instructor, _id: String(course.instructor._id || "") }
-                : course.instructor,
-          }));
-          setCourses(normalized);
-        } else {
-          setCourses([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Failed to fetch courses:", err);
-        setCourses([]);
-      });
-  }, []);
 
-  const filteredCourses = courses.filter((course) =>
-    course.title?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  fetch("/api/courses", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Fetched courses:", data);
+      if (Array.isArray(data)) {
+        const normalized = data.map((course) => ({
+          ...course,
+          _id: course._id ? String(course._id) : "",
+          instructor:
+            typeof course.instructor === "object" && course.instructor !== null
+              ? { ...course.instructor, _id: String(course.instructor._id || "") }
+              : course.instructor,
+        }));
+        setCourses(normalized);
+      } else {
+        setCourses([]);
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to fetch courses:", err);
+      setCourses([]);
+    });
+}, []);
 
   // Inline version of CourseCard
   const InlineCourseCard = ({ course, onClick }) => (
