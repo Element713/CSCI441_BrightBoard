@@ -135,6 +135,7 @@ export default function ProfessorQuiz() {
   const [courses, setCourses] = useState([]);
   const [courseId, setCourseId] = useState(urlCourseId);
   const [quizzes, setQuizzes] = useState([]);
+  const [selectedQuizId, setSelectedQuizId] = useState(null);
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [creating, setCreating] = useState(false);
   const [message, setMessage] = useState("");
@@ -173,53 +174,54 @@ export default function ProfessorQuiz() {
 
   // Create or update quiz
   const handleSaveQuiz = async quizData => {
-  setMessage("");
-  try {
-    // Transform questions to match backend schema
-    const questions = quizData.questions.map(q => {
-      const choices = q.options.map(opt => opt.label);
-      // Find the correct answer index based on the value
-      const correctAnswerIndex = q.options.findIndex(opt => opt.value === q.correct);
-      return {
-        questionText: q.question,
-        choices,
-        correctAnswerIndex
+    setMessage("");
+    try {
+      // Transform questions to match backend schema
+      const questions = quizData.questions.map(q => {
+        const choices = q.options.map(opt => opt.label);
+        // Find the correct answer index based on the value
+        const correctAnswerIndex = q.options.findIndex(opt => opt.value === q.correct);
+        return {
+          questionText: q.question,
+          choices,
+          correctAnswerIndex
+        };
+      });
+
+      const payload = {
+        title: quizData.title,
+        course: courseId,
+        lesson: lessonId,
+        questions
       };
-    });
 
-    const payload = {
-      title: quizData.title,
-      course: courseId,
-      lesson: lessonId,
-      questions
-    };
-
-    const token = localStorage.getItem("token");
-    let res, data;
-    if (editingQuiz) {
-      res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-      });
-    } else {
-      res = await fetch("/api/quizzes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-      });
+      const token = localStorage.getItem("token");
+      let res, data;
+      if (editingQuiz) {
+        res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        res = await fetch("/api/quizzes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
       }
       data = await res.json();
       if (res.ok) {
         setMessage("Quiz saved successfully!");
         setEditingQuiz(null);
         setCreating(false);
+        setSelectedQuizId(null);
         // Refresh quizzes
         fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
           .then(res => res.json())
@@ -248,6 +250,7 @@ export default function ProfessorQuiz() {
       if (res.ok) {
         setMessage("Quiz deleted.");
         setQuizzes(quizzes.filter(q => q._id !== quizId));
+        setSelectedQuizId(null);
       } else {
         setMessage("Failed to delete quiz.");
       }
@@ -266,25 +269,61 @@ export default function ProfessorQuiz() {
           {/* If courseId and lessonId are present, show quiz management for that lesson */}
           {(courseId && lessonId) ? (
             <>
-              <button className="btn" onClick={() => { setCreating(true); setEditingQuiz(null); }}>Create New Quiz</button>
+              <button className="btn" onClick={() => { setCreating(true); setEditingQuiz(null); setSelectedQuizId(null); }}>Create New Quiz</button>
               <div className="section-title">Existing Quizzes</div>
               {quizzes.length === 0 ? (
                 <div>No quizzes for this lesson.</div>
               ) : (
-                quizzes.map(quiz => (
-                  <div key={quiz._id} className="created-item">
-                    <strong>{quiz.title}</strong>
-                    <button className="btn" style={{ marginLeft: "1em" }} onClick={() => { setEditingQuiz(quiz); setCreating(false); }}>Edit</button>
-                    <button className="btn" style={{ marginLeft: "1em" }} onClick={() => handleDeleteQuiz(quiz._id)}>Delete</button>
+                <>
+                  {quizzes.map(quiz => (
+                    <div
+                      key={quiz._id}
+                      className={`created-item${selectedQuizId === quiz._id ? " selected" : ""}`}
+                      style={{ cursor: "pointer", background: selectedQuizId === quiz._id ? "#e0e0ff" : undefined }}
+                      onClick={() => setSelectedQuizId(quiz._id)}
+                    >
+                      <strong>{quiz.title}</strong>
+                    </div>
+                  ))}
+                  <div style={{ marginTop: "1em" }}>
+                    <button
+                      className="btn"
+                      disabled={!selectedQuizId}
+                      onClick={() => {
+                        if (!selectedQuizId) {
+                          setMessage("Please select a quiz to edit.");
+                          return;
+                        }
+                        const quiz = quizzes.find(q => q._id === selectedQuizId);
+                        setEditingQuiz(quiz);
+                        setCreating(false);
+                      }}
+                    >
+                      Edit Selected Quiz
+                    </button>
+                    <button
+                      className="btn"
+                      style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
+                      disabled={!selectedQuizId}
+                      onClick={() => {
+                        if (!selectedQuizId) {
+                          setMessage("Please select a quiz to delete.");
+                          return;
+                        }
+                        handleDeleteQuiz(selectedQuizId);
+                      }}
+                    >
+                      Delete Selected Quiz
+                    </button>
                   </div>
-                ))
+                </>
               )}
               {(creating || editingQuiz) && (
                 <div style={{ marginTop: "2em" }}>
                   <QuizForm
                     quiz={editingQuiz}
                     onSave={handleSaveQuiz}
-                    onCancel={() => { setEditingQuiz(null); setCreating(false); }}
+                    onCancel={() => { setEditingQuiz(null); setCreating(false); setSelectedQuizId(null); }}
                   />
                 </div>
               )}
