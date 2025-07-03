@@ -54,7 +54,8 @@ function QuizForm({ quiz, onSave, onCancel }) {
         options: [
           { label: "", value: "a" },
           { label: "", value: "b" },
-          { label: "", value: "c" }
+          { label: "", value: "c" },
+          {label: "", value: "d"}
         ],
         correct: "a"
       }
@@ -152,13 +153,21 @@ export default function ProfessorQuiz() {
   }, [courseId]);
 
   // Fetch lessons for selected course (only if not coming from URL)
-  useEffect(() => {
-    if (!courseId || lessonId) return;
-    fetch(`/api/lessons/${courseId}`)
-      .then(res => res.json())
-      .then(data => setLessons(Array.isArray(data) ? data : []))
-      .catch(() => setLessons([]));
-  }, [courseId, lessonId]);
+useEffect(() => {
+  if (!courseId) return;
+  fetch(`/api/lessons/${courseId}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("Fetched lessons:", data);  // <-- optional debug
+      setLessons(Array.isArray(data) ? data : []);
+    })
+    .catch(err => {
+      console.error("Failed to fetch lessons:", err);
+      setLessons([]);
+    });
+}, [courseId]);
+
+
 
   // Fetch quizzes for selected lesson
   useEffect(() => {
