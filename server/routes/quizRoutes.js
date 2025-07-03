@@ -12,13 +12,13 @@ router.get('/', quizController.listQuizzes);
 // Instructor creates a quiz
 router.post('/', verifyUser, verifyInstructor, quizController.createQuiz);
 
-// Update a quiz
+// Update a quiz by quiz ID
 router.put('/:id', verifyUser, verifyInstructor, quizController.updateQuiz);
 
-// Delete a quiz
+// Delete a quiz by quiz ID
 router.delete('/:id', verifyUser, verifyInstructor, quizController.deleteQuiz);
 
-// Any user can fetch a quiz by lesson ID
-router.get('/:lessonId', quizController.getQuizByLesson);
+// Get quiz by lesson ID (must be after other specific routes)
+router.get('/lesson/:lessonId', quizController.getQuizByLesson);
 
 module.exports = router;
