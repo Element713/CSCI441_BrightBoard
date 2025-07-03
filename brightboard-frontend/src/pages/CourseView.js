@@ -55,23 +55,23 @@ export default function CourseView() {
   }, [id, token]);
 
   const handleEnroll = () => {
-    fetch(`/api/courses/${id}/enroll`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
+  fetch(`/api/courses/${id}/enroll`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // 🔥 Removed Content-Type
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Enrollment failed");
+      return res.json();
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Enrollment failed");
-        return res.json();
-      })
-      .then(() => setEnrollMessage("Successfully enrolled in this course! 🎉"))
-      .catch((err) => {
-        console.error(err);
-        setEnrollMessage("Error enrolling. Please try again.");
-      });
-  };
+    .then(() => setEnrollMessage("Successfully enrolled in this course! 🎉"))
+    .catch((err) => {
+      console.error(err);
+      setEnrollMessage("Error enrolling. Please try again.");
+    });
+};
 
   return (
     <div className={dark ? "dark" : ""}>
