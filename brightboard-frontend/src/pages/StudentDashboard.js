@@ -16,24 +16,36 @@ export default function StudentDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-    fetch("/api/courses/enrolled", {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
+  const token = getToken();
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+  fetch("/api/courses/enrolled", {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+      return res.json();
     })
-      .then((res) => res.json())
-      .then((data) => {
+    .then((data) => {
+      if (Array.isArray(data)) {
         setCourses(data);
-      })
-      .catch(() => setCourses([]))
-      .finally(() => setLoading(false));
-  }, [navigate]);
-
+      } else {
+        console.error("Unexpected response format:", data);
+        setCourses([]);
+      }
+    })
+    .catch((err) => {
+      console.error("Fetch error:", err);
+      setCourses([]);
+    })
+    .finally(() => setLoading(false));
+}, [navigate]);
   return (
     <>
       <Navbar />
