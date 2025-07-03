@@ -158,7 +158,8 @@ export default function ProfessorQuiz() {
       .catch(() => setLessons([]));
   }, [courseId]);
 
-  useEffect(() => {
+    useEffect(() => {
+    console.log("courseId:", courseId, "lessonId:", lessonId); // Add this
     if (!courseId || !lessonId) {
       setQuizzes([]);
       return;
@@ -166,10 +167,13 @@ export default function ProfessorQuiz() {
     fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
       .then(res => res.json())
       .then(data => {
-      console.log("Fetched quizzes:", data); // <-- Add this line
-      setQuizzes(Array.isArray(data) ? data : []);
-    })
-      .catch(() => setQuizzes([]));
+        console.log("Fetched quizzes:", data); // Add this
+        setQuizzes(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        console.error("Quiz fetch error:", err); // Add this
+        setQuizzes([]);
+      });
   }, [courseId, lessonId]);
 
   const handleSaveQuiz = async quizData => {
