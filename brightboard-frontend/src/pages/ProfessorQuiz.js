@@ -180,15 +180,7 @@ useEffect(() => {
       .then(data => setQuizzes(Array.isArray(data) ? data : []))
       .catch(() => setQuizzes([]));
   }, [courseId, lessonId]);
-  /////////////////////////
-  fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
-  .then(res => res.json())
-  .then(data => {
-    console.log("Fetched quizzes:", data);
-    setQuizzes(Array.isArray(data) ? data : []);
-  })
-  ////////////////////////////////
-  .catch(() => setQuizzes([]));
+
   // Create or update quiz
   const handleSaveQuiz = async quizData => {
     setMessage("");
