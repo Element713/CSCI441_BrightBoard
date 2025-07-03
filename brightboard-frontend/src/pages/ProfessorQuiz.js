@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useLocation } from "react-router-dom";
 
-// QuizForm component for creating/editing quizzes
 function QuizForm({ quiz, onSave, onCancel }) {
   const [title, setTitle] = useState(quiz?.title || "");
   const [questions, setQuestions] = useState(
@@ -55,7 +54,7 @@ function QuizForm({ quiz, onSave, onCancel }) {
           { label: "", value: "a" },
           { label: "", value: "b" },
           { label: "", value: "c" },
-          {label: "", value: "d"}
+          { label: "", value: "d" }
         ],
         correct: "a"
       }
@@ -143,7 +142,6 @@ export default function ProfessorQuiz() {
   const [lessons, setLessons] = useState([]);
   const [lessonId, setLessonId] = useState(urlLessonId);
 
-  // Fetch courses for dropdown (only if not coming from URL)
   useEffect(() => {
     if (courseId) return;
     fetch("/api/courses")
@@ -152,24 +150,14 @@ export default function ProfessorQuiz() {
       .catch(() => setCourses([]));
   }, [courseId]);
 
-  // Fetch lessons for selected course (only if not coming from URL)
-useEffect(() => {
-  if (!courseId) return;
-  fetch(`/api/lessons/${courseId}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("Fetched lessons:", data);  // <-- optional debug
-      setLessons(Array.isArray(data) ? data : []);
-    })
-    .catch(err => {
-      console.error("Failed to fetch lessons:", err);
-      setLessons([]);
-    });
-}, [courseId]);
+  useEffect(() => {
+    if (!courseId) return;
+    fetch(`/api/lessons/${courseId}`)
+      .then(res => res.json())
+      .then(data => setLessons(Array.isArray(data) ? data : []))
+      .catch(() => setLessons([]));
+  }, [courseId]);
 
-
-
-  // Fetch quizzes for selected lesson
   useEffect(() => {
     if (!courseId || !lessonId) {
       setQuizzes([]);
@@ -181,14 +169,17 @@ useEffect(() => {
       .catch(() => setQuizzes([]));
   }, [courseId, lessonId]);
 
-  // Create or update quiz
   const handleSaveQuiz = async quizData => {
     setMessage("");
+
+    if (!courseId || !lessonId) {
+      setMessage("Course and Lesson must be selected before saving a quiz.");
+      return;
+    }
+
     try {
-      // Transform questions to match backend schema
       const questions = quizData.questions.map(q => {
         const choices = q.options.map(opt => opt.label);
-        // Find the correct answer index based on the value
         const correctAnswerIndex = q.options.findIndex(opt => opt.value === q.correct);
         return {
           questionText: q.question,
@@ -205,33 +196,21 @@ useEffect(() => {
       };
 
       const token = localStorage.getItem("token");
-      let res, data;
-      if (editingQuiz) {
-        res = await fetch(`/api/quizzes/${editingQuiz._id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify(payload)
-        });
-      } else {
-        res = await fetch("/api/quizzes", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify(payload)
-        });
-      }
-      data = await res.json();
+      const res = await fetch(editingQuiz ? `/api/quizzes/${editingQuiz._id}` : "/api/quizzes", {
+        method: editingQuiz ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
       if (res.ok) {
         setMessage("Quiz saved successfully!");
         setEditingQuiz(null);
         setCreating(false);
         setSelectedQuizId(null);
-        // Refresh quizzes
         fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
           .then(res => res.json())
           .then(data => setQuizzes(Array.isArray(data) ? data : []))
@@ -244,7 +223,6 @@ useEffect(() => {
     }
   };
 
-  // Delete quiz
   const handleDeleteQuiz = async quizId => {
     if (!window.confirm("Are you sure you want to delete this quiz?")) return;
     setMessage("");
@@ -268,14 +246,12 @@ useEffect(() => {
     }
   };
 
-  // UI rendering
   return (
     <>
       <Navbar />
       <main>
         <div className="card">
           <h2>Manage Quizzes</h2>
-          {/* If courseId and lessonId are present, show quiz management for that lesson */}
           {(courseId && lessonId) ? (
             <>
               <button className="btn" onClick={() => { setCreating(true); setEditingQuiz(null); setSelectedQuizId(null); }}>Create New Quiz</button>
@@ -299,10 +275,6 @@ useEffect(() => {
                       className="btn"
                       disabled={!selectedQuizId}
                       onClick={() => {
-                        if (!selectedQuizId) {
-                          setMessage("Please select a quiz to edit.");
-                          return;
-                        }
                         const quiz = quizzes.find(q => q._id === selectedQuizId);
                         setEditingQuiz(quiz);
                         setCreating(false);
@@ -314,13 +286,7 @@ useEffect(() => {
                       className="btn"
                       style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
                       disabled={!selectedQuizId}
-                      onClick={() => {
-                        if (!selectedQuizId) {
-                          setMessage("Please select a quiz to delete.");
-                          return;
-                        }
-                        handleDeleteQuiz(selectedQuizId);
-                      }}
+                      onClick={() => handleDeleteQuiz(selectedQuizId)}
                     >
                       Delete Selected Quiz
                     </button>
@@ -338,7 +304,6 @@ useEffect(() => {
               )}
             </>
           ) : (
-            // Fallback: allow course/lesson selection if not in URL
             <>
               <div className="form-group">
                 <label>Course:</label>
@@ -373,5 +338,5 @@ useEffect(() => {
         <p>&copy; 2025 BrightBoard. All rights reserved.</p>
       </footer>
     </>
-      );
+  );
 }
