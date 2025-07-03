@@ -20,13 +20,12 @@ const createCourse = async (req, res) => {
 // Get all courses
 const getCourses = async (req, res) => {
   try {
-    const instructorId = req.user._id;
-    const courses = await Course.find({ instructor: instructorId })
-      .populate("students", "name email progress") // Populate student data
-      .populate("instructor", "name");
-    
+    const courses = await Course.find()
+      .populate("instructor", "name")
+      .select("title description instructor"); // Optional: limit fields
     res.json(courses);
   } catch (err) {
+    console.error("Failed to get courses:", err);
     res.status(500).json({ error: "Failed to get courses" });
   }
 };
