@@ -33,6 +33,11 @@ const questionSchema = new mongoose.Schema({
 // Main Quiz schema
 const quizSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: true,
+      trim: true
+    },
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Course',
