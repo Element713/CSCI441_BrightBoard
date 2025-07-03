@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
-
 export default function ProfessorDashboard() {
   const [courses, setCourses] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -18,16 +17,16 @@ export default function ProfessorDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     fetch("/api/courses?mine=true", {
-      headers: { "Authorization": `Bearer ${token}` }
+      headers: { "Authorization": `Bearer ${token}` },
     })
-      .then(res => res.json())
-      .then(data => setCourses(Array.isArray(data) ? data : []))
+      .then((res) => res.json())
+      .then((data) => setCourses(Array.isArray(data) ? data : []))
       .catch(() => setCourses([]))
       .finally(() => setLoading(false));
   }, []);
 
   // Add a new course (POST to backend)
-  const addCourse = async e => {
+  const addCourse = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
@@ -35,9 +34,9 @@ export default function ProfessorDashboard() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: courseTitle, description: courseDesc })
+        body: JSON.stringify({ title: courseTitle, description: courseDesc }),
       });
       const newCourse = await res.json();
       if (res.ok) {
@@ -53,7 +52,7 @@ export default function ProfessorDashboard() {
   };
 
   // Edit a course (PUT to backend)
-  const editCourse = async e => {
+  const editCourse = async (e) => {
     e.preventDefault();
     if (selected === null) return;
     const course = courses[selected];
@@ -63,9 +62,9 @@ export default function ProfessorDashboard() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: courseTitle, description: courseDesc })
+        body: JSON.stringify({ title: courseTitle, description: courseDesc }),
       });
       const updatedCourse = await res.json();
       if (res.ok) {
@@ -92,7 +91,7 @@ export default function ProfessorDashboard() {
     try {
       const res = await fetch(`/api/courses/${course._id}`, {
         method: "DELETE",
-        headers: { "Authorization": `Bearer ${token}` }
+        headers: { "Authorization": `Bearer ${token}` },
       });
       if (res.ok) {
         const updatedCourses = courses.filter((_, idx) => idx !== selected);
@@ -111,7 +110,7 @@ export default function ProfessorDashboard() {
   };
 
   // Add lesson/material to selected course (PUT to backend)
-  const addMaterial = async e => {
+  const addMaterial = async (e) => {
     e.preventDefault();
     if (selected === null) return;
     const course = courses[selected];
@@ -121,9 +120,9 @@ export default function ProfessorDashboard() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: materialTitle, desc: materialDesc })
+        body: JSON.stringify({ title: materialTitle, desc: materialDesc }),
       });
       const updatedCourse = await res.json();
       if (res.ok) {
@@ -141,7 +140,7 @@ export default function ProfessorDashboard() {
   };
 
   // When selecting a course, fill form for edit
-  const handleSelectCourse = idx => {
+  const handleSelectCourse = (idx) => {
     setSelected(idx);
     setEditMode(false);
     if (courses[idx]) {
@@ -158,25 +157,39 @@ export default function ProfessorDashboard() {
       <Navbar />
       <main>
         <h2 style={{ textAlign: "center", margin: "1em 0" }}>Professor Dashboard</h2>
-        <div className="dashboard-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "2em",
-          margin: "2em"
-        }}>
+        <div
+          className="dashboard-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "2em",
+            margin: "2em",
+          }}
+        >
           {/* Courses Box */}
           <div className="dashboard-box card">
             <h3>Courses</h3>
             <form onSubmit={editMode ? editCourse : addCourse} autoComplete="off">
               <div className="form-group">
                 <label>Title:</label>
-                <input value={courseTitle} onChange={e => setCourseTitle(e.target.value)} required />
+                <input
+                  value={courseTitle}
+                  onChange={(e) => setCourseTitle(e.target.value)}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label>Description:</label>
-                <textarea value={courseDesc} onChange={e => setCourseDesc(e.target.value)} rows={2} required />
+                <textarea
+                  value={courseDesc}
+                  onChange={(e) => setCourseDesc(e.target.value)}
+                  rows={2}
+                  required
+                />
               </div>
-              <button className="btn" type="submit">{editMode ? "Update" : "Add"}</button>
+              <button className="btn" type="submit">
+                {editMode ? "Update" : "Add"}
+              </button>
               {editMode && (
                 <button
                   className="btn"
@@ -208,18 +221,34 @@ export default function ProfessorDashboard() {
                     <strong>{course.title}</strong>
                     <div style={{ fontSize: "0.9em" }}>{course.description}</div>
                     <div style={{ marginTop: "0.5em" }}>
-                      <button className="btn" type="button" onClick={e => {
-                        e.stopPropagation();
-                        setEditMode(true);
-                        setCourseTitle(course.title);
-                        setCourseDesc(course.description);
-                        setSelected(idx);
-                      }}>Edit</button>
-                      <button className="btn" type="button" style={{ marginLeft: "0.5em", background: "var(--pink-accent)" }} onClick={e => {
-                        e.stopPropagation();
-                        setSelected(idx);
-                        deleteCourse();
-                      }}>Delete</button>
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditMode(true);
+                          setCourseTitle(course.title);
+                          setCourseDesc(course.description);
+                          setSelected(idx);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn"
+                        type="button"
+                        style={{
+                          marginLeft: "0.5em",
+                          background: "var(--pink-accent)",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelected(idx);
+                          deleteCourse();
+                        }}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))
@@ -244,19 +273,21 @@ export default function ProfessorDashboard() {
           </div>
 
           {/* Quizzes Box */}
-            <div className="dashboard-box card">
-              <h3>Quizzes</h3>
-              {selected === null || !courses[selected] ? (
-                <div style={{ color: "#888" }}>Select a course to manage its quizzes.</div>
-              ) : (
-                <LessonSelector
-                  courseId={courses[selected]._id}
-                  onLessonSelect={lessonId =>
-                    navigate(`/professor/quizzes?courseId=${courses[selected]._id}&lessonId=${lessonId}`)
-                  }
-                />
-              )}
-            </div>
+          <div className="dashboard-box card">
+            <h3>Quizzes</h3>
+            {selected === null || !courses[selected] ? (
+              <div style={{ color: "#888" }}>Select a course to manage its quizzes.</div>
+            ) : (
+              <LessonSelector
+                courseId={courses[selected]._id}
+                onLessonSelect={(lessonId) =>
+                  navigate(
+                    `/professor/quizzes?courseId=${courses[selected]._id}&lessonId=${lessonId}`
+                  )
+                }
+              />
+            )}
+          </div>
 
           {/* Students & Progress Box */}
           <div className="dashboard-box card">
@@ -265,14 +296,18 @@ export default function ProfessorDashboard() {
               <div style={{ color: "#888" }}>Select a course to view students.</div>
             ) : (
               <div className="student-list">
-                {Array.isArray(courses[selected]?.students) && courses[selected].students.length === 0 ? (
+                {Array.isArray(courses[selected]?.students) &&
+                courses[selected].students.length === 0 ? (
                   <div className="no-items">No students enrolled yet.</div>
                 ) : Array.isArray(courses[selected]?.students) ? (
-                  courses[selected].students.map(student => (
+                  courses[selected].students.map((student) => (
                     <div className="student-item" key={student._id || student.name}>
                       <strong>{student.name}</strong>
                       <div className="progress-bar-container">
-                        <div className="progress-bar" style={{ width: `${student.progress || 0}%` }}>
+                        <div
+                          className="progress-bar"
+                          style={{ width: `${student.progress || 0}%` }}
+                        >
                           {student.progress || 0}%
                         </div>
                       </div>
@@ -292,6 +327,7 @@ export default function ProfessorDashboard() {
     </>
   );
 }
+
 function LessonSelector({ courseId, onLessonSelect }) {
   const [lessons, setLessons] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -300,8 +336,8 @@ function LessonSelector({ courseId, onLessonSelect }) {
     if (!courseId) return;
     setLoading(true);
     fetch(`/api/lessons/${courseId}`)
-      .then(res => res.json())
-      .then(data => setLessons(Array.isArray(data) ? data : []))
+      .then((res) => res.json())
+      .then((data) => setLessons(Array.isArray(data) ? data : []))
       .catch(() => setLessons([]))
       .finally(() => setLoading(false));
   }, [courseId]);
@@ -314,7 +350,7 @@ function LessonSelector({ courseId, onLessonSelect }) {
     <div>
       <label>Select Lesson:</label>
       <select
-        onChange={e => {
+        onChange={(e) => {
           if (e.target.value) onLessonSelect(e.target.value);
         }}
         defaultValue=""
@@ -322,7 +358,7 @@ function LessonSelector({ courseId, onLessonSelect }) {
         <option value="" disabled>
           Choose a lesson
         </option>
-        {lessons.map(lesson => (
+        {lessons.map((lesson) => (
           <option key={lesson._id} value={lesson._id}>
             {lesson.title}
           </option>

@@ -20,15 +20,14 @@ const createCourse = async (req, res) => {
 // Get all courses
 const getCourses = async (req, res) => {
   try {
-    let filter = {};
-    // If ?mine=true, only return courses for the logged-in professor
-    if (req.query.mine === "true" && req.user.role === "professor") {
-      filter = { instructor: req.user._id };
-    }
-    const courses = await Course.find(filter).populate('instructor', 'name');
+    const instructorId = req.user._id;
+    const courses = await Course.find({ instructor: instructorId })
+      .populate("students", "name email progress") // Populate student data
+      .populate("instructor", "name");
+    
     res.json(courses);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Failed to get courses" });
   }
 };
 
