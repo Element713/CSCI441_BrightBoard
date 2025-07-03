@@ -165,7 +165,10 @@ export default function ProfessorQuiz() {
     }
     fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
       .then(res => res.json())
-      .then(data => setQuizzes(Array.isArray(data) ? data : []))
+      .then(data => {
+      console.log("Fetched quizzes:", data); // <-- Add this line
+      setQuizzes(Array.isArray(data) ? data : []);
+    })
       .catch(() => setQuizzes([]));
   }, [courseId, lessonId]);
 
