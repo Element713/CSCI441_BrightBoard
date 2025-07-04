@@ -285,7 +285,20 @@ export default function ProfessorQuiz() {
                       disabled={!selectedQuizId}
                       onClick={() => {
                         const quiz = quizzes.find(q => q._id === selectedQuizId);
-                        setEditingQuiz(quiz);
+                        const transformedQuiz = {
+                          ...quiz,
+                          questions: quiz.questions.map(q => {
+                            return {
+                              question: q.questionText,
+                              options: q.choices.map((label, index) => ({
+                                label,
+                                value: String.fromCharCode(97 + index) // "a", "b", "c", ...
+                              })),
+                              correct: String.fromCharCode(97 + q.correctAnswerIndex)
+                            };
+                          })
+                        };
+                        setEditingQuiz(transformedQuiz);
                         setCreating(false);
                       }}
                     >
