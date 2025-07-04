@@ -107,7 +107,7 @@ const enrollInCourse = async (req, res) => {
 };
 
 // Get courses by student ID (enrolled courses)
-exports.getEnrolledCourses = async (req, res) => {
+const getEnrolledCourses = async (req, res) => {
   try {
     const studentId = req.user._id;
 
