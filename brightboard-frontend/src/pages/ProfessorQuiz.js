@@ -298,7 +298,7 @@ export default function ProfessorQuiz() {
                             };
                           })
                         };
-                        setEditingQuiz(quiz);
+                        setEditingQuiz(transformedQuiz);
                         setCreating(false);
                       }}
                     >
