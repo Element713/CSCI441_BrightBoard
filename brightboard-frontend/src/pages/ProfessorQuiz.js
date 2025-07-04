@@ -127,6 +127,8 @@ function QuizForm({ quiz, onSave, onCancel }) {
 }
 
 export default function ProfessorQuiz() {
+  console.log("ProfessorQuiz loaded"); // Debugging line
+  // Ensure the component is loaded correctly
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const urlCourseId = params.get("courseId") || "";
