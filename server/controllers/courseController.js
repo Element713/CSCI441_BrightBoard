@@ -1,6 +1,7 @@
 // CRUD operations for courses (create, edit, delete, list)
 
 const { Course } = require('../models');
+const Course = require('../models/Course');
 
 // Create a new course
 const createCourse = async (req, res) => {
@@ -107,14 +108,18 @@ const enrollInCourse = async (req, res) => {
 };
 
 // Get courses by student ID (enrolled courses)
-const getEnrolledCourses = async (req, res) => {
+exports.getEnrolledCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ students: req.params.studentId })
-      .populate('instructor', 'username')
-      .select('title description instructor');
+    const studentId = req.user._id;
+
+    const courses = await Course.find({ students: studentId }).select(
+      'title description materials'
+    );
+
     res.json(courses);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Error fetching enrolled courses:', err);
+    res.status(500).json({ error: 'Failed to fetch enrolled courses' });
   }
 };
 
