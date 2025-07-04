@@ -1,7 +1,6 @@
 // CRUD operations for courses (create, edit, delete, list)
 
 const { Course } = require('../models');
-const Course = require('../models/Course');
 
 // Create a new course
 const createCourse = async (req, res) => {
