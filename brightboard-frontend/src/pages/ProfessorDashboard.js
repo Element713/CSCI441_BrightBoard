@@ -262,13 +262,12 @@ export default function ProfessorDashboard() {
             {selected === null || !courses[selected] ? (
               <div style={{ color: "#888" }}>Select a course to manage its lessons.</div>
             ) : (
-              <button
-                className="btn"
-                style={{ marginTop: "1em" }}
-                onClick={() => navigate(`/lesson/${courses[selected]._id}`)}
-              >
-                Manage Lessons
-              </button>
+              <LessonSelector
+                courseId={courses[selected]._id}
+                onLessonSelect={(lessonId) =>
+                  navigate(`/lesson/${courses[selected]._id}/edit/${lessonId}`)
+                }
+              />
             )}
           </div>
 
@@ -328,6 +327,7 @@ export default function ProfessorDashboard() {
   );
 }
 
+// LessonSelector with delete functionality
 function LessonSelector({ courseId, onLessonSelect }) {
   const [lessons, setLessons] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -341,6 +341,24 @@ function LessonSelector({ courseId, onLessonSelect }) {
       .catch(() => setLessons([]))
       .finally(() => setLoading(false));
   }, [courseId]);
+
+  const handleDeleteLesson = async (lessonId) => {
+    const token = localStorage.getItem("token");
+    if (!window.confirm("Are you sure you want to delete this lesson?")) return;
+    try {
+      const res = await fetch(`/api/lessons/${lessonId}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setLessons((prev) => prev.filter((lesson) => lesson._id !== lessonId));
+      } else {
+        alert("Failed to delete lesson.");
+      }
+    } catch {
+      alert("Server error. Try again.");
+    }
+  };
 
   if (!courseId) return null;
   if (loading) return <div>Loading lessons...</div>;
@@ -364,6 +382,19 @@ function LessonSelector({ courseId, onLessonSelect }) {
           </option>
         ))}
       </select>
+      <ul style={{ marginTop: "1em", paddingLeft: 0 }}>
+        {lessons.map((lesson) => (
+          <li key={lesson._id} style={{ listStyle: "none", marginBottom: "0.5em" }}>
+            {lesson.title}
+            <button
+              style={{ marginLeft: "1em", color: "white", background: "var(--pink-accent)", border: "none", borderRadius: "4px", padding: "0.2em 0.7em", cursor: "pointer" }}
+              onClick={() => handleDeleteLesson(lesson._id)}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
