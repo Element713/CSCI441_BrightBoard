@@ -14,38 +14,48 @@ export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const userId = getCurrentUserId();
 
+  // If there's no user ID or token, redirect to login
   useEffect(() => {
-  const token = getToken();
-  if (!token) {
-    navigate("/login");
-    return;
-  }
-  fetch("/api/courses/enrolled", {
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status}`);
-      }
-      return res.json();
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+
+    const token = getToken();
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    // Fetch enrolled courses once the token is verified
+    fetch("/api/courses/enrolled", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
     })
-    .then((data) => {
-      if (Array.isArray(data)) {
-        setCourses(data);
-      } else {
-        console.error("Unexpected response format:", data);
-        setCourses([]);
-      }
-    })
-    .catch((err) => {
-      console.error("Fetch error:", err);
-      setCourses([]);
-    })
-    .finally(() => setLoading(false));
-}, [navigate]);
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setCourses(data);
+        } else {
+          console.error("Unexpected response format:", data);
+          setCourses([]); // Handle unexpected response format
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setCourses([]); // In case of fetch errors, reset courses state
+      })
+      .finally(() => setLoading(false)); // Set loading to false after fetch
+  }, [navigate, userId]); // Depend on userId, so it doesn't refetch unnecessarily
+
   return (
     <>
       <Navbar />
@@ -93,3 +103,5 @@ export default function StudentDashboard() {
     </>
   );
 }
+// This code is part of a React component for a student dashboard in a learning management system.
+// It fetches and displays courses that the student is enrolled in, along with their progress.
