@@ -238,7 +238,7 @@ export default function Lesson() {
                     <button
                       type="button"
                       className="btn"
-                      style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
+                      style={{ marginLeft: "1em" }}
                       onClick={handleDeleteLesson}
                     >
                       Delete Lesson

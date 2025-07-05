@@ -12,4 +12,10 @@ router.post('/', verifyUser, verifyInstructor, lessonController.createLesson);
 router.get('/:courseId', lessonController.getLessonsByCourse);
 router.get('/single/:id', lessonController.getLessonById);
 
+// Update lesson by ID (instructor only)
+router.put('/:id', verifyUser, verifyInstructor, lessonController.updateLesson);
+
+// Delete lesson by ID (instructor only)
+router.delete('/:id', verifyUser, verifyInstructor, lessonController.deleteLesson);
+
 module.exports = router;
