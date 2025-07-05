@@ -116,6 +116,38 @@ export default function Lesson() {
     }
   };
 
+  // Handle lesson deletion
+  const handleDeleteLesson = async () => {
+    if (!selectedLesson) return;
+    if (!window.confirm("Are you sure you want to delete this lesson?")) return;
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/lessons/${selectedLesson._id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+      if (res.ok) {
+        // Refresh lessons
+        const updated = await fetch(`/api/lessons/${courseId}`).then((r) => r.json());
+        setLessons(Array.isArray(updated) ? updated : []);
+        setSelectedLesson(null);
+        setForm({
+          title: "",
+          subtitle: "",
+          content: "",
+          vocab: "",
+          example: "",
+          pdf: null,
+        });
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      } else {
+        alert("Failed to delete lesson.");
+      }
+    } catch {
+      alert("Server error. Try again.");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -165,46 +197,53 @@ export default function Lesson() {
                   rows={5}
                   required
                 />
-          
-            
                 <input
                   type="file"
                   name="pdf"
                   accept="application/pdf"
                   ref={fileInputRef}
                   onChange={handleChange}
-                  />
-                  <input
+                />
+                <input
                   type="image"
                   name="png"
                   accept="image/png"
                   ref={fileInputRef}
                   onChange={handleChange}
                 />
-
                 <button className="btn" type="submit">
                   {selectedLesson ? "Update Lesson" : "Create Lesson"}
                 </button>
                 {selectedLesson && (
-                  <button
-                    type="button"
-                    className="btn"
-                    style={{ marginLeft: "1em" }}
-                    onClick={() => {
-                      setSelectedLesson(null);
-                      setForm({
-                        title: "",
-                        subtitle: "",
-                        content: "",
-                        vocab: "",
-                        example: "",
-                        pdf: null,
-                      });
-                      if (fileInputRef.current) fileInputRef.current.value = "";
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      className="btn"
+                      style={{ marginLeft: "1em" }}
+                      onClick={() => {
+                        setSelectedLesson(null);
+                        setForm({
+                          title: "",
+                          subtitle: "",
+                          content: "",
+                          vocab: "",
+                          example: "",
+                          pdf: null,
+                        });
+                        if (fileInputRef.current) fileInputRef.current.value = "";
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn"
+                      style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
+                      onClick={handleDeleteLesson}
+                    >
+                      Delete Lesson
+                    </button>
+                  </>
                 )}
               </form>
             </>
