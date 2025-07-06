@@ -62,10 +62,7 @@ export default function StudentDashboard() {
     <>
       <Navbar />
       <main>
-        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Student Dashboard</h2>
-        <h2 style={{ textAlign: "center", margin: "1em 0" }}>
-          Welcome, {userId ? userId : "Student"}!
-        </h2>
+        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Student Dashboard Welcome, {userId ? userId : "Student"}!</h2>
         <div className="dashboard-grid" style={{ margin: "2em" }}>
           <div className="dashboard-box card">
             <h3>Enrolled Courses</h3>
