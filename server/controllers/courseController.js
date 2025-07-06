@@ -84,12 +84,7 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-// Enroll student in a course
-// CRUD operations for courses (create, edit, delete, list)
 
-const Course = require('../models/Course'); // Use direct model import
-
-// ...existing code...
 
 // Enroll student in a course
 const enrollInCourse = async (req, res) => {
