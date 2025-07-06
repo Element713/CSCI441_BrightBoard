@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { useParams } from "react-router-dom"; // <-- Add this
 
-// Example: get userId from localStorage or context
 function getCurrentUserId() {
   return localStorage.getItem("userId");
 }
@@ -12,14 +12,13 @@ export default function Quiz() {
   const [score, setScore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
+  const params = useParams(); // <-- Add this
 
-  // Fetch quiz based on query param
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    // Support both ?quizId=... and ?lessonId=...&courseId=...
-    const quizId = params.get("quizId");
-    const lessonId = params.get("lessonId");
-    // If quizId is present, fetch by quizId, else try by lessonId
+    const searchParams = new URLSearchParams(window.location.search);
+    // Support both /quiz/:quizId and /quiz?quizId=...
+    const quizId = params.quizId || searchParams.get("quizId");
+    const lessonId = searchParams.get("lessonId");
     let fetchUrl = "";
     if (quizId) {
       fetchUrl = `/api/quizzes/${quizId}`;
@@ -35,7 +34,7 @@ export default function Quiz() {
       .then((data) => setQuiz(data))
       .catch(() => setQuiz(null))
       .finally(() => setLoading(false));
-  }, []);
+  }, [params.quizId]);
 
   // Fetch student progress
   useEffect(() => {
