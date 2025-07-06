@@ -9,6 +9,7 @@ const connectDB = require('./config/dbConn');
 const errorHandler = require('./middleware/errorHandler');
 const routes = require('./routes'); 
 const { logger } = require('./middleware/logEvents');
+const submissionRoutes = require('./routes/submissionRoutes'); 
 
 const PORT = process.env.PORT || 5000;
 
