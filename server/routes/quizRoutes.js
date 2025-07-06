@@ -18,6 +18,9 @@ router.put('/:id', verifyUser, verifyInstructor, quizController.updateQuiz);
 // Delete a quiz by quiz ID
 router.delete('/:id', verifyUser, verifyInstructor, quizController.deleteQuiz);
 
+// Get quiz by quiz ID (add this route)
+router.get('/:quizId', quizController.getQuizById);
+
 // Get quiz by lesson ID (must be after other specific routes)
 router.get('/lesson/:lessonId', quizController.getQuizByLesson);
 
