@@ -21,7 +21,7 @@ body {
 .App {
   min-height: 100vh;
   text-align: center;
-  background: transparent;
+  background: white;
   background-color: #7ed957; /* medium/light green */
 }
 
@@ -316,12 +316,13 @@ a:hover {
   border: 1px solid var(--blue-3);
   padding: 1.5em;
   cursor: pointer;
-  transition: box-shadow 0.2s, border 0.2s;
+  transition: box-shadow 0.2s, border 0.2s, transform 0.2s;
 }
 .course-card:hover {
   box-shadow: 0 4px 24px rgba(51, 111, 18, 0.18);
   border: 1.5px solid var(--green-3);
   background: #f9fff6;
+  transform: translateY(-4px) scale(1.02);
 }
 
 /* =========================
@@ -365,6 +366,7 @@ a:hover {
   max-width: 90vw;
   box-shadow: 0 2px 16px rgba(0,0,0,0.2);
   position: relative;
+  transition: transform 0.2s, opacity 0.2s;
 }
 .modal-close {
   position: absolute;
@@ -410,4 +412,32 @@ a:hover {
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+body.dark, .dark {
+  background: #181818;
+  color: #eee;
+}
+.dark .card,
+.dark .form-container,
+.dark .dashboard-card,
+.dark .quiz-card,
+.dark .lesson-card,
+.dark .progress-card {
+  background: #232323;
+  color: #eee;
+}
+button:focus, .btn:focus, a:focus {
+  outline: 2px solid var(--yellow-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .navbar-content {
+    flex-direction: column;
+    gap: 1em;
+  }
+  .course-catalog-grid {
+    grid-template-columns: 1fr;
+  }
 }
