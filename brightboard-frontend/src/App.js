@@ -1,15 +1,16 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import Lesson from "./pages/Lesson";
-import Quiz from "./pages/Quiz";
-import CourseCatalog from "./pages/CourseCatalog";
-import CourseView from "./pages/CourseView";
-import Register from "./pages/Register";
+
 import Login from "./pages/Login";
-import Progress from "./pages/Progress";
-import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard"; // ✅ Add this
+import CourseCatalog from "./pages/CourseCatalog"; // ✅ Add this
+import CourseView from "./pages/CourseView"; // ✅ Add this
+import Lesson from "./pages/Lesson"; // ✅ Add this
+import Quiz from "./pages/Quiz"; // ✅ Add this
+import Progress from "./pages/Progress";
+
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProfessorQuiz from './pages/ProfessorQuiz';
@@ -33,7 +34,6 @@ function App() {
         <Route path="/professor/quizzes" element={<ProfessorQuiz />} />
         <Route path="/student/lessons/:courseId" element={<StudentLessonView />} />
         <Route path="*" element={<NotFound />} />
-        
       </Routes>
     </Router>
   );
