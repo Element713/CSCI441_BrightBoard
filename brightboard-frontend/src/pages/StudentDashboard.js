@@ -12,57 +12,66 @@ function getToken() {
 
 export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const userId = getCurrentUserId();
 
-  // If there's no user ID or token, redirect to login
   useEffect(() => {
-    if (!userId) {
-      navigate("/login");
-      return;
-    }
-
     const token = getToken();
-    if (!token) {
+
+    if (!userId || !token) {
       navigate("/login");
       return;
     }
 
-    // Fetch enrolled courses once the token is verified
-    fetch("/api/courses/enrolled", {
+    // Fetch student profile
+    fetch("/api/users/me", {
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Server error: ${res.status}`);
-        }
+        if (!res.ok) throw new Error("Failed to fetch user profile");
+        return res.json();
+      })
+      .then((data) => setUser(data))
+      .catch((err) => {
+        console.error("User fetch error:", err);
+      });
+
+    // Fetch enrolled courses
+    fetch("/api/courses/enrolled", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
         return res.json();
       })
       .then((data) => {
         if (Array.isArray(data)) {
           setCourses(data);
         } else {
-          console.error("Unexpected response format:", data);
-          setCourses([]); // Handle unexpected response format
+          console.warn("Unexpected course data format", data);
+          setCourses([]);
         }
       })
       .catch((err) => {
-        console.error("Fetch error:", err);
-        setCourses([]); // In case of fetch errors, reset courses state
+        console.error("Course fetch error:", err);
+        setCourses([]);
       })
-      .finally(() => setLoading(false)); // Set loading to false after fetch
-  }, [navigate, userId]); // Depend on userId, so it doesn't refetch unnecessarily
-
-  // Render the student dashboard with enrolled courses
+      .finally(() => setLoading(false));
+  }, [navigate, userId]);
 
   return (
     <>
       <Navbar />
       <main>
-        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Student Dashboard Welcome, {userId ? userId : "Student"}!</h2>
+        <h2 style={{ textAlign: "center", margin: "1em 0" }}>
+          Student Dashboard — Welcome, {user?.username || "Student"}!
+        </h2>
         <div className="dashboard-grid" style={{ margin: "2em" }}>
           <div className="dashboard-box card">
             <h3>Enrolled Courses</h3>
@@ -80,10 +89,16 @@ export default function StudentDashboard() {
                   >
                     <strong>{course.title}</strong>
                     <div>{course.description}</div>
-                    <div className="progress-bar-container">
+                    <div className="progress-bar-container" style={{ background: "#eee", borderRadius: "8px", overflow: "hidden", height: "20px", marginTop: "0.5em" }}>
                       <div
                         className="progress-bar"
-                        style={{ width: `${course.progress || 0}%` }}
+                        style={{
+                          width: `${course.progress || 0}%`,
+                          background: "#4caf50",
+                          height: "100%",
+                          color: "#fff",
+                          textAlign: "center",
+                        }}
                       >
                         {course.progress || 0}%
                       </div>
@@ -91,7 +106,7 @@ export default function StudentDashboard() {
                     <Link
                       className="btn"
                       to={`/lesson/${course._id}`}
-                      style={{ marginTop: "0.5em", display: "block" }}
+                      style={{ marginTop: "0.5em", display: "inline-block" }}
                     >
                       Go to Lessons
                     </Link>
@@ -105,5 +120,3 @@ export default function StudentDashboard() {
     </>
   );
 }
-// This code is part of a React component for a student dashboard in a learning management system.
-// It fetches and displays courses that the student is enrolled in, along with their progress.
