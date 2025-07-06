@@ -95,7 +95,7 @@ export default function StudentDashboard() {
                         className="progress-bar"
                         style={{
                           width: `${course.progress || 0}%`,
-                          background: "#4caf50",
+                          background: "#1a237e",
                           height: "100%",
                           color: "#fff",
                           textAlign: "center",

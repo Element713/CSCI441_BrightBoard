@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 export default function StudentLessonView() {
@@ -7,13 +7,13 @@ export default function StudentLessonView() {
   const [lessons, setLessons] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // HIGHLIGHTED: Add navigate
 
   useEffect(() => {
     setLoading(true);
     fetch(`/api/lessons/${courseId}`)
       .then(res => res.json())
       .then(data => {
-         console.log('Fetched lessons:', data); // ✅ Add this
         setLessons(Array.isArray(data) ? data : []);
         setLoading(false);
       })
@@ -55,50 +55,15 @@ export default function StudentLessonView() {
               {selectedLesson && (
                 <div className="lesson-details" style={{ marginTop: "2em" }}>
                   <h3>{selectedLesson.title}</h3>
-                  <h4>{selectedLesson.subtitle}</h4>
                   <p>{selectedLesson.content}</p>
-                  {selectedLesson.vocab && selectedLesson.vocab.length > 0 && (
-                    <>
-                      <h5>Vocabulary</h5>
-                      <ul>
-                        {selectedLesson.vocab.map((item, idx) => (
-                          <li key={idx}>
-                            <strong>{item.term}</strong>: {item.definition}
-                          </li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-                  {selectedLesson.example && (
-                    <>
-                      <h5>Example</h5>
-                      <p>{selectedLesson.example}</p>
-                    </>
-                  )}
-                  {selectedLesson.pdfUrl && (
-                    <>
-                      <h5>Lesson PDF</h5>
-                      <embed
-                        src={selectedLesson.pdfUrl}
-                        type="application/pdf"
-                        className="pdf-embed"
-                        style={{ width: "100%", height: "400px" }}
-                      />
-                      <p>
-                        <small>
-                          If you can't view the PDF,{" "}
-                          <a
-                            href={selectedLesson.pdfUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            click here to download it
-                          </a>
-                          .
-                        </small>
-                      </p>
-                    </>
-                  )}
+                  {/* HIGHLIGHTED: Add Take Quiz button */}
+                  <button
+                    className="btn"
+                    style={{ marginTop: "1em" }}
+                    onClick={() => navigate(`/quiz?lessonId=${selectedLesson._id}&courseId=${courseId}`)}
+                  >
+                    Take Quiz
+                  </button>
                 </div>
               )}
             </>
