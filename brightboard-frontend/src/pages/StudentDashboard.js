@@ -104,13 +104,13 @@ export default function StudentDashboard() {
                         {course.progress || 0}%
                       </div>
                     </div>
-                    <Link
-                      className="btn"
-                      to={`/lesson/${course._id}`}
-                      style={{ marginTop: "0.5em", display: "inline-block" }}
-                    >
-                      Go to Lessons
-                    </Link>
+             <Link
+            className="btn"
+                    to={`/student/lessons/${course._id}`} // ✅ This matches the correct route
+               style={{ marginTop: "0.5em", display: "inline-block" }}
+>
+                Go to Lessons
+               </Link>
                   </div>
                 ))}
               </div>
