@@ -13,7 +13,7 @@ export default function Quiz() {
   const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
 
-  // Assume quizId is passed as a query param (?quizId=...)
+  // Fetch quiz based on query param
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const quizId = params.get("quizId");
@@ -21,6 +21,7 @@ export default function Quiz() {
       setLoading(false);
       return;
     }
+
     fetch(`/api/quizzes/${quizId}`)
       .then((res) => res.json())
       .then((data) => setQuiz(data))
@@ -28,17 +29,25 @@ export default function Quiz() {
       .finally(() => setLoading(false));
   }, []);
 
-  const token = localStorage.getItem("token");
-fetch(`/api/progress/student/${userId}`, {
-  headers: { "Authorization": `Bearer ${token}` }
-})
-  .then((res) => res.json())
-  .then((data) => {
-    // Handle progress data
-  })
-  .catch(() => {
-    // Handle error
-  });
+  // Fetch student progress
+  useEffect(() => {
+    const userId = getCurrentUserId();
+    const token = localStorage.getItem("token");
+
+    if (!userId || !token) return;
+
+    fetch(`/api/progress/student/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Student progress:", data);
+        // You can display or use this progress later
+      })
+      .catch((err) => {
+        console.error("Failed to fetch progress", err);
+      });
+  }, []);
 
   const handleChange = (qIdx, value) => {
     setAnswers({ ...answers, [qIdx]: value });
@@ -47,15 +56,15 @@ fetch(`/api/progress/student/${userId}`, {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!quiz) return;
-    // Calculate score
+
     let s = 0;
     quiz.questions.forEach((q, idx) => {
       if (answers[idx] === q.correct) s++;
     });
+
     setScore(s);
     setSubmitted(true);
 
-    // Save result to backend
     const userId = getCurrentUserId();
     if (userId) {
       await fetch(`/api/quizzes/submit/${quiz._id}`, {
@@ -71,13 +80,12 @@ fetch(`/api/progress/student/${userId}`, {
     }
   };
 
-
   if (loading) {
     return (
       <>
         <Navbar />
         <main>
-          <div className="quiz-card">Loading...One moment please</div>
+          <div className="quiz-card">Loading... One moment please</div>
         </main>
         <footer className="footer">
           <p>&copy; 2025 BrightBoard. All rights reserved.</p>
