@@ -112,7 +112,6 @@ export default function Register() {
           </form>
           <div
             id="register-message"
-            style={{ marginTop: "1rem", textAlign: "center" }}
             dangerouslySetInnerHTML={{ __html: message }}
           />
         </div>

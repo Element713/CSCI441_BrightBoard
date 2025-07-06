@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
+import "../App.css";
 
 function getCurrentUserId() {
   return localStorage.getItem("userId");
@@ -96,7 +97,7 @@ export default function Quiz() {
       <>
         <Navbar />
         <main>
-          <div className="quiz-card">Loading... One moment please</div>
+          <div className="quiz-card quiz-bg">Loading... One moment please</div>
         </main>
         <footer className="footer">
           <p>&copy; 2025 BrightBoard. All rights reserved.</p>
@@ -110,7 +111,7 @@ export default function Quiz() {
       <>
         <Navbar />
         <main>
-          <div className="quiz-card">Quiz not found.</div>
+          <div className="quiz-card quiz-bg">Quiz not found.</div>
         </main>
         <footer className="footer">
           <p>&copy; 2025 BrightBoard. All rights reserved.</p>
@@ -123,7 +124,7 @@ export default function Quiz() {
     <>
       <Navbar />
       <main>
-        <div className="quiz-card">
+        <div className="quiz-card quiz-bg">
           <h2>Quiz: {quiz.title}</h2>
           <form onSubmit={handleSubmit}>
             {Array.isArray(quiz.questions) && quiz.questions.length > 0 ? (
@@ -133,7 +134,7 @@ export default function Quiz() {
                     {idx + 1}. {q.questionText}
                   </h3>
                   {q.choices.map((choice, i) => (
-                    <label key={i} style={{ display: "block", marginBottom: "0.5em" }}>
+                    <label key={i} className="quiz-choice-label">
                       <input
                         type="radio"
                         name={`q${idx}`}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useLocation } from "react-router-dom";
+import "../App.css";
 
 function QuizForm({ quiz, onSave, onCancel }) {
   const [title, setTitle] = useState(quiz?.title || "");
@@ -111,7 +112,7 @@ function QuizForm({ quiz, onSave, onCancel }) {
             </select>
           </label>
           {questions.length > 1 && (
-            <button type="button" onClick={() => removeQuestion(idx)} style={{ marginLeft: "1em" }}>
+            <button type="button" onClick={() => removeQuestion(idx)} className="quiz-btn-margin">
               Remove
             </button>
           )}
@@ -121,14 +122,12 @@ function QuizForm({ quiz, onSave, onCancel }) {
       <button type="button" onClick={addQuestion}>Add Question</button>
       <br /><br />
       <button className="btn" type="submit">Save Quiz</button>
-      <button type="button" onClick={onCancel} style={{ marginLeft: "1em" }}>Cancel</button>
+      <button type="button" onClick={onCancel} className="quiz-btn-margin">Cancel</button>
     </form>
   );
 }
 
 export default function ProfessorQuiz() {
-  console.log("ProfessorQuiz loaded"); // Debugging line
-  // Ensure the component is loaded correctly
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const urlCourseId = params.get("courseId") || "";
@@ -160,22 +159,15 @@ export default function ProfessorQuiz() {
       .catch(() => setLessons([]));
   }, [courseId]);
 
-    useEffect(() => {
-    console.log("courseId:", courseId, "lessonId:", lessonId); // Add this
+  useEffect(() => {
     if (!courseId || !lessonId) {
       setQuizzes([]);
       return;
     }
     fetch(`/api/quizzes?courseId=${courseId}&lessonId=${lessonId}`)
       .then(res => res.json())
-      .then(data => {
-        console.log("Fetched quizzes:", data); // Add this
-        setQuizzes(Array.isArray(data) ? data : []);
-      })
-      .catch((err) => {
-        console.error("Quiz fetch error:", err); // Add this
-        setQuizzes([]);
-      });
+      .then(data => setQuizzes(Array.isArray(data) ? data : []))
+      .catch(() => setQuizzes([]));
   }, [courseId, lessonId]);
 
   const handleSaveQuiz = async quizData => {
@@ -273,13 +265,12 @@ export default function ProfessorQuiz() {
                     <div
                       key={quiz._id}
                       className={`created-item${selectedQuizId === quiz._id ? " selected" : ""}`}
-                      style={{ cursor: "pointer", background: selectedQuizId === quiz._id ? "#e0e0ff" : undefined }}
                       onClick={() => setSelectedQuizId(quiz._id)}
                     >
                       <strong>{quiz.title}</strong>
                     </div>
                   ))}
-                  <div style={{ marginTop: "1em" }}>
+                  <div className="quiz-section-margin">
                     <button
                       className="btn"
                       disabled={!selectedQuizId}
@@ -305,8 +296,7 @@ export default function ProfessorQuiz() {
                       Edit Selected Quiz
                     </button>
                     <button
-                      className="btn"
-                      style={{ marginLeft: "1em"}}
+                      className="btn quiz-btn-margin"
                       disabled={!selectedQuizId}
                       onClick={() => handleDeleteQuiz(selectedQuizId)}
                     >
@@ -316,7 +306,7 @@ export default function ProfessorQuiz() {
                 </>
               )}
               {(creating || editingQuiz) && (
-                <div style={{ marginTop: "2em" }}>
+                <div className="quiz-section-margin-lg">
                   <QuizForm
                     quiz={editingQuiz}
                     onSave={handleSaveQuiz}

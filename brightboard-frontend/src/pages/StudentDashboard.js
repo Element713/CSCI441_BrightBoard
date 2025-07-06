@@ -70,10 +70,10 @@ export default function StudentDashboard() {
     <>
       <Navbar />
       <main>
-        <h2 style={{ textAlign: "center", margin: "1em 0" }}>
+        <h2 className="dashboard-title">
           Student Dashboard — Welcome, {user?.username || "Student"}!
         </h2>
-        <div className="dashboard-grid" style={{ margin: "2em" }}>
+        <div className="dashboard-grid">
           <div className="dashboard-box card">
             <h3>Enrolled Courses</h3>
             {loading ? (
@@ -86,37 +86,22 @@ export default function StudentDashboard() {
                   <div
                     key={course._id}
                     className="course-item"
-                    style={{ marginBottom: "1em" }}
                   >
                     <strong>{course.title}</strong>
                     <div>{course.description}</div>
-                    <div
-                      className="progress-bar-container"
-                      style={{
-                        background: "#eee",
-                        borderRadius: "8px",
-                        overflow: "hidden",
-                        height: "20px",
-                        marginTop: "0.5em",
-                      }}
-                    >
+                    <div className="progress-bar-container">
                       <div
                         className="progress-bar"
                         style={{
-                          width: `${course.progress || 0}%`,
-                          background: "#1a237e", // Darker color
-                          height: "100%",
-                          color: "#fff",
-                          textAlign: "center",
+                          width: `${course.progress || 0}%`
                         }}
                       >
                         {course.progress || 0}%
                       </div>
                     </div>
                     <Link
-                      className="btn"
+                      className="btn go-to-lessons-link"
                       to={`/student/lessons/${course._id}`}
-                      style={{ marginTop: "0.5em", display: "inline-block" }}
                     >
                       Go to Lessons
                     </Link>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 export default function ProfessorDashboard() {
   const [courses, setCourses] = useState([]);
@@ -156,16 +157,8 @@ export default function ProfessorDashboard() {
     <>
       <Navbar />
       <main>
-        <h2 style={{ textAlign: "center", margin: "1em 0" }}>Professor Dashboard</h2>
-        <div
-          className="dashboard-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "2em",
-            margin: "2em",
-          }}
-        >
+        <h2 className="prof-dashboard-title">Professor Dashboard</h2>
+        <div className="dashboard-grid prof-dashboard-grid">
           {/* Courses Box */}
           <div className="dashboard-box card">
             <h3>Courses</h3>
@@ -192,9 +185,8 @@ export default function ProfessorDashboard() {
               </button>
               {editMode && (
                 <button
-                  className="btn"
+                  className="btn prof-btn-margin"
                   type="button"
-                  style={{ marginLeft: "1em"}}
                   onClick={() => {
                     setEditMode(false);
                     setCourseTitle("");
@@ -205,7 +197,7 @@ export default function ProfessorDashboard() {
                 </button>
               )}
             </form>
-            <div className="created-list" style={{ marginTop: "1em" }}>
+            <div className="created-list">
               {loading ? (
                 <div>Loading...</div>
               ) : courses.length === 0 ? (
@@ -216,11 +208,10 @@ export default function ProfessorDashboard() {
                     className={`created-item${selected === idx ? " selected" : ""}`}
                     key={course._id}
                     onClick={() => handleSelectCourse(idx)}
-                    style={{ cursor: "pointer", marginBottom: "0.5em" }}
                   >
                     <strong>{course.title}</strong>
-                    <div style={{ fontSize: "0.9em" }}>{course.description}</div>
-                    <div style={{ marginTop: "0.5em" }}>
+                    <div className="course-desc">{course.description}</div>
+                    <div className="edit-btn-group">
                       <button
                         className="btn"
                         type="button"
@@ -235,11 +226,8 @@ export default function ProfessorDashboard() {
                         Edit
                       </button>
                       <button
-                        className="btn"
+                        className="btn prof-btn-margin"
                         type="button"
-                        style={{
-                          marginLeft: "0.5em"
-                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelected(idx);
@@ -259,7 +247,7 @@ export default function ProfessorDashboard() {
           <div className="dashboard-box card">
             <h3>Lessons / Materials</h3>
             {selected === null || !courses[selected] ? (
-              <div style={{ color: "#888" }}>Select a course to manage its lessons.</div>
+              <div className="prof-empty-state">Select a course to manage its lessons.</div>
             ) : (
               <button
                 className="btn"
@@ -275,7 +263,7 @@ export default function ProfessorDashboard() {
           <div className="dashboard-box card">
             <h3>Quizzes</h3>
             {selected === null || !courses[selected] ? (
-              <div style={{ color: "#888" }}>Select a course to manage its quizzes.</div>
+              <div className="prof-empty-state">Select a course to manage its quizzes.</div>
             ) : (
               <LessonSelector
                 courseId={courses[selected]._id}
@@ -292,7 +280,7 @@ export default function ProfessorDashboard() {
           <div className="dashboard-box card">
             <h3>Students & Progress</h3>
             {selected === null || !courses[selected] ? (
-              <div style={{ color: "#888" }}>Select a course to view students.</div>
+              <div className="prof-empty-state">Select a course to view students.</div>
             ) : (
               <div className="student-list">
                 {Array.isArray(courses[selected]?.students) &&

@@ -1,15 +1,10 @@
+/* =========================
+   Root Variables & General
+   ========================= */
 :root {
-  /* Primary green palette */
   --green-3: #549431;
-
-
-  /* Secondary blue palette */
   --blue-3: #304073;
-
-  /* Accent yellow */
   --yellow-accent: #ffb100;
-
-  /* Complement pink/red */
   --pink-3: #9d344b;
 }
 
@@ -27,9 +22,12 @@ body {
   min-height: 100vh;
   text-align: center;
   background: transparent;
+  background-color: #7ed957; /* medium/light green */
 }
 
-/* Navbar/header */
+/* =========================
+   Navbar/Header
+   ========================= */
 .navbar, header.navbar {
   display: flex;
   align-items: center;
@@ -93,7 +91,9 @@ body {
   color: #222;
 }
 
-/* Buttons */
+/* =========================
+   Buttons
+   ========================= */
 button, .btn {
   background: var(--yellow-accent);
   color: #222;
@@ -109,19 +109,19 @@ button:hover, .btn:hover {
   color: #fff;
 }
 
-/* Card backgrounds */
+/* =========================
+   Card backgrounds
+   ========================= */
 .card, .form-container, .dashboard-card, .quiz-card, .lesson-card, .progress-card {
   background: #fff;
-}
-
-/* Remove stacking/centering for ALL cards */
-.card, .form-container, .dashboard-card, .quiz-card, .lesson-card, .progress-card {
   max-width: none;
   margin: 0;
   width: 100%;
 }
 
-/* Dashboard grid: always horizontal scroll if needed */
+/* =========================
+   Dashboard grid and box styles
+   ========================= */
 .dashboard-grid {
   display: grid;
   grid-auto-flow: column;
@@ -136,8 +136,32 @@ button:hover, .btn:hover {
   display: inline-block;
   vertical-align: top;
 }
+.dashboard-title {
+  text-align: center;
+  margin: 1em 0;
+}
 
-/* Accent links */
+/* =========================
+   Progress Bar
+   ========================= */
+.progress-bar-container {
+  background: #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 20px;
+  margin-top: 0.5em;
+}
+.progress-bar {
+  background: #1a237e;
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  transition: width 0.3s;
+}
+
+/* =========================
+   Accent Links
+   ========================= */
 a, .App-link {
   color: var(--pink-3);
   text-decoration: underline;
@@ -146,25 +170,9 @@ a:hover {
   color: var(--yellow-accent);
 }
 
-/* Progress bar */
-.progress-bar-container {
-  background: var(--green-3);
-  border-radius: 8px;
-  overflow: hidden;
-  height: 1.2rem;
-  margin: 0.5rem 0;
-}
-.progress-bar {
-  background: var(--blue-3);
-  color: #fff;
-  height: 100%;
-  text-align: right;
-  padding-right: 0.5rem;
-  border-radius: 8px 0 0 8px;
-  font-weight: bold;
-}
-
-/* Footer */
+/* =========================
+   Footer
+   ========================= */
 .footer {
   background: var(--blue-3);
   color: #fff;
@@ -173,48 +181,9 @@ a:hover {
   border-top: 2px solid var(--blue-3);
 }
 
-.App {
-  background-color: #7ed957; /* medium/light green */
-  min-height: 100vh;
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #7ed957; /* medium/light green */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Professor Dashboard specific (add to App.css) */
+/* =========================
+   Professor Dashboard & Quiz Management
+   ========================= */
 .section-title {
   font-size: 1.2rem;
   font-weight: bold;
@@ -235,11 +204,12 @@ a:hover {
   margin-bottom: 0.75rem;
   cursor: pointer;
   transition: background 0.2s, border 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
-
 .created-item.selected {
-  background: var(--yellow-accent);
-  border-color: var(--yellow-accent);
+  background: #e0e0ff;
 }
 
 .no-items {
@@ -253,62 +223,118 @@ a:hover {
   border-top: 1px solid var(--blue-1);
 }
 
-/* Add to App.css for quiz management consistency */
-.created-item {
-  background: #fff;
-  border: 1px solid var(--green-3);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 1em;
-}
-
-.section-title {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin: 2rem 0 1rem 0;
-  color: var(--blue-3);
-}
-
-.quiz-question-form {
-  background: var(--yellow-1);
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.success-msg {
-  color: var(--green-3);
+.quiz-section-margin {
   margin-top: 1em;
 }
-.error-msg {
-  color: var(--pink-3);
-  margin-top: 1em;
+.quiz-section-margin-lg {
+  margin-top: 2em;
+}
+.quiz-btn-margin {
+  margin-left: 1em;
 }
 
-.quiz-card {
-  background: #fff;
+.edit-btn-group {
+  margin-top: 0.5em;
+}
+
+.course-desc {
+  font-size: 0.9em;
+}
+
+.prof-dashboard-title {
+  text-align: center;
+  margin: 1em 0;
+}
+.prof-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2em;
+  margin: 2em;
+}
+.prof-empty-state {
+  color: #888;
+}
+
+/* =========================
+   Quiz Card and Questions
+   ========================= */
+.quiz-bg {
+  background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+  color: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
-  margin: 2rem auto;
-  padding: 2rem;
+  padding: 2em;
+  margin: 2em auto;
   max-width: 600px;
+  box-shadow: 0 4px 16px rgba(26,35,126,0.15);
 }
-
+.quiz-choice-label {
+  display: block;
+  margin-bottom: 0.5em;
+  color: #fff;
+}
+.quiz-card h3 {
+  color: #fff;
+}
 .quiz-result {
-  margin-top: 1.5rem;
-  font-size: 1.2rem;
-  color: var(--green-3);
+  margin-top: 1.5em;
+  background: #fff;
+  color: #1a237e;
+  border-radius: 8px;
+  padding: 1em;
   font-weight: bold;
 }
-
 .question {
   margin-bottom: 2rem;
 }
 
-/* App.css */
+/* =========================
+   Lesson Details
+   ========================= */
+.lesson-details {
+  margin-top: 2em;
+}
+.lesson-btn-selected {
+  font-weight: bold;
+}
+.lesson-quiz-btn {
+  margin-top: 1em;
+}
+
+/* =========================
+   Course Catalog
+   ========================= */
+.course-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2em;
+  margin: 2em 0;
+}
+.course-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
+  border: 1px solid var(--blue-3);
+  padding: 1.5em;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+.course-card:hover {
+  box-shadow: 0 4px 24px rgba(51, 111, 18, 0.18);
+  border: 1.5px solid var(--green-3);
+  background: #f9fff6;
+}
+
+/* =========================
+   Utility Classes
+   ========================= */
+.go-to-lessons-link {
+  margin-top: 0.5em;
+  display: inline-block;
+}
+
+/* =========================
+   Register Page
+   ========================= */
 #register-message {
   margin-top: 1rem;
   text-align: center;
@@ -319,53 +345,9 @@ a:hover {
   text-decoration: underline;
 }
 
-.user-dropdown {
-  position: relative;
-  display: inline-block;
-}
-.user-btn {
-  background: var(--blue-2);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 110%;
-  background: #fff;
-  border: 1px solid var(--blue-3);
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
-  min-width: 180px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-}
-.dropdown-menu a, .dropdown-menu button {
-  color: var(--blue-3);
-  background: none;
-  border: none;
-  text-align: left;
-  padding: 0.75rem 1rem;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 1rem;
-}
-.dropdown-menu a:hover, .dropdown-menu button:hover {
-  background: var(--yellow-accent);
-}
-.dropdown-logout {
-  color: var(--pink-3);
-  font-weight: bold;
-  border-top: 1px solid var(--blue-3);
-  margin-top: 0.5rem;
-}
-
-/* Modal styles */
+/* =========================
+   Modal Styles
+   ========================= */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -400,43 +382,32 @@ a:hover {
   margin-top: 1em;
 }
 
-/* Dashboard grid and box styles */
-.dashboard-grid {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: 1fr;
-  overflow-x: auto;
-  gap: 2em;
-  margin: 2em;
-  white-space: nowrap;
+/* =========================
+   Miscellaneous
+   ========================= */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
-
-.dashboard-box {
-  min-width: 320px;
-  display: inline-block;
-  vertical-align: top;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
-
-/* Course catalog grid */
-.course-catalog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2em;
-  margin: 2em 0;
+.App-header {
+  background-color: #7ed957;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
-
-.course-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(51, 111, 18, 0.08);
-  border: 1px solid var(--blue-3);
-  padding: 1.5em;
-  cursor: pointer;
-  transition: box-shadow 0.2s, border 0.2s;
+.App-link {
+  color: #61dafb;
 }
-.course-card:hover {
-  box-shadow: 0 4px 24px rgba(51, 111, 18, 0.18);
-  border: 1.5px solid var(--green-3);
-  background: #f9fff6;
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
-
