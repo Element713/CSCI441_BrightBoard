@@ -306,7 +306,7 @@ export default function ProfessorQuiz() {
                     </button>
                     <button
                       className="btn"
-                      style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
+                      style={{ marginLeft: "1em"}}
                       disabled={!selectedQuizId}
                       onClick={() => handleDeleteQuiz(selectedQuizId)}
                     >

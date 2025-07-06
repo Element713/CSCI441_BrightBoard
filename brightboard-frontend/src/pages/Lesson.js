@@ -26,7 +26,11 @@ export default function Lesson() {
         setLessons(Array.isArray(data) ? data : []);
         setLoading(false);
       })
-      .catch(() => setLessons([]));
+      .catch((err) => {
+        console.error("Error fetching lessons:", err);
+        setLessons([]);
+        setLoading(false);
+      });
   }, [courseId]);
 
   // When selecting a lesson to edit
@@ -74,45 +78,50 @@ export default function Lesson() {
       example: form.example,
     };
     const token = localStorage.getItem("token");
-    const res = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      // If PDF is selected, upload it
-      if (form.pdf) {
-        const fd = new FormData();
-        fd.append("pdf", form.pdf);
-        await fetch(`/api/lessons/${data._id}/upload`, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${token}`
-          },
-          body: fd,
-        });
-      }
-      // Refresh lessons
-      const updated = await fetch(
-        `/api/lessons/${courseId}`
-      ).then((r) => r.json());
-      setLessons(Array.isArray(updated) ? updated : []);
-      setSelectedLesson(null);
-      setForm({
-        title: "",
-        subtitle: "",
-        content: "",
-        vocab: "",
-        example: "",
-        pdf: null,
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(body),
       });
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    } else {
-      alert(data.error || "Failed to save lesson.");
+      const data = await res.json();
+      if (res.ok) {
+        // If PDF is selected, upload it
+        if (form.pdf) {
+          const fd = new FormData();
+          fd.append("pdf", form.pdf);
+          await fetch(`/api/lessons/${data._id}/upload`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`
+            },
+            body: fd,
+          });
+        }
+        // Refresh lessons
+        const updated = await fetch(
+          `/api/lessons/${courseId}`
+        ).then((r) => r.json());
+        setLessons(Array.isArray(updated) ? updated : []);
+        setSelectedLesson(null);
+        setForm({
+          title: "",
+          subtitle: "",
+          content: "",
+          vocab: "",
+          example: "",
+          pdf: null,
+        });
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      } else {
+        alert(data.error || "Failed to save lesson.");
+      }
+    } catch (err) {
+      console.error("Error saving lesson:", err);
+      alert("Server error. Try again.");
     }
   };
 
@@ -141,9 +150,11 @@ export default function Lesson() {
         });
         if (fileInputRef.current) fileInputRef.current.value = "";
       } else {
-        alert("Failed to delete lesson.");
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || "Failed to delete lesson.");
       }
-    } catch {
+    } catch (err) {
+      console.error("Error deleting lesson:", err);
       alert("Server error. Try again.");
     }
   };
@@ -238,7 +249,7 @@ export default function Lesson() {
                     <button
                       type="button"
                       className="btn"
-                      style={{ marginLeft: "1em" }}
+                      style={{ marginLeft: "1em", background: "#e53935", color: "white" }}
                       onClick={handleDeleteLesson}
                     >
                       Delete Lesson
