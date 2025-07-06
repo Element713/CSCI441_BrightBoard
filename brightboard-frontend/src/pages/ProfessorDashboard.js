@@ -194,7 +194,7 @@ export default function ProfessorDashboard() {
                 <button
                   className="btn"
                   type="button"
-                  style={{ marginLeft: "1em", background: "var(--pink-accent)" }}
+                  style={{ marginLeft: "1em"}}
                   onClick={() => {
                     setEditMode(false);
                     setCourseTitle("");
@@ -238,8 +238,7 @@ export default function ProfessorDashboard() {
                         className="btn"
                         type="button"
                         style={{
-                          marginLeft: "0.5em",
-                          background: "var(--pink-accent)",
+                          marginLeft: "0.5em"
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
