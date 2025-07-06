@@ -39,7 +39,7 @@ export default function CourseCatalog() {
       });
   }, []);
 
-  // ✅ THIS was missing
+  // Filter courses based on search query
   const filteredCourses = courses.filter((course) =>
     course.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );

@@ -56,11 +56,16 @@ export default function StudentDashboard() {
       .finally(() => setLoading(false)); // Set loading to false after fetch
   }, [navigate, userId]); // Depend on userId, so it doesn't refetch unnecessarily
 
+  // Render the student dashboard with enrolled courses
+
   return (
     <>
       <Navbar />
       <main>
         <h2 style={{ textAlign: "center", margin: "1em 0" }}>Student Dashboard</h2>
+        <h2 style={{ textAlign: "center", margin: "1em 0" }}>
+          Welcome, {userId ? userId : "Student"}!
+        </h2>
         <div className="dashboard-grid" style={{ margin: "2em" }}>
           <div className="dashboard-box card">
             <h3>Enrolled Courses</h3>
