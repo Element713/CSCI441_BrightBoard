@@ -13,8 +13,8 @@ function getToken() {
 export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // <-- ADDED
-  const [error, setError] = useState(""); // <-- ADDED
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const userId = getCurrentUserId();
 
@@ -90,12 +90,21 @@ export default function StudentDashboard() {
                   >
                     <strong>{course.title}</strong>
                     <div>{course.description}</div>
-                    <div className="progress-bar-container" style={{ background: "#eee", borderRadius: "8px", overflow: "hidden", height: "20px", marginTop: "0.5em" }}>
+                    <div
+                      className="progress-bar-container"
+                      style={{
+                        background: "#eee",
+                        borderRadius: "8px",
+                        overflow: "hidden",
+                        height: "20px",
+                        marginTop: "0.5em",
+                      }}
+                    >
                       <div
                         className="progress-bar"
                         style={{
                           width: `${course.progress || 0}%`,
-                          background: "#1a237e",
+                          background: "#1a237e", // Darker color
                           height: "100%",
                           color: "#fff",
                           textAlign: "center",
@@ -104,13 +113,13 @@ export default function StudentDashboard() {
                         {course.progress || 0}%
                       </div>
                     </div>
-             <Link
-            className="btn"
-                    to={`/student/lessons/${course._id}`} // ✅ This matches the correct route
-               style={{ marginTop: "0.5em", display: "inline-block" }}
->
-                Go to Lessons
-               </Link>
+                    <Link
+                      className="btn"
+                      to={`/student/lessons/${course._id}`}
+                      style={{ marginTop: "0.5em", display: "inline-block" }}
+                    >
+                      Go to Lessons
+                    </Link>
                   </div>
                 ))}
               </div>
