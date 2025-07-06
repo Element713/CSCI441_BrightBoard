@@ -1,6 +1,6 @@
 // CRUD operations for courses (create, edit, delete, list)
 
-const { Course } = require('../models');
+const Course = require('../models/Course'); // Use direct model import
 
 // Create a new course
 const createCourse = async (req, res) => {
@@ -17,15 +17,22 @@ const createCourse = async (req, res) => {
   }
 };
 
-// Get all courses
+// Get all courses (optionally only those created by this instructor)
 const getCourses = async (req, res) => {
   try {
-    const courses = await Course.find()
+    const instructorId = req.user?._id;
+    const query = req.query.mine === "true"
+      ? { instructor: instructorId }
+      : {};
+
+    const courses = await Course.find(query)
+      .populate("students", "name")
       .populate("instructor", "name")
-      .select("title description instructor"); // Optional: limit fields
+      .lean();
+
     res.json(courses);
   } catch (err) {
-    console.error("Failed to get courses:", err);
+    console.error("Error fetching courses:", err);
     res.status(500).json({ error: "Failed to get courses" });
   }
 };
@@ -76,8 +83,6 @@ const deleteCourse = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
 
 // Enroll student in a course
 const enrollInCourse = async (req, res) => {
@@ -138,26 +143,6 @@ const addMaterial = async (req, res) => {
     res.json(course);
   } catch (err) {
     res.status(500).json({ error: err.message });
-  }
-};
-// Get courses created by this instructor
-exports.getCourses = async (req, res) => {
-  try {
-    const instructorId = req.user._id;
-
-    const query = req.query.mine === "true"
-      ? { instructor: instructorId }
-      : {};
-
-    const courses = await Course.find(query)
-      .populate("students", "name")
-      .populate("instructor", "name")
-      .lean();
-
-    res.json(courses);
-  } catch (err) {
-    console.error("Error fetching courses:", err);
-    res.status(500).json({ error: "Failed to get courses" });
   }
 };
 
