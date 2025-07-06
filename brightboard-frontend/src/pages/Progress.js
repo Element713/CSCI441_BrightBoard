@@ -16,13 +16,14 @@ export default function Progress() {
   };
 
   useEffect(() => {
-    const userId = getCurrentUserId();
-    const token = localStorage.getItem("token");
-    if (!userId) {
-      setProgress([]);
-      setLoading(false);
-      return;
-    }
+  const userId = getCurrentUserId();
+  const token = localStorage.getItem("token");
+  console.log("Progress useEffect running. userId:", userId, "token:", token);
+  if (!userId) {
+    setProgress([]);
+    setLoading(false);
+    return;
+  }
     fetch(`/api/progress/student/${userId}`, {
       headers: { "Authorization": `Bearer ${token}` }
     })
