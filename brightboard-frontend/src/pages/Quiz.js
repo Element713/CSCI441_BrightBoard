@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom"; // <-- Add this
+import { useParams } from "react-router-dom";
 
 function getCurrentUserId() {
   return localStorage.getItem("userId");
@@ -12,7 +12,7 @@ export default function Quiz() {
   const [score, setScore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
-  const params = useParams(); // <-- Add this
+  const params = useParams();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -36,7 +36,7 @@ export default function Quiz() {
       .finally(() => setLoading(false));
   }, [params.quizId]);
 
-  // Fetch student progress
+  // Fetch student progress (optional, not used in this file)
   useEffect(() => {
     const userId = getCurrentUserId();
     const token = localStorage.getItem("token");
@@ -49,11 +49,8 @@ export default function Quiz() {
       .then((res) => res.json())
       .then((data) => {
         // You can display or use this progress later
-        // console.log("Student progress:", data);
       })
-      .catch((err) => {
-        // console.error("Failed to fetch progress", err);
-      });
+      .catch(() => {});
   }, []);
 
   const handleChange = (qIdx, value) => {
@@ -65,8 +62,14 @@ export default function Quiz() {
     if (!quiz) return;
 
     let s = 0;
+    // Match backend: questions[].choices and correctAnswerIndex
     quiz.questions.forEach((q, idx) => {
-      if (answers[idx] === q.correct) s++;
+      if (
+        typeof q.correctAnswerIndex === "number" &&
+        answers[idx] === q.choices[q.correctAnswerIndex]
+      ) {
+        s++;
+      }
     });
 
     setScore(s);
@@ -82,6 +85,8 @@ export default function Quiz() {
           quizId: quiz._id,
           score: s,
           total: quiz.questions.length,
+          // Optionally send answers if backend expects them
+          answers: Object.values(answers)
         }),
       });
     }
@@ -122,27 +127,31 @@ export default function Quiz() {
         <div className="quiz-card">
           <h2>Quiz: {quiz.title}</h2>
           <form onSubmit={handleSubmit}>
-            {quiz.questions.map((q, idx) => (
-              <div className="question" key={idx}>
-                <h3>
-                  {idx + 1}. {q.question}
-                </h3>
-                {q.options.map((opt, i) => (
-                  <label key={i}>
-                    <input
-                      type="radio"
-                      name={`q${idx}`}
-                      value={opt.value}
-                      required
-                      checked={answers[idx] === opt.value}
-                      onChange={() => handleChange(idx, opt.value)}
-                      disabled={submitted}
-                    />{" "}
-                    {opt.label}
-                  </label>
-                ))}
-              </div>
-            ))}
+            {Array.isArray(quiz.questions) && quiz.questions.length > 0 ? (
+              quiz.questions.map((q, idx) => (
+                <div className="question" key={idx}>
+                  <h3>
+                    {idx + 1}. {q.questionText}
+                  </h3>
+                  {q.choices.map((choice, i) => (
+                    <label key={i} style={{ display: "block", marginBottom: "0.5em" }}>
+                      <input
+                        type="radio"
+                        name={`q${idx}`}
+                        value={choice}
+                        required
+                        checked={answers[idx] === choice}
+                        onChange={() => handleChange(idx, choice)}
+                        disabled={submitted}
+                      />{" "}
+                      {choice}
+                    </label>
+                  ))}
+                </div>
+              ))
+            ) : (
+              <div>No questions found for this quiz.</div>
+            )}
             {!submitted && (
               <button type="submit" className="btn">
                 Submit Quiz
