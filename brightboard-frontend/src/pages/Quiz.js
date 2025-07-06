@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
-import "../App.css"; // Ensure this import is present for styles
 
 function getCurrentUserId() {
   return localStorage.getItem("userId");
