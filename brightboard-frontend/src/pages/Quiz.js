@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
+import "../App.css"; // Ensure this import is present for styles
 
 function getCurrentUserId() {
   return localStorage.getItem("userId");
@@ -57,12 +58,12 @@ export default function Quiz() {
     setAnswers({ ...answers, [qIdx]: value });
   };
 
+  // Updated submission to match backend expectations
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!quiz) return;
 
     let s = 0;
-    // Match backend: questions[].choices and correctAnswerIndex
     quiz.questions.forEach((q, idx) => {
       if (
         typeof q.correctAnswerIndex === "number" &&
@@ -75,21 +76,20 @@ export default function Quiz() {
     setScore(s);
     setSubmitted(true);
 
-    const userId = getCurrentUserId();
-    if (userId) {
-      await fetch(`/api/quizzes/submit/${quiz._id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          quizId: quiz._id,
-          score: s,
-          total: quiz.questions.length,
-          // Optionally send answers if backend expects them
-          answers: Object.values(answers)
-        }),
-      });
-    }
+    // Prepare answers as array of selected indices
+    const answerIndices = quiz.questions.map((q, idx) =>
+      q.choices.indexOf(answers[idx])
+    );
+
+    const token = localStorage.getItem("token");
+    await fetch(`/api/submissions/${quiz._id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ answers: answerIndices }),
+    });
   };
 
   if (loading) {
