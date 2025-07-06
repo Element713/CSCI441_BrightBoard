@@ -24,6 +24,7 @@ app.use(express.json());
 app.use('/api', routes);
 app.use("/api", require("./routes/courseRoutes"));
 app.use("/api/quizzes", require("./routes/quizRoutes"));
+app.use('/api/progress', require('./routes/progressRoutes'));
 
 // Serve static files from React build (in all environments)
 app.use(express.static(path.join(__dirname, '../brightboard-frontend/build')));
