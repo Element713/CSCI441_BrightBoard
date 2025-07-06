@@ -13,7 +13,8 @@ function getToken() {
 export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // <-- ADDED
+  const [error, setError] = useState(""); // <-- ADDED
   const navigate = useNavigate();
   const userId = getCurrentUserId();
 
