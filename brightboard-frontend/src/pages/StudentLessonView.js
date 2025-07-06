@@ -57,13 +57,15 @@ export default function StudentLessonView() {
                   <h3>{selectedLesson.title}</h3>
                   <p>{selectedLesson.content}</p>
                   {/* HIGHLIGHTED: Add Take Quiz button */}
-                  <button
-                    className="btn"
-                    style={{ marginTop: "1em" }}
-                    onClick={() => navigate(`/quiz?lessonId=${selectedLesson._id}&courseId=${courseId}`)}
-                  >
-                    Take Quiz
-                  </button>
+                {selectedLesson.quizId && (
+  <button
+    className="btn"
+    style={{ marginTop: "1em" }}
+    onClick={() => navigate(`/quiz/${selectedLesson.quizId}`)}
+  >
+    Take Quiz
+  </button>
+)}
                 </div>
               )}
             </>
