@@ -8,6 +8,7 @@ export default function StudentLessonView() {
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate(); // HIGHLIGHTED: Add navigate
+  const [relatedQuiz, setRelatedQuiz] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -19,6 +20,17 @@ export default function StudentLessonView() {
       })
       .catch(() => setLessons([]));
   }, [courseId]);
+
+  useEffect(() => {
+  if (selectedLesson?._id) {
+    fetch(`/api/quizzes/lesson/${selectedLesson._id}`)
+      .then(res => res.json())
+      .then(data => {
+        setRelatedQuiz(data); // Or set to null if no quiz found
+      })
+      .catch(() => setRelatedQuiz(null));
+  }
+}, [selectedLesson]);
 
   return (
     <>
@@ -57,14 +69,21 @@ export default function StudentLessonView() {
                   <h3>{selectedLesson.title}</h3>
                   <p>{selectedLesson.content}</p>
                   {/* HIGHLIGHTED: Add Take Quiz button */}
-                {selectedLesson.quizId && (
-  <button
-    className="btn"
-    style={{ marginTop: "1em" }}
-    onClick={() => navigate(`/quiz/${selectedLesson.quizId}`)}
-  >
-    Take Quiz
-  </button>
+                  {selectedLesson && (
+  <div className="lesson-details" style={{ marginTop: "2em" }}>
+    <h3>{selectedLesson.title}</h3>
+    <p>{selectedLesson.content}</p>
+
+    {relatedQuiz && (
+      <button
+        className="btn"
+        style={{ marginTop: "1em" }}
+        onClick={() => navigate(`/quiz/${relatedQuiz._id}`)}
+      >
+        Take Quiz
+      </button>
+    )}
+  </div>
 )}
                 </div>
               )}
