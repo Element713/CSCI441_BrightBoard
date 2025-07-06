@@ -85,6 +85,13 @@ const deleteCourse = async (req, res) => {
 };
 
 // Enroll student in a course
+// CRUD operations for courses (create, edit, delete, list)
+
+const Course = require('../models/Course'); // Use direct model import
+
+// ...existing code...
+
+// Enroll student in a course
 const enrollInCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
@@ -97,7 +104,8 @@ const enrollInCourse = async (req, res) => {
       return res.status(404).json({ error: 'Course not found' });
     }
 
-    if (course.students.some(id => id.equals(studentId))) {
+    // HIGHLIGHTED: Use .map(id => id.toString()).includes(studentId.toString())
+    if (course.students.map(id => id.toString()).includes(studentId.toString())) {
       return res.status(400).json({ error: 'You are already enrolled in this course' });
     }
 

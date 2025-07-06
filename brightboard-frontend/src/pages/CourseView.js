@@ -59,17 +59,19 @@ export default function CourseView() {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      // 🔥 Removed Content-Type
     },
   })
-    .then((res) => {
-      if (!res.ok) throw new Error("Enrollment failed");
+    .then(async (res) => {
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Enrollment failed");
+      }
       return res.json();
     })
     .then(() => setEnrollMessage("Successfully enrolled in this course! 🎉"))
     .catch((err) => {
       console.error(err);
-      setEnrollMessage("Error enrolling. Please try again.");
+      setEnrollMessage(err.message || "Error enrolling. Please try again.");
     });
 };
 
