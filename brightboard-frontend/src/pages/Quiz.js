@@ -16,13 +16,21 @@ export default function Quiz() {
   // Fetch quiz based on query param
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    // Support both ?quizId=... and ?lessonId=...&courseId=...
     const quizId = params.get("quizId");
-    if (!quizId) {
+    const lessonId = params.get("lessonId");
+    // If quizId is present, fetch by quizId, else try by lessonId
+    let fetchUrl = "";
+    if (quizId) {
+      fetchUrl = `/api/quizzes/${quizId}`;
+    } else if (lessonId) {
+      fetchUrl = `/api/quizzes/lesson/${lessonId}`;
+    } else {
       setLoading(false);
       return;
     }
 
-    fetch(`/api/quizzes/${quizId}`)
+    fetch(fetchUrl)
       .then((res) => res.json())
       .then((data) => setQuiz(data))
       .catch(() => setQuiz(null))
@@ -41,11 +49,11 @@ export default function Quiz() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Student progress:", data);
         // You can display or use this progress later
+        // console.log("Student progress:", data);
       })
       .catch((err) => {
-        console.error("Failed to fetch progress", err);
+        // console.error("Failed to fetch progress", err);
       });
   }, []);
 
