@@ -13,6 +13,7 @@ export default function StudentLessonView() {
     fetch(`/api/lessons/${courseId}`)
       .then(res => res.json())
       .then(data => {
+         console.log('Fetched lessons:', data); // ✅ Add this
         setLessons(Array.isArray(data) ? data : []);
         setLoading(false);
       })
