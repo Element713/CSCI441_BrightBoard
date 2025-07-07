@@ -1,58 +1,55 @@
-// Program code to run unit tests and 
-// README3.txt on how to run the integration tests
+# Integration Testing - BrightBoard
 
 This folder contains integration tests for backend routes and workflows.
 
-To run:
-1. Make sure the server is not running.
-2. cd integration_testing/server
-3. npm install
-4. npm run test:integration
+---
 
-Test files simulate actual HTTP requests and responses.
+## How to Run Integration Tests
 
+1. **Make sure your backend server is NOT running.**
+2. Open a terminal and navigate to your backend server directory:
+   
+       cd BrightBoard/Code/server
 
+3. **Install all required dependencies** (if you haven’t already):
 
-Install required packages (if not already):
-bash
+       npm install
 
-npm install --save-dev jest supertest mongodb-memory-server
-//////
-Folder Structure:
-pgsql
+4. **Run the integration tests:**
 
-integration_testing/
-├── server/
-│   ├── tests/
-│   │   ├── auth.integration.test.js
-│   │   ├── course.integration.test.js
-│   │   └── utils/
-│   │       └── testDb.js
-│   └── README3.txt
-✅ README3.txt
-/////
- Add Test Script to server/package.json
- 
+       npx jest integration_testing/server/integration
+
+   Or, if you have a script in your `package.json`:
+
+       npm run test:integration
+
+---
+
+## Test Details
+
+- These tests spin up an **in-memory MongoDB** instance for safe, isolated testing.
+- Test files simulate actual HTTP requests and responses using [supertest](https://github.com/visionmedia/supertest).
+- Each test automatically tears down and cleans the test database after running.
+
+---
+
+## Folder Structure
+
+    integration_testing/
+    └── server/
+        └── integration/
+            ├── auth.integration.test.js
+            ├── course.integration.test.js
+            └── testDb.js
+
+---
+
+## Example `package.json` Test Script
+
+Add this to your `Code/server/package.json` for convenience:
+
+```json
 "scripts": {
-  "test": "jest --testEnvironment=node"
+  "test:integration": "jest integration_testing/server/integration"
 }
-////
-sql
-
-Integration Testing - BrightBoard
-
-To run integration tests:
-
-1. Ensure all required dev dependencies are installed:
-   npm install --save-dev jest supertest mongodb-memory-server
-
-2. From the project root, run:
-   npm run test
-
-These tests spin up an in-memory MongoDB instance to simulate database interactions.
-
-Tests covered:
-- User registration and login
-- Course creation and access
-
-Each test will automatically tear down and clean the test database after running.
+```

@@ -4,9 +4,9 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const User = require('../../server/models/User'); // adjust path if needed
+const User = require ('../../Code/server/models/User');
 
-const exportUsers = async () => {
+async function exportUsers(outputPath = path.join(__dirname, 'exported_users.json')) {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
@@ -14,16 +14,20 @@ const exportUsers = async () => {
     });
 
     const users = await User.find({});
-    const outputPath = path.join(__dirname, 'exported_users.json');
-
     fs.writeFileSync(outputPath, JSON.stringify(users, null, 2), 'utf-8');
     console.log(`Exported ${users.length} users to ${outputPath}`);
 
-    mongoose.connection.close();
+    await mongoose.connection.close();
+    return users;
   } catch (error) {
     console.error('Error exporting users:', error.message);
     process.exit(1);
   }
-};
+}
 
-exportUsers();
+// Only run if called directly
+if (require.main === module) {
+  exportUsers();
+}
+
+module.exports = { exportUsers };

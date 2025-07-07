@@ -1,69 +1,83 @@
-README4.txt - Data Collection Scripts for BrightBoard
-=====================================================
+# BrightBoard Data Collection & Testing Guide
 
-This directory contains scripts used to seed and extract data from the BrightBoard MongoDB database. These tools are intended for development and testing purposes only.
+## Project Structure
 
------------------------------------------------------
-📁 Folder Structure:
------------------------------------------------------
-
-data_collection/
-├── seed/
-│   ├── seedUsers.js         -> Inserts sample instructor and student accounts.
-│   ├── seedCourses.js       -> Inserts sample courses.
-│   ├── seedLessons.js       -> Adds lessons to existing courses.
-│   ├── seedQuizzes.js       -> Adds quizzes linked to lessons.
-│   └── seedAll.js           -> Runs all seed scripts in order.
+BrightBoard/
 │
-├── scripts/
-│   ├── exportUsers.js       -> Exports user data to a JSON file.
-│   └── scrapeCourses.js     -> Scrapes public course data for testing.
+├── CSCI441_BrightBoard/
+│   └── Code/
+│       └── server/
+│           └── models/
+│               └── User.js
+│
+├── data_collection/
+│   └── scripts/
+│       ├── scrapeCourses.js
+│       ├── scrapeCourses.test.js
+│       ├── exportUsers.js
+│       └── exportUsers.test.js
+│
+└── ...
 
------------------------------------------------------
-🔧 Setup Instructions:
------------------------------------------------------
+---
 
-1. Ensure MongoDB is running or that your `.env` file is correctly configured with a working MONGO_URI.
+## Running Data Collection Scripts
 
-2. Navigate to the root of the project or the `data_collection/` directory.
+Navigate to the `data_collection` directory:
 
-3. Install dependencies (if needed):
-   > npm install dotenv mongoose axios
+    cd BrightBoard/data_collection
 
------------------------------------------------------
-▶️ Running Scripts:
------------------------------------------------------
+To run a script (for example, `scrapeCourses.js`):
 
-Seed Users:
-> node data_collection/seed/seedUsers.js
+    node scripts/scrapeCourses.js
 
-Seed Courses:
-> node data_collection/seed/seedCourses.js
+---
 
-Seed Lessons:
-> node data_collection/seed/seedLessons.js
+## Running Data Collection Tests
 
-Seed Quizzes:
-> node data_collection/seed/seedQuizzes.js
+1. **Install dependencies** (if you haven’t already):
 
-Run All Seeds:
-> node data_collection/seed/seedAll.js
+    npm install
 
-Export Users:
-> node data_collection/scripts/exportUsers.js
+   Make sure you have `jest`, `axios`, and `cheerio` installed.
 
-Scrape Sample Courses:
-> node data_collection/scripts/scrapeCourses.js
+2. **Run all tests in the `scripts` folder:**
 
------------------------------------------------------
-⚠️ Notes:
------------------------------------------------------
+    npm test
 
-- These scripts are intended only for local development or staging environments.
-- Seeding scripts may delete or overwrite existing records.
-- Ensure backups or caution before running on production databases.
+   or
 
------------------------------------------------------
-📄 Author:
------------------------------------------------------
-BrightBoard Team – 2025
+    npx jest scripts
+
+   This will run both `scrapeCourses.test.js` and `exportUsers.test.js`.
+
+---
+
+## Troubleshooting
+
+- If you get a "Cannot find module" error, double-check the relative paths in your test files.
+- Make sure your backend model path in the tests matches your actual folder structure (e.g., `../../CSCI441_BrightBoard/Code/server/models/User`).
+- If you add new scripts, export their main functions so you can write tests for them.
+
+---
+
+## Notes
+
+- The tests for `scrapeCourses.js` mock network requests and do not hit real websites.
+- The tests for `exportUsers.js` mock the database and file system, so they do not require a real database connection.
+- Console errors in test output are expected for error-handling test cases.
+
+---
+
+## Example Test Output
+
+    PASS  scripts/scrapeCourses.test.js
+    PASS  scripts/exportUsers.test.js
+    Test Suites: 2 passed, 2 total
+    Tests:       3 passed, 3 total
+
+---
+
+## Contact
+
+For any issues, please contact the project maintainer or open an issue in the repository.
