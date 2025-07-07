@@ -2,6 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "main": "server.js",
+  "scripts": {
+    "test": "jest ../unit_testing/tests"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
@@ -9,5 +12,9 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.1"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^10.1.4",
+    "node-mocks-http": "^1.17.2"
   }
 }
