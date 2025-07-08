@@ -1,6 +1,4 @@
-/* =========================
-   Root Variables & General
-   ========================= */
+
 :root {
   --green-3: #549431;
   --blue-3: #304073;
@@ -8,7 +6,7 @@
   --pink-3: #9d344b;
 }
 
-/* App background and text */
+
 body {
   background-color: var(--green-3);
   min-height: 100vh;
@@ -17,17 +15,14 @@ body {
   color: #222;
 }
 
-/* Main app container */
+
 .App {
   min-height: 100vh;
   text-align: center;
   background: white;
-  background-color: #7ed957; /* medium/light green */
+  background-color: #7ed957; 
 }
 
-/* =========================
-   Navbar/Header
-   ========================= */
 .navbar, header.navbar {
   display: flex;
   align-items: center;
@@ -91,9 +86,7 @@ body {
   color: #222;
 }
 
-/* =========================
-   Buttons
-   ========================= */
+
 button, .btn {
   background: var(--yellow-accent);
   color: #222;
@@ -109,9 +102,7 @@ button:hover, .btn:hover {
   color: #fff;
 }
 
-/* =========================
-   Card backgrounds
-   ========================= */
+
 .card, .form-container, .dashboard-card, .quiz-card, .lesson-card, .progress-card {
   background: #fff;
   max-width: none;
@@ -119,9 +110,7 @@ button:hover, .btn:hover {
   width: 100%;
 }
 
-/* =========================
-   Dashboard grid and box styles
-   ========================= */
+
 .dashboard-grid {
   display: grid;
   grid-auto-flow: column;
@@ -141,9 +130,7 @@ button:hover, .btn:hover {
   margin: 1em 0;
 }
 
-/* =========================
-   Progress Bar
-   ========================= */
+
 .progress-bar-container {
   background: #eee;
   border-radius: 8px;
@@ -159,9 +146,7 @@ button:hover, .btn:hover {
   transition: width 0.3s;
 }
 
-/* =========================
-   Accent Links
-   ========================= */
+
 a, .App-link {
   color: var(--pink-3);
   text-decoration: underline;
@@ -170,9 +155,7 @@ a:hover {
   color: var(--yellow-accent);
 }
 
-/* =========================
-   Footer
-   ========================= */
+
 .footer {
   background: var(--blue-3);
   color: #fff;
@@ -181,9 +164,7 @@ a:hover {
   border-top: 2px solid var(--blue-3);
 }
 
-/* =========================
-   Professor Dashboard & Quiz Management
-   ========================= */
+
 .section-title {
   font-size: 1.2rem;
   font-weight: bold;
@@ -255,9 +236,7 @@ a:hover {
   color: #888;
 }
 
-/* =========================
-   Quiz Card and Questions
-   ========================= */
+
 .quiz-bg {
   background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
   color: #fff;
@@ -287,9 +266,7 @@ a:hover {
   margin-bottom: 2rem;
 }
 
-/* =========================
-   Lesson Details
-   ========================= */
+
 .lesson-details {
   margin-top: 2em;
 }
@@ -300,9 +277,7 @@ a:hover {
   margin-top: 1em;
 }
 
-/* =========================
-   Course Catalog
-   ========================= */
+
 .course-catalog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -325,17 +300,13 @@ a:hover {
   transform: translateY(-4px) scale(1.02);
 }
 
-/* =========================
-   Utility Classes
-   ========================= */
+
 .go-to-lessons-link {
   margin-top: 0.5em;
   display: inline-block;
 }
 
-/* =========================
-   Register Page
-   ========================= */
+
 #register-message {
   margin-top: 1rem;
   text-align: center;
@@ -346,9 +317,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* =========================
-   Modal Styles
-   ========================= */
+
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -384,9 +353,7 @@ a:hover {
   margin-top: 1em;
 }
 
-/* =========================
-   Miscellaneous
-   ========================= */
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
