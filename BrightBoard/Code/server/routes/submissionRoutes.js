@@ -9,6 +9,8 @@ router.post('/submit/:quizId', verifyUser, verifyStudent, submissionController.s
 
 router.post('/:quizId', verifyUser, submissionController.submitQuiz);
 
+router.get('/:id', submissionController.getSubmissionById);
+
 // Get all submissions for a student (student can only see their own, or extend logic for instructor)
 router.get('/student/:studentId', verifyUser, (req, res, next) => {
   const isSelf = req.user._id.toString() === req.params.studentId;
