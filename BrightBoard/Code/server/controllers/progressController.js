@@ -3,10 +3,45 @@
 const { Progress, Submission, Course, Lesson, Quiz } = require('../models');
 
 // Get all submissions for a student (all courses)
+// Updated: Only return completion status for lessons/quizzes, not scores
 const getStudentProgress = async (req, res) => {
   try {
-    const results = await Submission.find({ student: req.params.studentId }).populate('quiz');
-    res.json(results);
+    const studentId = req.params.studentId;
+
+    // Find all progress records for this student
+    const progressRecords = await Progress.find({ student: studentId }).populate('course');
+
+    // For each course, return completion status for lessons and quizzes
+    const progressSummary = await Promise.all(progressRecords.map(async (record) => {
+      // Get all lessons and quizzes for the course
+      const lessons = await Lesson.find({ course: record.course._id });
+      const quizzes = await Quiz.find({ course: record.course._id });
+
+      // Map completion status for lessons
+      const lessonsCompleted = lessons.map(lesson => ({
+        lessonId: lesson._id,
+        title: lesson.title,
+        completed: record.lessonsCompleted.map(id => id.toString()).includes(lesson._id.toString())
+      }));
+
+      // Map completion status for quizzes
+      const quizzesCompleted = quizzes.map(quiz => ({
+        quizId: quiz._id,
+        title: quiz.title,
+        completed: record.quizzesCompleted.map(id => id.toString()).includes(quiz._id.toString())
+      }));
+
+      return {
+        courseId: record.course._id,
+        courseTitle: record.course.title,
+        lessonsCompleted,
+        quizzesCompleted,
+        totalLessons: lessons.length,
+        totalQuizzes: quizzes.length
+      };
+    }));
+
+    res.json(progressSummary);
   } catch (error) {
     console.error('Error fetching student progress:', error);
     res.status(500).json({ error: 'Internal server error' });

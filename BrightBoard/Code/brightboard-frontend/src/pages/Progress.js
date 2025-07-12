@@ -32,7 +32,14 @@ export default function Progress() {
       .catch(() => setProgress([]))
       .finally(() => setLoading(false));
   }, []);
-
+  
+ function getCourseProgress(course) {
+    const progress = progressData.find((p) => p.course === course._id);
+    const totalLessons = Array.isArray(course.lessons) ? course.lessons.length : 0;
+    const completed = progress?.lessonsCompleted?.length || 0;
+    if (totalLessons === 0) return 0;
+    return Math.round((completed / totalLessons) * 100);
+  }
   return (
     <div className={dark ? "dark" : ""}>
       <Navbar onToggleTheme={handleToggleTheme} />
