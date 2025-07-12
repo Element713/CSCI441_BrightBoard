@@ -86,6 +86,24 @@ export default function StudentDashboard() {
     return Math.round((completed / totalLessons) * 100);
   }
 
+  function getLessonProgress(course) {
+    const progress = progressData.find((p) => p.courseId === course._id);
+    const totalLessons = progress?.totalLessons || 0;
+    const completedLessons = Array.isArray(progress?.lessonsCompleted)
+      ? progress.lessonsCompleted.filter(l => l.completed).length
+      : 0;
+    return totalLessons === 0 ? 0 : Math.round((completedLessons / totalLessons) * 100);
+  }
+
+  function getQuizProgress(course) {
+    const progress = progressData.find((p) => p.courseId === course._id);
+    const totalQuizzes = progress?.totalQuizzes || 0;
+    const completedQuizzes = Array.isArray(progress?.quizzesCompleted)
+      ? progress.quizzesCompleted.filter(q => q.completed).length
+      : 0;
+    return totalQuizzes === 0 ? 0 : Math.round((completedQuizzes / totalQuizzes) * 100);
+  }
+
   return (
     <>
       <Navbar />
@@ -103,20 +121,27 @@ export default function StudentDashboard() {
             ) : (
               <div className="course-list">
                 {courses.map((course) => (
-                  <div
-                    key={course._id}
-                    className="course-item"
-                  >
+                  <div key={course._id} className="course-item">
                     <strong>{course.title}</strong>
                     <div>{course.description}</div>
                     <div className="progress-bar-container">
-                      <div
-                        className="progress-bar"
-                        style={{
-                          width: `${getCourseProgress(course)}%`
-                        }}
-                      >
-                        {getCourseProgress(course)}%
+                      <div>
+                        <span>Lessons:</span>
+                        <div className="progress-bar" style={{
+                          width: `${getLessonProgress(course)}%`,
+                          background: "#4caf50"
+                        }}>
+                          {getLessonProgress(course)}%
+                        </div>
+                      </div>
+                      <div>
+                        <span>Quizzes:</span>
+                        <div className="progress-bar" style={{
+                          width: `${getQuizProgress(course)}%`,
+                          background: "#2196f3"
+                        }}>
+                          {getQuizProgress(course)}%
+                        </div>
                       </div>
                     </div>
                     <Link

@@ -16,14 +16,14 @@ export default function Progress() {
   };
 
   useEffect(() => {
-  const userId = getCurrentUserId();
-  const token = localStorage.getItem("token");
-  console.log("Progress useEffect running. userId:", userId, "token:", token);
-  if (!userId) {
-    setProgress([]);
-    setLoading(false);
-    return;
-  }
+    const userId = getCurrentUserId();
+    const token = localStorage.getItem("token");
+    console.log("Progress useEffect running. userId:", userId, "token:", token);
+    if (!userId) {
+      setProgress([]);
+      setLoading(false);
+      return;
+    }
     fetch(`/api/progress/student/${userId}`, {
       headers: { "Authorization": `Bearer ${token}` }
     })
@@ -32,14 +32,7 @@ export default function Progress() {
       .catch(() => setProgress([]))
       .finally(() => setLoading(false));
   }, []);
-  
- function getCourseProgress(course) {
-    const progress = progressData.find((p) => p.course === course._id);
-    const totalLessons = Array.isArray(course.lessons) ? course.lessons.length : 0;
-    const completed = progress?.lessonsCompleted?.length || 0;
-    if (totalLessons === 0) return 0;
-    return Math.round((completed / totalLessons) * 100);
-  }
+
   return (
     <div className={dark ? "dark" : ""}>
       <Navbar onToggleTheme={handleToggleTheme} />
@@ -51,37 +44,59 @@ export default function Progress() {
           <p>No progress data available.</p>
         ) : (
           progress.map((item, idx) => {
-            // Count completed lessons
+            // Lessons progress
             const completedLessons = Array.isArray(item.lessonsCompleted)
               ? item.lessonsCompleted.filter(l => l.completed).length
               : 0;
             const totalLessons = item.totalLessons || 0;
+            // Quizzes progress
+            const completedQuizzes = Array.isArray(item.quizzesCompleted)
+              ? item.quizzesCompleted.filter(q => q.completed).length
+              : 0;
+            const totalQuizzes = item.totalQuizzes || 0;
 
             return (
               <div key={item.courseId || idx} className="progress-card">
                 <p><strong>Course:</strong> {item.courseTitle}</p>
-                <p>Lessons Completed: {completedLessons}/{totalLessons}</p>
                 <div className="progress-bar-container">
-                  <div
-                    className="progress-bar"
-                    style={{
-                      width: totalLessons
+                  <div>
+                    <span>Lessons:</span>
+                    <div
+                      className="progress-bar"
+                      style={{
+                        width: totalLessons
+                          ? `${Math.round((completedLessons / totalLessons) * 100)}%`
+                          : "0%",
+                        background: "#4caf50"
+                      }}
+                    >
+                      {totalLessons
                         ? `${Math.round((completedLessons / totalLessons) * 100)}%`
-                        : "0%"
-                    }}
-                  >
-                    {totalLessons
-                      ? `${Math.round((completedLessons / totalLessons) * 100)}%`
-                      : "0%"}
+                        : "0%"}
+                    </div>
+                  </div>
+                  <div>
+                    <span>Quizzes:</span>
+                    <div
+                      className="progress-bar"
+                      style={{
+                        width: totalQuizzes
+                          ? `${Math.round((completedQuizzes / totalQuizzes) * 100)}%`
+                          : "0%",
+                        background: "#2196f3"
+                      }}
+                    >
+                      {totalQuizzes
+                        ? `${Math.round((completedQuizzes / totalQuizzes) * 100)}%`
+                        : "0%"}
+                    </div>
                   </div>
                 </div>
-                {/* Optionally show quizzes completed */}
                 <p>
-                  Quizzes Completed: {
-                    Array.isArray(item.quizzesCompleted)
-                      ? item.quizzesCompleted.filter(q => q.completed).length
-                      : 0
-                  }/{item.totalQuizzes || 0}
+                  Lessons Completed: {completedLessons}/{totalLessons}
+                </p>
+                <p>
+                  Quizzes Completed: {completedQuizzes}/{totalQuizzes}
                 </p>
               </div>
             );
