@@ -30,7 +30,6 @@ export default function Navbar({ onToggleTheme }) {
           <>
             <Link to="/professor/dashboard">Dashboard</Link>
             <Link to="/professor/quizzes">Quizzes</Link>
-            <Link to="/catalog">Course Catalog</Link>
             {/* Add more professor links as needed */}
           </>
         )}
