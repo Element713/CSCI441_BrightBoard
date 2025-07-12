@@ -59,37 +59,17 @@ export default function Progress() {
               <div key={item.courseId || idx} className="progress-card">
                 <p><strong>Course:</strong> {item.courseTitle}</p>
                 <div className="progress-bar-container">
-                  <div>
-                    <span>Lessons:</span>
-                    <div
-                      className="progress-bar"
-                      style={{
-                        width: totalLessons
-                          ? `${Math.round((completedLessons / totalLessons) * 100)}%`
-                          : "0%",
-                        background: "#4caf50"
-                      }}
-                    >
-                      {totalLessons
-                        ? `${Math.round((completedLessons / totalLessons) * 100)}%`
-                        : "0%"}
-                    </div>
+                  <div
+                    className={`progress-bar lesson${completedLessons < totalLessons ? " incomplete" : ""}`}
+                    style={{ width: `${totalLessons ? Math.round((completedLessons / totalLessons) * 100) : 0}%` }}
+                  >
+                    {totalLessons ? `${Math.round((completedLessons / totalLessons) * 100)}%` : "0%"}
                   </div>
-                  <div>
-                    <span>Quizzes:</span>
-                    <div
-                      className="progress-bar"
-                      style={{
-                        width: totalQuizzes
-                          ? `${Math.round((completedQuizzes / totalQuizzes) * 100)}%`
-                          : "0%",
-                        background: "#2196f3"
-                      }}
-                    >
-                      {totalQuizzes
-                        ? `${Math.round((completedQuizzes / totalQuizzes) * 100)}%`
-                        : "0%"}
-                    </div>
+                  <div
+                    className={`progress-bar quiz${completedQuizzes < totalQuizzes ? " incomplete" : ""}`}
+                    style={{ width: `${totalQuizzes ? Math.round((completedQuizzes / totalQuizzes) * 100) : 0}%` }}
+                  >
+                    {totalQuizzes ? `${Math.round((completedQuizzes / totalQuizzes) * 100)}%` : "0%"}
                   </div>
                 </div>
                 <p>

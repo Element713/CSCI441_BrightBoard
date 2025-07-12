@@ -125,23 +125,17 @@ export default function StudentDashboard() {
                     <strong>{course.title}</strong>
                     <div>{course.description}</div>
                     <div className="progress-bar-container">
-                      <div>
-                        <span>Lessons:</span>
-                        <div className="progress-bar" style={{
-                          width: `${getLessonProgress(course)}%`,
-                          background: "#4caf50"
-                        }}>
-                          {getLessonProgress(course)}%
-                        </div>
+                      <div
+                        className={`progress-bar lesson${completedLessons < totalLessons ? " incomplete" : ""}`}
+                        style={{ width: `${getLessonProgress(course)}%` }}
+                      >
+                        {getLessonProgress(course)}%
                       </div>
-                      <div>
-                        <span>Quizzes:</span>
-                        <div className="progress-bar" style={{
-                          width: `${getQuizProgress(course)}%`,
-                          background: "#2196f3"
-                        }}>
-                          {getQuizProgress(course)}%
-                        </div>
+                      <div
+                        className={`progress-bar quiz${completedQuizzes < totalQuizzes ? " incomplete" : ""}`}
+                        style={{ width: `${getQuizProgress(course)}%` }}
+                      >
+                        {getQuizProgress(course)}%
                       </div>
                     </div>
                     <Link
