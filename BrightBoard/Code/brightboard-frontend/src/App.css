@@ -140,6 +140,7 @@ button:hover, .btn:hover {
   align-items: center;
   box-shadow: 0 2px 8px rgba(51, 111, 18, 0.08);
 }
+
 .progress-bar {
   height: 100%;
   color: #fff;

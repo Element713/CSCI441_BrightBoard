@@ -120,32 +120,54 @@ export default function StudentDashboard() {
               <div>No courses enrolled yet.</div>
             ) : (
               <div className="course-list">
-                {courses.map((course) => (
-                  <div key={course._id} className="course-item">
-                    <strong>{course.title}</strong>
-                    <div>{course.description}</div>
-                    <div className="progress-bar-container">
-                      <div
-                        className={`progress-bar lesson${completedLessons < totalLessons ? " incomplete" : ""}`}
-                        style={{ width: `${getLessonProgress(course)}%` }}
-                      >
-                        {getLessonProgress(course)}%
+                {courses.map((course) => {
+                  const lessonProgress = getLessonProgress(course);
+                  const quizProgress = getQuizProgress(course);
+
+                  // Get raw numbers for display
+                  const progress = progressData.find((p) => p.courseId === course._id);
+                  const totalLessons = progress?.totalLessons || 0;
+                  const completedLessons = Array.isArray(progress?.lessonsCompleted)
+                    ? progress.lessonsCompleted.filter(l => l.completed).length
+                    : 0;
+                  const totalQuizzes = progress?.totalQuizzes || 0;
+                  const completedQuizzes = Array.isArray(progress?.quizzesCompleted)
+                    ? progress.quizzesCompleted.filter(q => q.completed).length
+                    : 0;
+
+                  return (
+                    <div key={course._id} className="course-item">
+                      <strong>{course.title}</strong>
+                      <div>{course.description}</div>
+                      <div className="progress-bar-container">
+                        <div
+                          className={`progress-bar lesson${completedLessons < totalLessons ? " incomplete" : ""}`}
+                          style={{ width: `${lessonProgress}%` }}
+                        >
+                          {lessonProgress}%
+                        </div>
+                        <div
+                          className={`progress-bar quiz${completedQuizzes < totalQuizzes ? " incomplete" : ""}`}
+                          style={{ width: `${quizProgress}%` }}
+                        >
+                          {quizProgress}%
+                        </div>
                       </div>
-                      <div
-                        className={`progress-bar quiz${completedQuizzes < totalQuizzes ? " incomplete" : ""}`}
-                        style={{ width: `${getQuizProgress(course)}%` }}
-                      >
-                        {getQuizProgress(course)}%
+                      <div>
+                        Lessons Completed: {completedLessons}/{totalLessons}
                       </div>
+                      <div>
+                        Quizzes Completed: {completedQuizzes}/{totalQuizzes}
+                      </div>
+                      <Link
+                        className="btn go-to-lessons-link"
+                        to={`/student/lessons/${course._id}`}
+                      >
+                        Go to Lessons
+                      </Link>
                     </div>
-                    <Link
-                      className="btn go-to-lessons-link"
-                      to={`/student/lessons/${course._id}`}
-                    >
-                      Go to Lessons
-                    </Link>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
