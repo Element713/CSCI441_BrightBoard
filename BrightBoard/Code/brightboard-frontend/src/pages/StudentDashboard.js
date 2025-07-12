@@ -12,6 +12,7 @@ function getToken() {
 
 export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
+  const [progressData, setProgressData] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -55,16 +56,33 @@ export default function StudentDashboard() {
         if (Array.isArray(data)) {
           setCourses(data);
         } else {
-          console.warn("Unexpected course data format", data);
           setCourses([]);
         }
       })
       .catch((err) => {
-        console.error("Course fetch error:", err);
         setCourses([]);
-      })
+      });
+
+    // Fetch progress data
+    fetch(`/api/progress/student/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setProgressData(Array.isArray(data) ? data : []))
+      .catch(() => setProgressData([]))
       .finally(() => setLoading(false));
   }, [navigate, userId]);
+
+  // Helper to get progress percentage for a course
+  function getCourseProgress(course) {
+    const progress = progressData.find((p) => p.course === course._id);
+    const totalLessons = Array.isArray(course.lessons) ? course.lessons.length : 0;
+    const completed = progress?.lessonsCompleted?.length || 0;
+    if (totalLessons === 0) return 0;
+    return Math.round((completed / totalLessons) * 100);
+  }
 
   return (
     <>
@@ -93,10 +111,10 @@ export default function StudentDashboard() {
                       <div
                         className="progress-bar"
                         style={{
-                          width: `${course.progress || 0}%`
+                          width: `${getCourseProgress(course)}%`
                         }}
                       >
-                        {course.progress || 0}%
+                        {getCourseProgress(course)}%
                       </div>
                     </div>
                     <Link
