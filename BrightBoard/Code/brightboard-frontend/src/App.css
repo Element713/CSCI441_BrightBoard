@@ -474,6 +474,8 @@ button:focus, .btn:focus, a:focus {
   margin-bottom: 1em;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .professor-lesson-list option,
