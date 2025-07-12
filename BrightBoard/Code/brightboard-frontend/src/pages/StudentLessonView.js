@@ -10,6 +10,7 @@ export default function StudentLessonView() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [relatedQuiz, setRelatedQuiz] = useState(null);
+  const [lessonCompleted, setLessonCompleted] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -33,11 +34,19 @@ export default function StudentLessonView() {
     }
   }, [selectedLesson]);
 
-  // Mark lesson as completed when selected
+  // Mark lesson as completed when selected (existing logic)
   useEffect(() => {
     if (selectedLesson && selectedLesson._id) {
-      const token = localStorage.getItem("token");
-      fetch("/api/progress/complete-lesson", {
+      setLessonCompleted(false); // Reset when a new lesson is selected
+    }
+  }, [selectedLesson, courseId]);
+
+  // Handler for marking lesson complete
+  const handleMarkLessonComplete = async () => {
+    if (!selectedLesson || !selectedLesson._id) return;
+    const token = localStorage.getItem("token");
+    try {
+      await fetch("/api/progress/complete-lesson", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,8 +54,11 @@ export default function StudentLessonView() {
         },
         body: JSON.stringify({ lessonId: selectedLesson._id, courseId })
       });
+      setLessonCompleted(true);
+    } catch (err) {
+      setLessonCompleted(false);
     }
-  }, [selectedLesson, courseId]);
+  };
 
   return (
     <>
@@ -81,6 +93,13 @@ export default function StudentLessonView() {
                 <div className="lesson-details">
                   <h3>{selectedLesson.title}</h3>
                   <p>{selectedLesson.content}</p>
+                  <button
+                    className="btn"
+                    onClick={handleMarkLessonComplete}
+                    disabled={lessonCompleted}
+                  >
+                    {lessonCompleted ? "Lesson Completed" : "Mark Lesson Complete"}
+                  </button>
                   {relatedQuiz && (
                     <button
                       className="btn lesson-quiz-btn"
