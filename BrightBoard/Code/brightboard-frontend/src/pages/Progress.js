@@ -50,27 +50,42 @@ export default function Progress() {
         ) : progress.length === 0 ? (
           <p>No progress data available.</p>
         ) : (
-          progress.map((item, idx) => (
-            <div key={item.courseId || idx} className="progress-card">
-              <p><strong>Course:</strong> {item.courseTitle}</p>
-              <p>Lessons Completed: {item.lessonsCompleted}/{item.totalLessons}</p>
-              <div className="progress-bar-container">
-                <div
-                  className="progress-bar"
-                  style={{
-                    width: item.totalLessons
-                      ? `${Math.round((item.lessonsCompleted / item.totalLessons) * 100)}%`
-                      : "0%"
-                  }}
-                >
-                  {item.totalLessons
-                    ? `${Math.round((item.lessonsCompleted / item.totalLessons) * 100)}%`
-                    : "0%"}
+          progress.map((item, idx) => {
+            // Count completed lessons
+            const completedLessons = Array.isArray(item.lessonsCompleted)
+              ? item.lessonsCompleted.filter(l => l.completed).length
+              : 0;
+            const totalLessons = item.totalLessons || 0;
+
+            return (
+              <div key={item.courseId || idx} className="progress-card">
+                <p><strong>Course:</strong> {item.courseTitle}</p>
+                <p>Lessons Completed: {completedLessons}/{totalLessons}</p>
+                <div className="progress-bar-container">
+                  <div
+                    className="progress-bar"
+                    style={{
+                      width: totalLessons
+                        ? `${Math.round((completedLessons / totalLessons) * 100)}%`
+                        : "0%"
+                    }}
+                  >
+                    {totalLessons
+                      ? `${Math.round((completedLessons / totalLessons) * 100)}%`
+                      : "0%"}
+                  </div>
                 </div>
+                {/* Optionally show quizzes completed */}
+                <p>
+                  Quizzes Completed: {
+                    Array.isArray(item.quizzesCompleted)
+                      ? item.quizzesCompleted.filter(q => q.completed).length
+                      : 0
+                  }/{item.totalQuizzes || 0}
+                </p>
               </div>
-              <p>Quiz Score: {item.quizScore}%</p>
-            </div>
-          ))
+            );
+          })
         )}
       </main>
       <footer className="footer">
