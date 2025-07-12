@@ -25,13 +25,14 @@ export default function Navbar({ onToggleTheme }) {
           <>
             <Link to="/student/dashboard">Dashboard</Link>
             <Link to="/progress">Progress</Link>
-            {/* Lessons for the selected course are accessed from dashboard */}
+            <link to ="/catalog">Course Catalog</link>
           </>
         )}
         {(user?.role === "professor" || user?.role === "instructor") && (
           <>
             <Link to="/professor/dashboard">Dashboard</Link>
             <Link to="/professor/quizzes">Quizzes</Link>
+            <Link to="/catalog">Course Catalog</Link>
             {/* Add more professor links as needed */}
           </>
         )}

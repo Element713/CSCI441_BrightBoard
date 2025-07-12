@@ -130,29 +130,34 @@ button:hover, .btn:hover {
 }
 
 
-.progress-bar-container {
-  background: #eee;
-  border-radius: 8px;
-  overflow: hidden;
-  height: 24px;
-  margin-top: 0.5em;
-  display: flex;
-  align-items: center;
+.progress-card {
+  box-sizing: border-box;
+  padding: 1.5em;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 1.5em;
   box-shadow: 0 2px 8px rgba(51, 111, 18, 0.08);
+  max-width: 420px;
+  width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.progress-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: 100%;
 }
 
 .progress-bar {
-  height: 100%;
-  color: #fff;
-  text-align: center;
-  transition: width 0.3s;
-  font-weight: bold;
-  font-size: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  letter-spacing: 1px;
+  min-width: 40px;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 0.5em;
+  box-sizing: border-box;
 }
 
 /* Lesson progress: green */
@@ -178,11 +183,14 @@ button:hover, .btn:hover {
 
 /* Responsive for mobile */
 @media (max-width: 600px) {
-  .progress-bar-container {
-    height: 18px;
+  .progress-card {
+    padding: 1em;
+    font-size: 0.95em;
+    max-width: 98vw;
   }
   .progress-bar {
     font-size: 0.85em;
+    padding: 0 0.3em;
   }
 }
 
@@ -438,12 +446,70 @@ button:focus, .btn:focus, a:focus {
   outline-offset: 2px;
 }
 
+/* Add styles to ensure lesson containers and selects in ProfessorDashboard do not overflow */
+.lesson-details,
+.prof-lesson-container,
+.professor-lesson-list {
+  box-sizing: border-box;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding: 1em;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 1em;
+}
+
+.professor-lesson-list select,
+.prof-lesson-container select {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5em;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid var(--blue-3);
+  background: #f7f7f7;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.professor-lesson-list option,
+.prof-lesson-container option {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Responsive for mobile */
 @media (max-width: 600px) {
+  .progress-card {
+    padding: 1em;
+    font-size: 0.95em;
+    max-width: 98vw;
+  }
+  .progress-bar {
+    font-size: 0.85em;
+    padding: 0 0.3em;
+  }
   .navbar-content {
     flex-direction: column;
     gap: 1em;
   }
   .course-catalog-grid {
     grid-template-columns: 1fr;
+  }
+  .lesson-details,
+  .prof-lesson-container,
+  .professor-lesson-list {
+    padding: 0.7em;
+    font-size: 0.95em;
+  }
+  .professor-lesson-list select,
+  .prof-lesson-container select {
+    font-size: 0.95em;
+    padding: 0.4em;
   }
 }

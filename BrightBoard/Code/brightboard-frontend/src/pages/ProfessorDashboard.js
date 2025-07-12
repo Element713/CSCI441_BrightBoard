@@ -334,9 +334,10 @@ function LessonSelector({ courseId, onLessonSelect }) {
   if (lessons.length === 0) return <div>No lessons found for this course.</div>;
 
   return (
-    <div>
-      <label>Select Lesson:</label>
+    <div className="professor-lesson-list">
+      <label htmlFor="lesson-select">Select Lesson:</label>
       <select
+        id="lesson-select"
         onChange={(e) => {
           if (e.target.value) onLessonSelect(e.target.value);
         }}
