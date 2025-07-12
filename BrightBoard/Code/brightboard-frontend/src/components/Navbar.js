@@ -18,14 +18,12 @@ export default function Navbar({ onToggleTheme }) {
         <Link to="/" className="logo">BrightBoard</Link>
       </h1>
       <div className="nav-links">
-        <Link to="/">Home</Link>
         <Link to="/catalog">Catalog</Link>
         {/* Show links based on user role */}
         {user?.role === "student" && (
           <>
             <Link to="/student/dashboard">Dashboard</Link>
             <Link to="/progress">Progress</Link>
-            <Link to="/catalog">Course Catalog</Link>
           </>
         )}
         {(user?.role === "professor" || user?.role === "instructor") && (
