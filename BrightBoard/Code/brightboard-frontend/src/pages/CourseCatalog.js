@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function CourseCatalog() {
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,8 +17,21 @@ export default function CourseCatalog() {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (res.status === 401) {
+          setError("You are not authorized to view courses. Please log in.");
+          setCourses([]);
+          return null;
+        }
+        if (!res.ok) {
+          setError("Failed to fetch courses. Please try again later.");
+          setCourses([]);
+          return null;
+        }
+        return res.json();
+      })
       .then((data) => {
+        if (!data) return;
         console.log("Fetched courses:", data);
         if (Array.isArray(data)) {
           const normalized = data.map((course) => ({
@@ -29,12 +43,14 @@ export default function CourseCatalog() {
                 : course.instructor,
           }));
           setCourses(normalized);
+          setError("");
         } else {
           setCourses([]);
         }
       })
       .catch((err) => {
         console.error("Failed to fetch courses:", err);
+        setError("An error occurred while fetching courses.");
         setCourses([]);
       });
   }, []);
@@ -72,6 +88,9 @@ export default function CourseCatalog() {
       <Navbar />
       <main>
         <h2 style={{ textAlign: "center", margin: "1em 0" }}>Course Catalog</h2>
+        {error && (
+          <div style={{ color: "red", textAlign: "center", marginBottom: "1em" }}>{error}</div>
+        )}
         <div style={{ textAlign: "center", marginBottom: "1em" }}>
           <input
             type="text"
@@ -85,6 +104,7 @@ export default function CourseCatalog() {
               border: "1px solid #ccc",
               borderRadius: "5px",
             }}
+            disabled={!!error}
           />
         </div>
         <div
@@ -96,17 +116,17 @@ export default function CourseCatalog() {
             margin: "2em",
           }}
         >
-          {filteredCourses.length === 0 ? (
+          {!error && filteredCourses.length === 0 ? (
             <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>No courses found.</div>
-          ) : (
+          ) : null}
+          {!error && filteredCourses.length > 0 &&
             filteredCourses.map((course) => (
               <InlineCourseCard
                 key={course._id}
                 course={course}
                 onClick={() => navigate(`/course/${course._id}`)}
               />
-            ))
-          )}
+            ))}
         </div>
       </main>
       <footer className="footer">
