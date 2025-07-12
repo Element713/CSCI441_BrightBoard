@@ -33,6 +33,21 @@ export default function StudentLessonView() {
     }
   }, [selectedLesson]);
 
+  // Mark lesson as completed when selected
+  useEffect(() => {
+    if (selectedLesson && selectedLesson._id) {
+      const token = localStorage.getItem("token");
+      fetch("/api/progress/complete-lesson", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ lessonId: selectedLesson._id, courseId })
+      });
+    }
+  }, [selectedLesson, courseId]);
+
   return (
     <>
       <Navbar />

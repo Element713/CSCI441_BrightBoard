@@ -34,4 +34,6 @@ const progressSchema = new mongoose.Schema(
 // Prevent duplicate progress records for the same student-course pair
 progressSchema.index({ student: 1, course: 1 }, { unique: true });
 
+
+
 module.exports = mongoose.model('Progress', progressSchema);
