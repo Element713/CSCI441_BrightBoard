@@ -77,9 +77,11 @@ export default function StudentDashboard() {
 
   // Helper to get progress percentage for a course
   function getCourseProgress(course) {
-    const progress = progressData.find((p) => p.course === course._id);
-    const totalLessons = Array.isArray(course.lessons) ? course.lessons.length : 0;
-    const completed = progress?.lessonsCompleted?.length || 0;
+    const progress = progressData.find((p) => p.courseId === course._id);
+    const totalLessons = progress?.totalLessons || 0;
+    const completed = Array.isArray(progress?.lessonsCompleted)
+      ? progress.lessonsCompleted.filter(l => l.completed).length
+      : 0;
     if (totalLessons === 0) return 0;
     return Math.round((completed / totalLessons) * 100);
   }
