@@ -233,8 +233,12 @@ a:hover {
   cursor: pointer;
   transition: background 0.2s, border 0.2s;
   display: flex;
-  align-items: center;
-  gap: 1em;
+  flex-direction: column;   /* <-- Change from row to column */
+  align-items: flex-start;  /* <-- Align items to start */
+  gap: 0.5em;               /* <-- Reduce gap for tighter layout */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 .created-item.selected {
   background: #e0e0ff;
@@ -262,11 +266,26 @@ a:hover {
 }
 
 .edit-btn-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
   margin-top: 0.5em;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.edit-btn-group .btn {
+  min-width: 70px;
+  white-space: nowrap;
 }
 
 .course-desc {
-  font-size: 0.9em;
+  font-size: 0.95em;
+  color: #444;
+  margin: 0.25em 0 0.5em 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 .prof-dashboard-title {
@@ -513,5 +532,13 @@ button:focus, .btn:focus, a:focus {
   .prof-lesson-container select {
     font-size: 0.95em;
     padding: 0.4em;
+  }
+  .created-item, .student-item {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.95em;
+  }
+  .edit-btn-group {
+    flex-direction: column;
+    gap: 0.3em;
   }
 }
