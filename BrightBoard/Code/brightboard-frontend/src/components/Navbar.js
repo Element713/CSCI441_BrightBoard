@@ -25,7 +25,7 @@ export default function Navbar({ onToggleTheme }) {
           <>
             <Link to="/student/dashboard">Dashboard</Link>
             <Link to="/progress">Progress</Link>
-            <link to ="/catalog">Course Catalog</link>
+            <Link to="/catalog">Course Catalog</Link>
           </>
         )}
         {(user?.role === "professor" || user?.role === "instructor") && (
