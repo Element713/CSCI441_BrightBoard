@@ -87,17 +87,15 @@ export default function CourseView() {
               ) : (
                 <ul style={{ paddingLeft: "1.5rem", marginBottom: "1.5rem" }}>
                   {lessons.map((lesson) => (
-                    <li key={lesson._id} style={{ marginBottom: "0.5rem" }}>
-                      <Link to={`/lesson/${lesson._id}`}>{lesson.title}</Link>
+                    <li key={lesson._id} style={{ marginBottom: "0.5rem", color: '#555' }}>
+                      {lesson.title}
                     </li>
                   ))}
                 </ul>
               )}
 
-              <p>
-                <Link to={`/quiz?courseId=${course._id}`} className="btn">
-                  Take Quiz
-                </Link>
+              <p style={{ color: '#888', fontStyle: 'italic' }}>
+                Quiz available for this course.
               </p>
             </>
           )}
