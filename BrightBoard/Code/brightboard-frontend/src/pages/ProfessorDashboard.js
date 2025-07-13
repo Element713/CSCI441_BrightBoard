@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../App.css";
 
 export default function ProfessorDashboard() {
@@ -317,7 +317,13 @@ export default function ProfessorDashboard() {
             {selected === null || !courses[selected] ? (
               <div className="prof-empty-state">Select a course to manage its lessons.</div>
             ) : (
-              <div className="prof-course-materials">Manage lessons for the selected course here.</div>
+              <Link
+                to={`/lesson/${courses[selected]._id}`}
+                className="btn"
+                style={{ display: 'inline-block', marginTop: '1em' }}
+              >
+                Manage Lessons & Materials
+              </Link>
             )}
           </div>
 
