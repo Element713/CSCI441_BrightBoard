@@ -278,34 +278,40 @@ export default function ProfessorDashboard() {
 
           {/* Students & Progress Box */}
           <div className="dashboard-box card">
-            <h3>Students & Progress</h3>
-            {selected === null || !courses[selected] ? (
-              <div className="prof-empty-state">Select a course to view students.</div>
-            ) : (
-              <div className="student-list">
-                {Array.isArray(courses[selected]?.students) &&
-                courses[selected].students.length === 0 ? (
-                  <div className="no-items">No students enrolled yet.</div>
-                ) : Array.isArray(courses[selected]?.students) ? (
-                  courses[selected].students.map((student) => (
+          <h3>Students & Progress</h3>
+          {selected === null || !courses[selected] ? (
+            <div className="prof-empty-state">Select a course to view students.</div>
+          ) : (
+            <div className="student-list">
+              {Array.isArray(courses[selected]?.students) &&
+              courses[selected].students.length === 0 ? (
+                <div className="no-items">No students enrolled yet.</div>
+              ) : Array.isArray(courses[selected]?.students) ? (
+                courses[selected].students.map((student) => {
+                  const progress = studentProgress[student._id] || { percent: 0, completed: 0, total: 0 };
+                  return (
                     <div className="student-item" key={student._id || student.name}>
-                      <strong>{student.name}</strong>
+                      <div style={{ fontWeight: "bold", marginBottom: "0.25em" }}>{student.name}</div>
                       <div className="progress-bar-container">
                         <div
                           className="progress-bar"
-                          style={{ width: `${student.progress || 0}%` }}
+                          style={{ width: `${progress.percent}%` }}
                         >
-                          {student.progress || 0}%
+                          {progress.percent}%
                         </div>
                       </div>
+                      <div style={{ fontSize: "0.9em", color: "#444" }}>
+                        Lessons Completed: {progress.completed}/{progress.total}
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="no-items">No students enrolled yet.</div>
-                )}
-              </div>
-            )}
-          </div>
+                  );
+                })
+              ) : (
+                <div className="no-items">No students enrolled yet.</div>
+              )}
+            </div>
+          )}
+        </div>
         </div>
       </main>
       <footer className="footer">
