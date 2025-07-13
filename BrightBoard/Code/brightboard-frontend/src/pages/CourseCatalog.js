@@ -38,9 +38,9 @@ export default function CourseCatalog() {
             ...course,
             _id: course._id ? String(course._id) : "",
             instructor:
-              course.instructor && course.instructor.name
-                ? { name: course.instructor.name, _id: String(course.instructor._id || "") }
-                : { name: "Unknown" },
+              course.instructor && course.instructor.username
+                ? { username: course.instructor.username, _id: String(course.instructor._id || "") }
+                : { username: "Unknown" },
           }));
           setCourses(normalized);
           setError("");
@@ -78,7 +78,7 @@ export default function CourseCatalog() {
       <h3 style={{ marginBottom: "0.5em" }}>{course.title}</h3>
       <p style={{ fontSize: "0.9em", color: "#555" }}>{course.description}</p>
       <p style={{ fontStyle: "italic", marginTop: "1em", color: "#888" }}>
-        Instructor: {course.instructor?.name || "Unknown"}
+        Instructor: {course.instructor?.username || "Unknown"}
       </p>
     </div>
   );
