@@ -105,6 +105,7 @@ export default function CourseCatalog() {
               borderRadius: "5px",
             }}
             disabled={!!error}
+            autoComplete="username"
           />
         </div>
         <div
