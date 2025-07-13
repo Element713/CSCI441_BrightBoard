@@ -12,6 +12,7 @@ export default function ProfessorDashboard() {
   const [materialTitle, setMaterialTitle] = useState("");
   const [materialDesc, setMaterialDesc] = useState("");
   const [loading, setLoading] = useState(true);
+  const [studentProgress, setStudentProgress] = useState({});
   const navigate = useNavigate();
 
   // Fetch courses from backend on mount
@@ -25,6 +26,50 @@ export default function ProfessorDashboard() {
       .catch(() => setCourses([]))
       .finally(() => setLoading(false));
   }, []);
+
+  // Fetch progress for all students in the selected course
+  useEffect(() => {
+    async function fetchProgressForStudents() {
+      if (
+        selected === null ||
+        !courses[selected] ||
+        !Array.isArray(courses[selected].students) ||
+        courses[selected].students.length === 0
+      ) {
+        setStudentProgress({});
+        return;
+      }
+      const token = localStorage.getItem("token");
+      const courseId = courses[selected]._id;
+      const progressObj = {};
+      await Promise.all(
+        courses[selected].students.map(async (student) => {
+          try {
+            const res = await fetch(`/api/progress/${student._id}/${courseId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            // Calculate lesson progress percent
+            let percent = 0;
+            if (data.totalLessons && data.lessonsCompleted) {
+              percent = Math.round(
+                (data.lessonsCompleted.length / data.totalLessons) * 100
+              );
+            }
+            progressObj[student._id] = {
+              percent,
+              completed: data.lessonsCompleted?.length || 0,
+              total: data.totalLessons || 0,
+            };
+          } catch {
+            progressObj[student._id] = { percent: 0, completed: 0, total: 0 };
+          }
+        })
+      );
+      setStudentProgress(progressObj);
+    }
+    fetchProgressForStudents();
+  }, [selected, courses]);
 
   // Add a new course (POST to backend)
   const addCourse = async (e) => {
@@ -281,19 +326,25 @@ export default function ProfessorDashboard() {
                 courses[selected].students.length === 0 ? (
                   <div className="no-items">No students enrolled yet.</div>
                 ) : Array.isArray(courses[selected]?.students) ? (
-                  courses[selected].students.map((student) => (
-                    <div className="student-item" key={student._id || student.name}>
-                      <strong>{student.name}</strong>
-                      <div className="progress-bar-container">
-                        <div
-                          className="progress-bar"
-                          style={{ width: `${student.progress || 0}%` }}
-                        >
-                          {student.progress || 0}%
+                  courses[selected].students.map((student) => {
+                    const progress = studentProgress[student._id] || { percent: 0, completed: 0, total: 0 };
+                    return (
+                      <div className="student-item" key={student._id || student.name}>
+                        <div style={{ fontWeight: "bold", marginBottom: "0.25em" }}>{student.name}</div>
+                        <div className="progress-bar-container">
+                          <div
+                            className="progress-bar"
+                            style={{ width: `${progress.percent}%` }}
+                          >
+                            {progress.percent}%
+                          </div>
+                        </div>
+                        <div style={{ fontSize: "0.9em", color: "#444" }}>
+                          Lessons Completed: {progress.completed}/{progress.total}
                         </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <div className="no-items">No students enrolled yet.</div>
                 )}
