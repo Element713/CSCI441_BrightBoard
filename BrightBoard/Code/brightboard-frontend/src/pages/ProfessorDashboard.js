@@ -358,9 +358,12 @@ export default function ProfessorDashboard() {
                       completedQuizzes: 0,
                       totalQuizzes: 0,
                     };
+                    // Show name, username, or fallback
                     return (
-                      <div className="student-item" key={student._id || student.name}>
-                        <div className="student-progress-name">{student.name}</div>
+                      <div className="student-item" key={student._id || student.username || student.name}>
+                        <div className="student-progress-name">
+                          {student.name || student.username || "Student"}
+                        </div>
                         <div className="progress-bar-container" style={{ marginBottom: "0.25em" }}>
                           <div
                             className={`progress-bar lesson${progress.completedLessons < progress.totalLessons ? " incomplete" : ""}`}
