@@ -277,24 +277,23 @@ export default function ProfessorDashboard() {
               <div className="prof-empty-state">Select a course to view students.</div>
             ) : (
               <div className="student-list">
-                {Array.isArray(courses[selected]?.students) ? (
-                  courses[selected].students.length === 0 ? (
-                    <div className="no-items">No students enrolled yet.</div>
-                  ) : (
-                    courses[selected].students.map((student) => (
-                      <div className="student-item" key={student._id || student.name}>
-                        <strong>{student.name}</strong>
-                        <div className="progress-bar-container">
-                          <div
-                            className="progress-bar"
-                            style={{ width: `${student.progress || 0}%` }}
-                          >
-                            {student.progress || 0}%
-                          </div>
+                {Array.isArray(courses[selected]?.students) &&
+                courses[selected].students.length === 0 ? (
+                  <div className="no-items">No students enrolled yet.</div>
+                ) : Array.isArray(courses[selected]?.students) ? (
+                  courses[selected].students.map((student) => (
+                    <div className="student-item" key={student._id || student.name}>
+                      <strong>{student.name}</strong>
+                      <div className="progress-bar-container">
+                        <div
+                          className="progress-bar"
+                          style={{ width: `${student.progress || 0}%` }}
+                        >
+                          {student.progress || 0}%
                         </div>
                       </div>
-                    ))
-                  )
+                    </div>
+                  ))
                 ) : (
                   <div className="no-items">No students enrolled yet.</div>
                 )}
