@@ -1,6 +1,10 @@
 // Lesson upload/viewing
 const express = require('express');
 const router = express.Router();
+// Multer setup for PDF uploads
+const multer = require('multer');
+const path = require('path');
+const upload = multer({ dest: path.join(__dirname, '../uploads/') });
 const lessonController = require('../controllers/lessonController');
 const { verifyUser } = require('../middleware/authMiddleware');
 const { verifyInstructor } = require('../middleware/roleMiddleware');
