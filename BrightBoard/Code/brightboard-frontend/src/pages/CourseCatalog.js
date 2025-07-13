@@ -38,8 +38,8 @@ export default function CourseCatalog() {
             ...course,
             _id: course._id ? String(course._id) : "",
             instructor:
-              typeof course.instructor === "object" && course.instructor !== null
-                ? { ...course.instructor, name: course.instructor.name || "Unknown", _id: String(course.instructor._id || "") }
+              course.instructor && course.instructor.name
+                ? { name: course.instructor.name, _id: String(course.instructor._id || "") }
                 : { name: "Unknown" },
           }));
           setCourses(normalized);
