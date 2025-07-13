@@ -27,7 +27,7 @@ const getCourses = async (req, res) => {
 
     const courses = await Course.find(query)
       .populate("students", "name")
-      .populate("instructor", "name")
+      .populate("instructor", "username")
       .lean();
 
     res.json(courses);
@@ -40,7 +40,7 @@ const getCourses = async (req, res) => {
 // Get course by ID
 const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate('instructor', 'name');
+    const course = await Course.findById(req.params.id).populate('instructor', 'username');
     if (!course) return res.status(404).json({ error: 'Course not found' });
     res.json(course);
   } catch (err) {
