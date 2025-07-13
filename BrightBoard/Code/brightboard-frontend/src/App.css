@@ -1,3 +1,6 @@
+/* =========================
+   Root Variables & General
+   ========================= */
 :root {
   --green-3: #549431;
   --blue-3: #304073;
@@ -5,7 +8,9 @@
   --pink-3: #9d344b;
 }
 
-
+/* =========================
+   Base Styles & Body
+   ========================= */
 body {
   background-color: var(--green-3);
   min-height: 100vh;
@@ -15,11 +20,9 @@ body {
   overflow: auto;
   scrollbar-width: none; /* For Firefox */
 }
-
 body::-webkit-scrollbar {
   display: none; /* For Chrome, Safari, and Edge */
 }
-
 .App {
   min-height: 100vh;
   text-align: center;
@@ -27,6 +30,9 @@ body::-webkit-scrollbar {
   background-color: #7ed957; 
 }
 
+/* =========================
+   Navbar/Header
+   ========================= */
 .navbar, header.navbar {
   display: flex;
   align-items: center;
@@ -35,7 +41,6 @@ body::-webkit-scrollbar {
   padding: 0.5em 2em;
   box-shadow: 0 2px 8px rgba(51, 111, 18, 0.08);
 }
-
 .navbar-content {
   display: flex;
   align-items: center;
@@ -44,7 +49,6 @@ body::-webkit-scrollbar {
   margin: 0 auto;
   padding: 0 1.5rem;
 }
-
 .logo {
   font-size: 2rem;
   font-weight: bold;
@@ -52,13 +56,11 @@ body::-webkit-scrollbar {
   text-decoration: none;
   letter-spacing: 1px;
 }
-
 .nav-links {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
-
 .nav-links a, .nav-links button {
   color: #fff;
   background: none;
@@ -69,11 +71,9 @@ body::-webkit-scrollbar {
   cursor: pointer;
   transition: color 0.2s;
 }
-
 .nav-links a:hover, .nav-links button:hover {
   color: var(--yellow-accent);
 }
-
 .theme-toggle {
   padding: 0.3em 1em;
   border-radius: 6px;
@@ -84,13 +84,14 @@ body::-webkit-scrollbar {
   cursor: pointer;
   transition: background 0.2s;
 }
-
 .theme-toggle:hover {
   background: var(--yellow-accent);
   color: #222;
 }
 
-
+/* =========================
+   Buttons
+   ========================= */
 button, .btn {
   background: var(--yellow-accent);
   color: #222;
@@ -106,7 +107,9 @@ button:hover, .btn:hover {
   color: #fff;
 }
 
-
+/* =========================
+   Card backgrounds
+   ========================= */
 .card, .form-container, .dashboard-card, .quiz-card, .lesson-card, .progress-card {
   background: #fff;
   max-width: none;
@@ -114,7 +117,9 @@ button:hover, .btn:hover {
   width: 100%;
 }
 
-
+/* =========================
+   Dashboard grid and box styles
+   ========================= */
 .dashboard-grid {
   display: grid;
   grid-auto-flow: column;
@@ -134,7 +139,9 @@ button:hover, .btn:hover {
   margin: 1em 0;
 }
 
-
+/* =========================
+   Progress Cards & Bars
+   ========================= */
 .progress-card {
   box-sizing: border-box;
   padding: 1.5em;
@@ -147,14 +154,12 @@ button:hover, .btn:hover {
   word-break: break-word;
   overflow-wrap: break-word;
 }
-
 .progress-bar-container {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
   width: 100%;
 }
-
 .progress-bar {
   min-width: 40px;
   max-width: 100%;
@@ -163,42 +168,25 @@ button:hover, .btn:hover {
   text-overflow: ellipsis;
   padding: 0 0.5em;
   box-sizing: border-box;
+  border: 1.5px solid #ddd;
 }
-
 /* Lesson progress: green */
 .progress-bar.lesson {
   background: linear-gradient(90deg, #4caf50 60%, #7ed957 100%);
 }
-
 /* Quiz progress: blue */
 .progress-bar.quiz {
   background: linear-gradient(90deg, #2196f3 60%, #304073 100%);
 }
-
 /* Show incomplete progress with faded color */
 .progress-bar.incomplete {
   opacity: 0.5;
   filter: grayscale(0.3);
 }
 
-/* Add a border for clarity */
-.progress-bar {
-  border: 1.5px solid #ddd;
-}
-
-/* Responsive for mobile */
-@media (max-width: 600px) {
-  .progress-card {
-    padding: 1em;
-    font-size: 0.95em;
-    max-width: 98vw;
-  }
-  .progress-bar {
-    font-size: 0.85em;
-    padding: 0 0.3em;
-  }
-}
-
+/* =========================
+   Links & Footer
+   ========================= */
 a, .App-link {
   color: var(--pink-3);
   text-decoration: underline;
@@ -206,8 +194,6 @@ a, .App-link {
 a:hover {
   color: var(--yellow-accent);
 }
-
-
 .footer {
   background: var(--blue-3);
   color: #fff;
@@ -216,19 +202,19 @@ a:hover {
   border-top: 2px solid var(--blue-3);
 }
 
-
+/* =========================
+   Professor Dashboard
+   ========================= */
 .section-title {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 2rem 0 1rem 0;
   color: var(--blue-3);
 }
-
 .created-list, .student-list {
   margin: 1rem 0;
   padding: 0;
 }
-
 .created-item, .student-item {
   background: #fff;
   border: 1px solid var(--green-3);
@@ -238,9 +224,9 @@ a:hover {
   cursor: pointer;
   transition: background 0.2s, border 0.2s;
   display: flex;
-  flex-direction: column;   /* <-- Change from row to column */
-  align-items: flex-start;  /* <-- Align items to start */
-  gap: 0.5em;               /* <-- Reduce gap for tighter layout */
+  flex-direction: column;   /* Column layout for name above bars */
+  align-items: flex-start;
+  gap: 0.5em;
   word-break: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
@@ -248,18 +234,15 @@ a:hover {
 .created-item.selected {
   background: #e0e0ff;
 }
-
 .no-items {
   color: var(--pink-3);
   font-style: italic;
 }
-
 .add-section {
   margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid var(--blue-1);
 }
-
 .quiz-section-margin {
   margin-top: 1em;
 }
@@ -269,7 +252,6 @@ a:hover {
 .quiz-btn-margin {
   margin-left: 1em;
 }
-
 .edit-btn-group {
   display: flex;
   flex-direction: row;
@@ -278,12 +260,10 @@ a:hover {
   flex-wrap: wrap;
   width: 100%;
 }
-
 .edit-btn-group .btn {
   min-width: 70px;
   white-space: nowrap;
 }
-
 .course-desc {
   font-size: 0.95em;
   color: #444;
@@ -292,7 +272,6 @@ a:hover {
   overflow-wrap: break-word;
   width: 100%;
 }
-
 .prof-dashboard-title {
   text-align: center;
   margin: 1em 0;
@@ -307,7 +286,19 @@ a:hover {
   color: #888;
 }
 
+/* =========================
+   Student Progress Name
+   ========================= */
+.student-progress-name {
+  font-weight: bold;
+  margin-bottom: 0.25em;
+  font-size: 1.08em;
+  color: #222;
+}
 
+/* =========================
+   Quiz Card and Questions
+   ========================= */
 .quiz-bg {
   background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
   color: #fff;
@@ -337,7 +328,9 @@ a:hover {
   margin-bottom: 2rem;
 }
 
-
+/* =========================
+   Lesson Details
+   ========================= */
 .lesson-details {
   margin-top: 2em;
 }
@@ -348,7 +341,9 @@ a:hover {
   margin-top: 1em;
 }
 
-
+/* =========================
+   Course Catalog
+   ========================= */
 .course-catalog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -371,13 +366,17 @@ a:hover {
   transform: translateY(-4px) scale(1.02);
 }
 
-
+/* =========================
+   Utility Classes
+   ========================= */
 .go-to-lessons-link {
   margin-top: 0.5em;
   display: inline-block;
 }
 
-
+/* =========================
+   Register Page
+   ========================= */
 #register-message {
   margin-top: 1rem;
   text-align: center;
@@ -388,7 +387,9 @@ a:hover {
   text-decoration: underline;
 }
 
-
+/* =========================
+   Modal Styles
+   ========================= */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -424,7 +425,9 @@ a:hover {
   margin-top: 1em;
 }
 
-
+/* =========================
+   App Logo & Animations
+   ========================= */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -452,6 +455,9 @@ a:hover {
   to { transform: rotate(360deg); }
 }
 
+/* =========================
+   Dark Mode
+   ========================= */
 body.dark, .dark {
   background: #181818;
   color: #eee;
@@ -470,7 +476,9 @@ button:focus, .btn:focus, a:focus {
   outline-offset: 2px;
 }
 
-/* Add styles to ensure lesson containers and selects in ProfessorDashboard do not overflow */
+/* =========================
+   Lesson Containers & Selects
+   ========================= */
 .lesson-details,
 .prof-lesson-container,
 .professor-lesson-list {
@@ -483,7 +491,6 @@ button:focus, .btn:focus, a:focus {
   border-radius: 8px;
   margin-bottom: 1em;
 }
-
 .professor-lesson-list select,
 .prof-lesson-container select {
   max-width: 100%;
@@ -501,15 +508,16 @@ button:focus, .btn:focus, a:focus {
   white-space: normal;
   word-break: break-word;
 }
-
 .professor-lesson-list option,
 .prof-lesson-container option {
   white-space: normal;
   word-break: break-word;
   overflow-wrap: break-word;
-}
+} 
 
-/* Responsive for mobile */
+/* =========================
+   Responsive Styles
+   ========================= */
 @media (max-width: 600px) {
   .progress-card {
     padding: 1em;
@@ -548,12 +556,14 @@ button:focus, .btn:focus, a:focus {
   }
 }
 
+/* =========================
+   Dropdowns
+   ========================= */
 .user-dropdown {
   max-width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
-
 .dropdown-menu {
   max-width: 90vw;
   overflow: hidden;
