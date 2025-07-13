@@ -93,10 +93,11 @@ export default function StudentLessonView() {
                 <div className="lesson-details">
                   <h3>{selectedLesson.title}</h3>
                   {selectedLesson.contentType === 'pdf' ? (
-                    <iframe
+                    <embed
                       src={selectedLesson.content}
-                      title="Lesson PDF"
-                      style={{ width: '100%', height: '600px', border: 'none' }}
+                      type="application/pdf"
+                      width="100%"
+                      height="600px"
                     />
                   ) : (
                     <p>{selectedLesson.content}</p>

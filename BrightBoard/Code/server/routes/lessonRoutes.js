@@ -1,10 +1,18 @@
 // Lesson upload/viewing
 const express = require('express');
 const router = express.Router();
-// Multer setup for PDF uploads
+// Multer setup for PDF uploads with preserved extension
 const multer = require('multer');
 const path = require('path');
-const upload = multer({ dest: path.join(__dirname, '../uploads/') });
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../uploads/'),
+  filename: (req, file, cb) => {
+    // preserve original extension
+    const ext = path.extname(file.originalname) || '';
+    cb(null, `${file.fieldname}-${Date.now()}${ext}`);
+  }
+});
+const upload = multer({ storage });
 const lessonController = require('../controllers/lessonController');
 const { verifyUser } = require('../middleware/authMiddleware');
 const { verifyInstructor } = require('../middleware/roleMiddleware');
