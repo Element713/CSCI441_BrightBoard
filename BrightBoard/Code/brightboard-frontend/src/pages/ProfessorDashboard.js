@@ -49,20 +49,43 @@ export default function ProfessorDashboard() {
               headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
-            // Calculate lesson progress percent
-            let percent = 0;
+
+            // Calculate lesson and quiz progress percent
+            let lessonPercent = 0;
+            let quizPercent = 0;
+            let completedLessons = 0;
+            let totalLessons = 0;
+            let completedQuizzes = 0;
+            let totalQuizzes = 0;
+
             if (data.totalLessons && data.lessonsCompleted) {
-              percent = Math.round(
-                (data.lessonsCompleted.length / data.totalLessons) * 100
-              );
+              completedLessons = data.lessonsCompleted.length;
+              totalLessons = data.totalLessons;
+              lessonPercent = totalLessons === 0 ? 0 : Math.round((completedLessons / totalLessons) * 100);
             }
+            if (data.totalQuizzes && data.quizzesCompleted) {
+              completedQuizzes = data.quizzesCompleted.length;
+              totalQuizzes = data.totalQuizzes;
+              quizPercent = totalQuizzes === 0 ? 0 : Math.round((completedQuizzes / totalQuizzes) * 100);
+            }
+
             progressObj[student._id] = {
-              percent,
-              completed: data.lessonsCompleted?.length || 0,
-              total: data.totalLessons || 0,
+              lessonPercent,
+              quizPercent,
+              completedLessons,
+              totalLessons,
+              completedQuizzes,
+              totalQuizzes,
             };
           } catch {
-            progressObj[student._id] = { percent: 0, completed: 0, total: 0 };
+            progressObj[student._id] = {
+              lessonPercent: 0,
+              quizPercent: 0,
+              completedLessons: 0,
+              totalLessons: 0,
+              completedQuizzes: 0,
+              totalQuizzes: 0,
+            };
           }
         })
       );
@@ -327,20 +350,34 @@ export default function ProfessorDashboard() {
                   <div className="no-items">No students enrolled yet.</div>
                 ) : Array.isArray(courses[selected]?.students) ? (
                   courses[selected].students.map((student) => {
-                    const progress = studentProgress[student._id] || { percent: 0, completed: 0, total: 0 };
+                    const progress = studentProgress[student._id] || {
+                      lessonPercent: 0,
+                      quizPercent: 0,
+                      completedLessons: 0,
+                      totalLessons: 0,
+                      completedQuizzes: 0,
+                      totalQuizzes: 0,
+                    };
                     return (
                       <div className="student-item" key={student._id || student.name}>
                         <div style={{ fontWeight: "bold", marginBottom: "0.25em" }}>{student.name}</div>
-                        <div className="progress-bar-container">
+                        <div className="progress-bar-container" style={{ marginBottom: "0.25em" }}>
                           <div
-                            className="progress-bar"
-                            style={{ width: `${progress.percent}%` }}
+                            className={`progress-bar lesson${progress.completedLessons < progress.totalLessons ? " incomplete" : ""}`}
+                            style={{ width: `${progress.lessonPercent}%` }}
                           >
-                            {progress.percent}%
+                            Lessons: {progress.lessonPercent}%
+                          </div>
+                          <div
+                            className={`progress-bar quiz${progress.completedQuizzes < progress.totalQuizzes ? " incomplete" : ""}`}
+                            style={{ width: `${progress.quizPercent}%`, marginTop: "0.2em", background: "#3949ab" }}
+                          >
+                            Quizzes: {progress.quizPercent}%
                           </div>
                         </div>
                         <div style={{ fontSize: "0.9em", color: "#444" }}>
-                          Lessons Completed: {progress.completed}/{progress.total}
+                          Lessons Completed: {progress.completedLessons}/{progress.totalLessons} <br />
+                          Quizzes Completed: {progress.completedQuizzes}/{progress.totalQuizzes}
                         </div>
                       </div>
                     );
