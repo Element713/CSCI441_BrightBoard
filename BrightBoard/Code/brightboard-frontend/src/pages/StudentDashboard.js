@@ -109,7 +109,7 @@ export default function StudentDashboard() {
       <Navbar />
       <main>
         <h2 className="dashboard-title">
-          Student Dashboard — Welcome, {user?.name || "Student"}!
+          Student Dashboard — Welcome, {user?.username || "Student"}!
         </h2>
         <div className="dashboard-grid">
           <div className="dashboard-box card">

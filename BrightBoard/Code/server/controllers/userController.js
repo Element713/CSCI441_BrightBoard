@@ -6,7 +6,7 @@ const getCurrentUser = (req, res) => {
   try {
     res.json({
       id: req.user._id,
-      name: req.user.name,
+      username: req.user.username,
       email: req.user.email,
       role: req.user.role
     });
