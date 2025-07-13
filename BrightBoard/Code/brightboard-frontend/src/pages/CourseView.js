@@ -1,23 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import {Navbar} from "../components/Navbar";
 
-// Navbar component
-function Navbar({ onToggleTheme }) {
-  return (
-    <header className="navbar">
-      <h1>BrightBoard</h1>
-      <div className="nav-links">
-        <a href="/">Home</a>
-        <a href="/catalog">Catalog</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-        <button id="toggle-theme" className="theme-toggle" onClick={onToggleTheme}>
-          Toggle Theme
-        </button>
-      </div>
-    </header>
-  );
-}
 
 export default function CourseView() {
   const [dark, setDark] = useState(false);

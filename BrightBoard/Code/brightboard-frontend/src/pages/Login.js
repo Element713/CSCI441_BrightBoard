@@ -1,21 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-function Navbar({ onToggleTheme }) {
-  return (
-    <header className="navbar">
-      <h1>BrightBoard</h1>
-      <div className="nav-links">
-        <a href="/Home">Home</a>
-        <a href="/Login">Login</a>
-        <a href="/Register">Register</a>
-        <button id="toggle-theme" className="theme-toggle" onClick={onToggleTheme}>
-          Toggle Theme
-        </button>
-      </div>
-    </header>
-  );
-}
+import {Navbar} from "../components/Navbar";
 
 export default function Login() {
   const [dark, setDark] = useState(false);

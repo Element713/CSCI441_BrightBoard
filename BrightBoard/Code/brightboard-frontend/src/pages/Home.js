@@ -1,20 +1,6 @@
 import React, { useState } from "react";
 
-function Navbar({ onToggleTheme }) {
-  return (
-    <header className="navbar">
-      <h1><button id="logo" className="logo">BrightBoard</button></h1>
-      <div className="nav-links">
-        <a href="/Home">Home</a>
-        <a href="/Login">Login</a>
-        <a href="/Register">Register</a>
-        <button id="toggle-theme" className="theme-toggle" onClick={onToggleTheme}>
-          Toggle Theme
-        </button>
-      </div>
-    </header>
-  );
-}
+import {Navbar} from "../components/Navbar";
 
 export default function Home() {
   const [dark, setDark] = useState(false);
