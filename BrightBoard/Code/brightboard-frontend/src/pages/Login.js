@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
-import {Navbar} from "../components/Navbar";
+import Navbar from "../components/Navbar";
 
 export default function Login() {
   const [dark, setDark] = useState(false);
