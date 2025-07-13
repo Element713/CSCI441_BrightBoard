@@ -16,6 +16,11 @@ const PORT = process.env.PORT || 5000;
 // Connect to MongoDB
 connectDB();
 
+// File uploads
+const multer = require('multer');
+const upload = multer({ dest: path.join(__dirname, 'uploads/') });
+// Serve uploaded files statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Middleware
 app.use(logger);
 app.use(cors(corsOptions));

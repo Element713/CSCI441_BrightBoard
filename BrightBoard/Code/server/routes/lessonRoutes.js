@@ -7,6 +7,9 @@ const { verifyInstructor } = require('../middleware/roleMiddleware');
 
 // Instructor-only: create a new lesson
 router.post('/', verifyUser, verifyInstructor, lessonController.createLesson);
+// Instructor-only: upload PDF for existing lesson
+// multer 'pdf' field expects file input name 'pdf'
+router.post('/:id/upload', verifyUser, verifyInstructor, upload.single('pdf'), lessonController.uploadPDF);
 
 // Public or authenticated users: view lessons
 router.get('/:courseId', lessonController.getLessonsByCourse);

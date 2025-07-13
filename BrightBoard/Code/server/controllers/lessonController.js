@@ -63,6 +63,20 @@ const deleteLesson = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// Upload PDF and store its path on the lesson
+const uploadPDF = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const lesson = await Lesson.findById(req.params.id);
+    if (!lesson) return res.status(404).json({ error: 'Lesson not found' });
+    lesson.contentType = 'pdf';
+    lesson.content = `/uploads/${req.file.filename}`;
+    await lesson.save();
+    res.json(lesson);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 module.exports = {
   createLesson,
@@ -70,4 +84,5 @@ module.exports = {
   getLessonById,
   updateLesson,
   deleteLesson
+  , uploadPDF
 };

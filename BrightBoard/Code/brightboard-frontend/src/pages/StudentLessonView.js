@@ -92,7 +92,15 @@ export default function StudentLessonView() {
               {selectedLesson && (
                 <div className="lesson-details">
                   <h3>{selectedLesson.title}</h3>
-                  <p>{selectedLesson.content}</p>
+                  {selectedLesson.contentType === 'pdf' ? (
+                    <iframe
+                      src={selectedLesson.content}
+                      title="Lesson PDF"
+                      style={{ width: '100%', height: '600px', border: 'none' }}
+                    />
+                  ) : (
+                    <p>{selectedLesson.content}</p>
+                  )}
                   <button
                     className="btn"
                     onClick={handleMarkLessonComplete}
