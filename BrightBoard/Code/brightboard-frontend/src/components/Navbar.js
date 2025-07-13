@@ -29,7 +29,6 @@ export default function Navbar({ onToggleTheme }) {
         {(user?.role === "professor" || user?.role === "instructor") && (
           <>
             <Link to="/professor/dashboard">Dashboard</Link>
-            <Link to="/professor/quizzes">Quizzes</Link>
             {/* Add more professor links as needed */}
           </>
         )}
