@@ -12,8 +12,13 @@ body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
   color: #222;
+  overflow: auto;
+  scrollbar-width: none; /* For Firefox */
 }
 
+body::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
 
 .App {
   min-height: 100vh;
@@ -541,4 +546,16 @@ button:focus, .btn:focus, a:focus {
     flex-direction: column;
     gap: 0.3em;
   }
+}
+
+.user-dropdown {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.dropdown-menu {
+  max-width: 90vw;
+  overflow: hidden;
+  word-wrap: break-word;
 }
