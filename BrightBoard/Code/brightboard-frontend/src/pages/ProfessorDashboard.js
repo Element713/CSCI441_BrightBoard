@@ -360,7 +360,7 @@ export default function ProfessorDashboard() {
                     };
                     return (
                       <div className="student-item" key={student._id || student.name}>
-                        <div style={{ fontWeight: "bold", marginBottom: "0.25em" }}>{student.name}</div>
+                        <div className="student-progress-name">{student.name}</div>
                         <div className="progress-bar-container" style={{ marginBottom: "0.25em" }}>
                           <div
                             className={`progress-bar lesson${progress.completedLessons < progress.totalLessons ? " incomplete" : ""}`}
