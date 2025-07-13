@@ -26,7 +26,7 @@ const getCourses = async (req, res) => {
       : {};
 
     const courses = await Course.find(query)
-      .populate("students", "name")
+      .populate("students", "username") // <-- This is the key change
       .populate("instructor", "username")
       .lean();
 
@@ -83,8 +83,6 @@ const deleteCourse = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
 
 // Enroll student in a course
 const enrollInCourse = async (req, res) => {
@@ -149,6 +147,18 @@ const addMaterial = async (req, res) => {
   }
 };
 
+// Example: Get all courses for the current professor (with students populated)
+const getMyCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({ instructor: req.user._id })
+      .populate('students', 'name username email') // <-- This is the key line!
+      .exec();
+    res.json(courses);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createCourse,
   getCourses,
@@ -157,6 +167,7 @@ module.exports = {
   deleteCourse,
   enrollInCourse,
   addMaterial,
-  getEnrolledCourses
+  getEnrolledCourses,
+  getMyCourses
 };
 
