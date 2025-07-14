@@ -9,7 +9,6 @@ export default function Lesson() {
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     title: "",
-    subtitle: "",
     content: "",
     vocab: "",
     example: "",
@@ -38,7 +37,6 @@ export default function Lesson() {
     setSelectedLesson(lesson);
     setForm({
       title: lesson.title || "",
-      subtitle: lesson.subtitle || "",
       content: lesson.content || "",
       vocab: lesson.vocab
         ? lesson.vocab.map((v) => `${v.term}:${v.definition}`).join("\n")
