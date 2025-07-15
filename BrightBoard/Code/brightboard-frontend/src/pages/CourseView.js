@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";

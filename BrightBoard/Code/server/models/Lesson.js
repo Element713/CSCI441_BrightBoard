@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // This schema defines a lesson with a title, content type (text or PDF), content (text or file path),
 // and a reference to the course it belongs to. The timestamps option adds createdAt and updated
 // at fields automatically.

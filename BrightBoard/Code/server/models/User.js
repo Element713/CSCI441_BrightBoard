@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // This model can be used to create, read, update, and delete user records in the database.
 // It includes methods for password hashing and comparison, ensuring secure authentication.
 

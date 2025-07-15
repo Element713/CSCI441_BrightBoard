@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // 	Track student progress, quiz scores, completion status
 
 const { Progress, Submission, Course, Lesson, Quiz } = require('../models');

@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // This schema defines a Quiz model with questions, choices, and correct answers
 // It ensures that each quiz is linked to a course and lesson, and validates the structure of
 

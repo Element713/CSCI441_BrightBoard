@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 const allowedOrigins = require('./allowedOrigins');
 
 const corsOptions = {

@@ -1,3 +1,6 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
+
 const express = require('express');
 const app = express();
 const cors = require('cors');

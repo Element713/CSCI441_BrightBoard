@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // Handles quiz creation, fetching quizzes, and submitting answers
 
 const { Quiz } = require('../models');

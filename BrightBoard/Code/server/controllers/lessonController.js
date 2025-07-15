@@ -1,5 +1,6 @@
 // Uploading, updating, and retrieving lesson content (PDF or text)
-
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 const { Lesson } = require('../models');
 
 // Create a lesson

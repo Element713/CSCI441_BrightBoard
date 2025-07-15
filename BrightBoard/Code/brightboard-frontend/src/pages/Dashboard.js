@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 import React from "react";
 import StudentDashboard from "./StudentDashboard";
 import ProfessorDashboard from "./ProfessorDashboard";

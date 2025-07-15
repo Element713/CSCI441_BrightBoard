@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // This schema captures the student's ID, the quiz ID, their answers, and the score.
 // It also includes validation to ensure answers are provided and prevents duplicate submissions.
 

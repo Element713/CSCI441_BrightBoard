@@ -1,3 +1,6 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
+
 // Handles login, registration, logout, and token refresh
 
 const jwt = require('jsonwebtoken');

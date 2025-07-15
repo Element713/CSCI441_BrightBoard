@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // This code defines a submission controller for handling quiz submissions in a Node.js application.
 // It includes functions to submit a quiz and retrieve submissions by a student.
 // controllers/submissionController.js

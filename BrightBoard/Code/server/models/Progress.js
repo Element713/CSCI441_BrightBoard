@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // This schema tracks which lessons and quizzes a student has completed in a course
 // It allows for efficient querying of a student's progress in a specific course
 

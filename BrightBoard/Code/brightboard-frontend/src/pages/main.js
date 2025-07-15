@@ -1,3 +1,9 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
+
+  // This file is not being used in the current version of the app, however I am afraid to delete it in case it is needed later.
+  // If you are confident that this file is not needed, you can delete it.
+
 import React, { useState } from "react";
 
 // Sample course data

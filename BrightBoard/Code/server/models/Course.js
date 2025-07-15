@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // This schema defines the structure of a course document in MongoDB.
 // It includes fields for the course title, description, and the instructor's ID.
 

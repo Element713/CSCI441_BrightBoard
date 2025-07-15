@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // CRUD operations for courses (create, edit, delete, list)
 
 const Course = require('../models/Course'); // Use direct model import

@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 // (optional)	Aggregates and exports all models for clean importing elsewhere
 
 const User = require('./User');

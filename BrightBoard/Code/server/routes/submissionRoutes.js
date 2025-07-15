@@ -1,3 +1,5 @@
+// written by: Conner Erckert and Shadow Love-Erckert
+  // tested by: Conner Erckert and Shadow Love-Erckert
 const express = require('express');
 const router = express.Router();
 const submissionController = require('../controllers/submissionController');
