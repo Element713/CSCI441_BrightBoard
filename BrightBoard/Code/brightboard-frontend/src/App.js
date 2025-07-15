@@ -6,11 +6,11 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/Dashboard"; // ✅ Add this
-import CourseCatalog from "./pages/CourseCatalog"; // ✅ Add this
-import CourseView from "./pages/CourseView"; // ✅ Add this
-import Lesson from "./pages/Lesson"; // ✅ Add this
-import Quiz from "./pages/Quiz"; // ✅ Add this
+import Dashboard from "./pages/Dashboard"; 
+import CourseCatalog from "./pages/CourseCatalog"; 
+import CourseView from "./pages/CourseView"; 
+import Lesson from "./pages/Lesson"; 
+import Quiz from "./pages/Quiz"; 
 import Progress from "./pages/Progress";
 
 import ProfessorDashboard from "./pages/ProfessorDashboard";
