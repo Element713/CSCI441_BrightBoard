@@ -76,3 +76,11 @@
 20250706	22:29:21	33d13ebc-cdd2-4a2d-b342-13684ab4503d	POST	unknown-origin	/api/auth/register
 20250706	22:29:21	5f99f994-6a78-4d14-922d-2820de1c737c	POST	unknown-origin	/api/auth/login
 20250706	22:29:21	a48929ab-f47b-40c8-80ab-b4d04004a9ef	POST	unknown-origin	/api/courses
+20250715	19:49:37	35259beb-b31d-4665-b7b2-725e8d94c6f9	POST	unknown-origin	/api/auth/register
+20250715	19:49:37	07dffa71-6a1f-467d-b812-9cd01ac49095	POST	unknown-origin	/api/auth/register
+20250715	19:49:37	0f0080ec-3c9f-4f43-bb3a-80f5c4e5ba6b	POST	unknown-origin	/api/auth/login
+20250715	19:49:37	4e96a16c-37ef-40c7-aeb2-5dc0a47f9a31	POST	unknown-origin	/api/auth/login
+20250715	19:49:37	76701b53-a28c-48b6-8edc-615f03dd1b2f	POST	unknown-origin	/api/courses
+20250715	19:49:37	1cfd0d64-10f2-451b-ab73-ceda0d9e98ac	POST	unknown-origin	/api/auth/register
+20250715	19:49:37	54b79525-b006-4242-b754-4f7cc79eac3c	POST	unknown-origin	/api/auth/login
+20250715	19:49:37	fc2e0903-c218-449d-9fda-b49e6236a3c8	POST	unknown-origin	/api/courses
